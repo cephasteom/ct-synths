@@ -1,7 +1,9 @@
-import { mtf, formatTime, formatOscType } from "./utils/core";
+import { mtf, formatOscType } from "./utils/core";
 import { formatCurve, timeToEvent } from "./utils/tone";
 import { Oscillator, AmplitudeEnvelope, Multiply, Signal, Add } from "tone";
 import BaseSynth from "./BaseSynth";
+
+// TODO: _n()
 
 class FMSynth extends BaseSynth {
     #carrierWaveform
@@ -51,7 +53,8 @@ class FMSynth extends BaseSynth {
 
     play(params = {}, time) {
         this.setParams(params)
-
+        this.note = params.n || 220
+        
         this.envelope.triggerAttackRelease(this.dur, time, this.amp)
         this.modulatorEnvelope.triggerAttackRelease(this.dur, time, this.amp)
         
@@ -59,7 +62,7 @@ class FMSynth extends BaseSynth {
         this.dispose(this.disposeTime)
     }
 
-    set n(value) { this.carrierFrequency.linearRampTo(mtf(value), 0.01) }
+    set note(value) { this.carrierFrequency.linearRampTo(mtf(value), 0.01) }
 
     set moda(value) { this.modulatorEnvelope.attack = value }
     set modd(value) { this.modulatorEnvelope.decay = value }

@@ -81,13 +81,12 @@ class BaseSynth {
     }
 
     dispose(time) {
-        // clear any previous disposal requests
         clearTimeout(this.disposeID)
         
-        // set to dispose at time
         this.disposeID = setTimeout(() => {
             getDisposable(this).forEach(prop => prop.dispose())
             this.onDisposeAction && this.onDisposeAction()
+            console.log('disposed!')
         }, timeToEvent(time) * 1000)
     } 
 
