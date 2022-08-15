@@ -52,6 +52,7 @@ class FMSynth extends BaseSynth {
     }
 
     play(params = {}, time) {
+        this.time = time
         this.setParams(params)
         this.note = params.n || 220
         
@@ -62,7 +63,7 @@ class FMSynth extends BaseSynth {
         this.dispose(this.disposeTime)
     }
 
-    set note(value) { this.carrierFrequency.linearRampTo(mtf(value), 0.01) }
+    set note(value) { this.carrierFrequency.setValueAtTime(mtf(value), this.time) }
 
     set moda(value) { this.modulatorEnvelope.attack = value }
     set modd(value) { this.modulatorEnvelope.decay = value }
@@ -79,8 +80,8 @@ class FMSynth extends BaseSynth {
         this.modrcurve = formatCurve(value)
     }
 
-    set harm(value) { this.harmonicityRatio.linearRampTo(value, 0.01) }
-    set modi(value) { this.modulationIndex.linearRampTo(value, 0.01) }
+    set harm(value) { this.harmonicity.setValueAtTime(value, this.time) }
+    set modi(value) { this.modulationIndex.setValueAtTime(value, this.time) }
 
     _harm(value, time, lag = 0.1) { this.harmonicityRatio.rampTo(value, lag, time) }
     _harm = this._harm.bind(this)

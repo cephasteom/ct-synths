@@ -3,6 +3,7 @@ import { formatTime, getDisposable, getClassSetters, getClassMethods, isMutableK
 import { formatCurve, timeToEvent } from "./utils/tone";
 
 class BaseSynth {
+    time = null;
     dur = 1;
     amp = 1;
     envelope;
@@ -10,7 +11,7 @@ class BaseSynth {
     #disposed = false
     disposeTime;
     onDisposeAction;
-    disposeID = null;                                                                                                                                  n = () => null;
+    disposeID = null;                                                                                                                               n = () => null;
     
     constructor() {
         this.panner = new Panner(0)
@@ -48,6 +49,7 @@ class BaseSynth {
     }
 
     play(params = {}, time) {
+        this.time = time
         this.setParams(params)
         this.envelope.triggerAttackRelease(this.dur, time, this.amp)
         
@@ -81,12 +83,13 @@ class BaseSynth {
     }
 
     dispose(time) {
-        clearTimeout(this.disposeID)
-        
         this.disposeID = setTimeout(() => {
+            if(this.#disposed) return
+            
             getDisposable(this).forEach(prop => prop.dispose())
             this.onDisposeAction && this.onDisposeAction()
-            console.log('disposed!')
+            this.#disposed = true
+            // console.log('disposed!')
         }, timeToEvent(time) * 1000)
     } 
 
