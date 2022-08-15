@@ -9,7 +9,8 @@ class BaseSynth {
     self = this.constructor
     #disposed = false
     disposeTime;
-    onDisposeAction;                                                                                                                                     n = () => null;
+    onDisposeAction;
+    disposeID = null;                                                                                                                                  n = () => null;
     
     constructor() {
         this.panner = new Panner(0)
@@ -47,15 +48,11 @@ class BaseSynth {
     }
 
     play(params = {}, time) {
-        const seconds = formatTime(time)
         this.setParams(params)
-        this.envelope.triggerAttackRelease(this.dur, seconds, this.amp)
-        this.disposeTime = seconds + this.dur + this.envelope.release + 0.1
-
-        setTimeout(
-            () => this.dispose(), 
-            (timeToEvent(time) + this.dur + this.envelope.release + 0.1) * 1000
-        )
+        this.envelope.triggerAttackRelease(this.dur, time, this.amp)
+        
+        this.disposeTime = time + this.dur + this.envelope.release + 0.1
+        this.dispose(this.disposeTime)
     }
 
     mutate(params = {}, time, lag) {
@@ -66,14 +63,11 @@ class BaseSynth {
     }
     
     cut(time) {
-        const seconds = formatTime(time)
         this.envelope.set({release: 0.1})
-        this.envelope.triggerRelease(seconds)
-        this.disposeTime = seconds + this.envelope.release + 0.1
-        setTimeout(
-            () => this.dispose(), 
-            (timeToEvent(time) + this.envelope.release + 0.1) * 1000
-        )
+        this.envelope.triggerRelease(time)
+        
+        this.disposeTime = time + this.envelope.release + 0.1
+        this.dispose(this.disposeTime)
     }
 
     connect(node) {
@@ -86,12 +80,17 @@ class BaseSynth {
         this.panner.chain(...nodes)
     }
 
-    dispose() {
-        if(this.#disposed) return
-
-        getDisposable(this).forEach(prop => prop.dispose())
-        this.onDisposeAction && this.onDisposeAction()
-        this.#disposed = true
+    dispose(time) {
+        // clear any previous disposal requests
+        clearTimeout(this.disposeID)
+        console.log(timeToEvent(time))
+        
+        // set to dispose at time
+        this.disposeID = setTimeout(() => {
+            getDisposable(this).forEach(prop => prop.dispose())
+            this.onDisposeAction && this.onDisposeAction()
+            console.log('disposed!')
+        }, timeToEvent(time) * 1000)
     } 
 
     set dur(value) { this.dur = value }

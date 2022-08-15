@@ -1,3 +1,5 @@
+import { immediate } from "tone"
+
 export function formatCurve(type) {
     const types = {
         exp: 'exponential',

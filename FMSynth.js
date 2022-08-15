@@ -51,14 +51,12 @@ class FMSynth extends BaseSynth {
 
     play(params = {}, time) {
         this.setParams(params)
+
         this.envelope.triggerAttackRelease(this.dur, time, this.amp)
         this.modulatorEnvelope.triggerAttackRelease(this.dur, time, this.amp)
+        
         this.disposeTime = time + this.dur + this.envelope.release + 0.1
-
-        setTimeout(
-            () => this.dispose(), 
-            (timeToEvent(time) + this.dur + this.envelope.release + 0.1) * 1000
-        )
+        this.dispose(this.disposeTime)
     }
 
     set n(value) { this.carrierFrequency.linearRampTo(mtf(value), 0.01) }
