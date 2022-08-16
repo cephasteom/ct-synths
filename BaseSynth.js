@@ -96,14 +96,14 @@ class BaseSynth {
     set dur(value) { this.dur = value }
     set amp(value) { this.amp = value }
 
-    set a(value) { this.envelope.attack = value }
-    set d(value) { this.envelope.decay = value }
-    set s(value) { this.envelope.sustain = value }
-    set r(value) { this.envelope.release = value }
+    set a(value) { this.envelope && (this.envelope.attack = value) }
+    set d(value) { this.envelope && (this.envelope.decay = value) }
+    set s(value) { this.envelope && (this.envelope.sustain = value) }
+    set r(value) { this.envelope && (this.envelope.release = value) }
     
-    set acurve(value) { this.envelope.attackCurve = formatCurve(value) }
-    set dcurve(value) { this.envelope.decayCurve = formatCurve(value) }
-    set rcurve(value) { this.envelope.releaseCurve = formatCurve(value) }    
+    set acurve(value) { this.envelope && (this.envelope.attackCurve = formatCurve(value)) }
+    set dcurve(value) { this.envelope && (this.envelope.decayCurve = formatCurve(value)) }
+    set rcurve(value) { this.envelope && (this.envelope.releaseCurve = formatCurve(value)) }    
 
     set curve(value) { 
         this.acurve = formatCurve(value)

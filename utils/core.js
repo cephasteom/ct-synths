@@ -26,3 +26,5 @@ export function formatOscType(type) {
 
 export const isSettableKey = string => string.charAt(0) !== '_'
 export const isMutableKey = string => string.charAt(0) === '_'
+
+export const max = (a, b) => a > b ? a : b
