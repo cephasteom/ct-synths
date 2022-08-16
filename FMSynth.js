@@ -3,10 +3,9 @@ import { formatCurve } from "./utils/tone";
 import { FMSynth } from "tone";
 import BaseSynth from "./BaseSynth";
 
-// TODO: _n()
 // TODO: presets
 
-class FMSynth2 extends BaseSynth {    
+class FM extends BaseSynth {    
     synth;
     
     constructor() {
@@ -62,4 +61,4 @@ class FMSynth2 extends BaseSynth {
 }
 
 
-export default FMSynth2
+export default FM
