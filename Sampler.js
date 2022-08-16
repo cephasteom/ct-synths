@@ -8,52 +8,57 @@ import BaseSynth from "./BaseSynth";
 class Sampler extends BaseSynth {    
     synth;
     #q = 48
-    #n = 60
+    n = 60
     #buffer
-    #dur
+    dur
     #begin = 0
     #rate = 1
 
     constructor(buffer) {
         super()
         this.#buffer = buffer
-        this.#dur = (buffer.length/context.sampleRate)
+        this.dur = (buffer.length/context.sampleRate)
         this.#initGraph()
     }
 
     #initGraph() {
-        this.synth = new Player()
+        this.synth = new Player({fadeOut: 0.1})
         this.synth._buffer.set(this.#buffer)
         this.envelope.dispose() // not needed
         this.synth.connect(this.panner)
     }
 
     #setPlaybackRate(mul = 1) {
-        const playbackRate = this.#rate * Math.pow(2, (this.#n - 60)/12) * mul || 0.001
+        const playbackRate = this.#rate * Math.pow(2, (this.n - 60)/12) * mul || 0.001
         this.synth.set({playbackRate})
     }
 
     // TODO: remove if everything works
     #formatParams(params) {
-        return params
+        return {
+            ...params,
+            note: params.n || this.n
+        }
     }
 
     play(params = {}, time) {
         this.time = time
         this.setParams(this.#formatParams(params))
         
-        this.synth.start(this.time, this.#begin, this.#dur)
+        this.synth.start(this.time, this.#begin, this.dur)
         
-        this.disposeTime = time + this.#dur + 0.1
+        this.disposeTime = time + this.dur + 0.5
         this.dispose(this.disposeTime)
     }
     
-    set dur(value) { this.#dur = max(value, 0.11) }
-    set n(value) {
-        this.#n = value 
+    set dur(value) { this.dur = max(value, 0.11) }
+    
+    set note(value) {
+        this.n = value 
         this.#setPlaybackRate()
     }
-    // TODO: is this passed on?
+    
+    // TODO: check from heree
     set q(value) { this.#q = value}
     set a(fadeIn) { this.synth.set({fadeIn}) }
     set r(fadeOut) { this.synth.set({fadeOut}) }
