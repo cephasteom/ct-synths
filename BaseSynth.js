@@ -89,7 +89,7 @@ class BaseSynth {
             getDisposable(this).forEach(prop => prop.dispose())
             this.onDisposeAction && this.onDisposeAction()
             this.#disposed = true
-            // console.log('disposed!')
+            console.log('disposed!')
         }, timeToEvent(time) * 1000)
     } 
 

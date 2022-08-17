@@ -8,16 +8,15 @@ import BaseSynth from "./BaseSynth";
 class Sampler extends BaseSynth {    
     synth;
     #q = 48
-    n = 60
+    #n = 60
     #buffer
-    dur
     #begin = 0
     #rate = 1
+    #playbackRate = 1
 
     constructor(buffer) {
         super()
         this.#buffer = buffer
-        this.dur = (buffer.length/context.sampleRate)
         this.#initGraph()
     }
 
@@ -29,15 +28,14 @@ class Sampler extends BaseSynth {
     }
 
     #setPlaybackRate(mul = 1) {
-        const playbackRate = this.#rate * Math.pow(2, (this.n - 60)/12) * mul || 0.001
-        this.synth.set({playbackRate})
+        this.#playbackRate = this.#rate * Math.pow(2, (this.#n - 60)/12) * mul || 0.001
+        this.synth.set({playbackRate: this.#playbackRate})
     }
 
-    // TODO: remove if everything works
     #formatParams(params) {
         return {
             ...params,
-            note: params.n || this.n
+            note: params.n || this.#n
         }
     }
 
@@ -45,21 +43,20 @@ class Sampler extends BaseSynth {
         this.time = time
         this.setParams(this.#formatParams(params))
         
-        this.synth.start(this.time, this.#begin, this.dur)
+        const duration = params.dur || (this.#buffer.length/context.sampleRate) / this.#playbackRate
+
+        this.synth.start(this.time, this.#begin, duration)
         
-        this.disposeTime = time + this.dur + 0.5
+        this.disposeTime = time + duration + this.synth.fadeOut + 1
+
         this.dispose(this.disposeTime)
     }
     
-    set dur(value) { this.dur = max(value, 0.11) }
-    
     set note(value) {
-        this.n = value 
+        this.#n = value 
         this.#setPlaybackRate()
     }
     
-    // TODO: check from heree
-    set q(value) { this.#q = value}
     set a(fadeIn) { this.synth.set({fadeIn}) }
     set r(fadeOut) { this.synth.set({fadeOut}) }
     set begin(value) { this.#begin = (this.#buffer.length/context.sampleRate) * value}
@@ -67,7 +64,9 @@ class Sampler extends BaseSynth {
         this.#rate = value 
         this.#setPlaybackRate()
     }
+    // TODO: check from heree
     // TODO: will the order be a problem here?
+    set q(value) { this.#q = value}
     set snap(value) {
         const { bpm } = Transport
         const sampleLength = this.#buffer.length/context.sampleRate
