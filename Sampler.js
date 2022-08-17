@@ -12,6 +12,7 @@ class Sampler extends BaseSynth {
     #buffer
     #begin = 0
     #rate = 1
+    #snap = 1
     #playbackRate = 1
 
     constructor(buffer) {
@@ -27,9 +28,20 @@ class Sampler extends BaseSynth {
         this.synth.connect(this.panner)
     }
 
-    #setPlaybackRate(mul = 1) {
-        this.#playbackRate = this.#rate * Math.pow(2, (this.#n - 60)/12) * mul || 0.001
+    #calculatePlaybackRate() {
+        return this.#rate * Math.pow(2, (this.#n - 60)/12) * this.#snap || 0.001
+    }
+
+    #setPlaybackRate() {
+        this.#playbackRate = this.#calculatePlaybackRate()
         this.synth.set({playbackRate: this.#playbackRate})
+    }
+
+    #mutatePlaybackRate(time, lag = 0.1) {
+        this.synth._activeSources
+            .forEach(s => s 
+                && s.playbackRate.exponentialRampTo(this.#calculatePlaybackRate(), lag, time)
+            )
     }
 
     #formatParams(params) {
@@ -64,15 +76,28 @@ class Sampler extends BaseSynth {
         this.#rate = value 
         this.#setPlaybackRate()
     }
-    // TODO: check from heree
-    // TODO: will the order be a problem here?
+    
+    // TODO: check snap
     set q(value) { this.#q = value}
     set snap(value) {
         const { bpm } = Transport
         const sampleLength = this.#buffer.length/context.sampleRate
         const snapLength = (60/bpm.value/this.#q) * value
-        this.#setPlaybackRate(sampleLength/snapLength)
+        this.#snap = sampleLength/snapLength
+        this.#setPlaybackRate()
     }
+
+    _n(value, time, lag = 0.1) { 
+        this.#n = value
+        this.#mutatePlaybackRate(time, lag)
+    }
+    _n = this._n.bind(this)
+
+    _rate(value, time, lag = 0.1) { 
+        this.#rate = value
+        this.#mutatePlaybackRate(time, lag)
+    }
+    _rate = this._n.bind(this)
 }
 
 export default Sampler
