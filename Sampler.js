@@ -1,6 +1,4 @@
-import { mtf, formatOscType, max } from "./utils/core";
-import { formatCurve } from "./utils/tone";
-import { FMSynth, Player, context, Transport } from "tone";
+import { Player, context, Transport } from "tone";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
@@ -61,6 +59,14 @@ class Sampler extends BaseSynth {
         
         this.disposeTime = time + duration + this.synth.fadeOut + 1
 
+        this.dispose(this.disposeTime)
+    }
+
+    cut(time) {
+        this.synth.set({fadeOut: 0.1})
+        this.synth.stop(time)
+        
+        this.disposeTime = time + this.synth.fadeOut + 1
         this.dispose(this.disposeTime)
     }
     

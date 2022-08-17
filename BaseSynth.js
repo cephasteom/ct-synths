@@ -1,5 +1,5 @@
 import { AmplitudeEnvelope, Panner } from "tone";
-import { formatTime, getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
+import { getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
 import { formatCurve, timeToEvent } from "./utils/tone";
 
 class BaseSynth {

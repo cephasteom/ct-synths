@@ -1,4 +1,4 @@
-import { mtf, formatOscType } from "./utils/core";
+import { mtf } from "./utils/core";
 import { formatCurve } from "./utils/tone";
 import { FMSynth } from "tone";
 import BaseSynth from "./BaseSynth";
@@ -30,10 +30,7 @@ class FM extends BaseSynth {
         this.dispose(this.disposeTime)
     }
 
-    set moda(value) { 
-        console.log('moda')
-        this.synth.modulationEnvelope.attack = value 
-    }
+    set moda(value) { this.synth.modulationEnvelope.attack = value }
     set modd(value) { this.synth.modulationEnvelope.decay = value }
     set mods(value) { this.synth.modulationEnvelope.sustain = value }
     set modr(value) { this.synth.modulationEnvelope.release = value }
