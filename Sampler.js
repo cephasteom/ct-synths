@@ -23,8 +23,8 @@ class Sampler extends BaseSynth {
     #initGraph() {
         this.synth = new Player({fadeOut: 0.1})
         this.synth._buffer.set(this.#buffer)
-        this.envelope.dispose() // not needed
-        this.synth.connect(this.panner)
+        this.synth.connect(this.envelope)
+        this.envelope.set({attack: 0, decay: 10, sustain: 1, release: 0.1})
     }
 
     #calculatePlaybackRate() {
@@ -57,17 +57,9 @@ class Sampler extends BaseSynth {
         const duration = params.dur || (this.#buffer.length/context.sampleRate) / this.#playbackRate
 
         this.synth.start(this.time, this.#begin, duration)
+        this.envelope.triggerAttackRelease(duration, this.time, this.amp)
         
-        this.disposeTime = time + duration + this.synth.fadeOut + 1
-
-        this.dispose(this.disposeTime)
-    }
-
-    cut(time) {
-        this.synth.set({fadeOut: 0.1})
-        this.synth.stop(time)
-        
-        this.disposeTime = time + this.synth.fadeOut + 1
+        this.disposeTime = time + duration + 0.1
         this.dispose(this.disposeTime)
     }
     
@@ -76,8 +68,6 @@ class Sampler extends BaseSynth {
         this.#setPlaybackRate()
     }
     
-    set a(fadeIn) { this.synth.set({fadeIn}) }
-    set r(fadeOut) { this.synth.set({fadeOut}) }
     set begin(value) { this.#begin = (this.#buffer.length/context.sampleRate) * value}
     set rate(value) { 
         this.#rate = value 
@@ -104,7 +94,7 @@ class Sampler extends BaseSynth {
         this.#rate = value
         this.#mutatePlaybackRate(time, lag)
     }
-    _rate = this._n.bind(this)
+    _rate = this._rate.bind(this)
 }
 
 export default Sampler
