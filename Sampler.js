@@ -2,6 +2,7 @@ import { Player, context, Transport } from "tone";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
+// Reinstate env?
 
 class Sampler extends BaseSynth {    
     synth;

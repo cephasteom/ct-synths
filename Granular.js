@@ -23,18 +23,13 @@ class Granular extends BaseSynth {
     play(params = {}, time) {
         this.time = time
         this.setParams(params)
-        const duration = params.dur || this.dur
+        
+        const duration = (params.dur || this.dur)
         this.synth.start(this.time, this.#begin, duration)
-        this.envelope.triggerAttackRelease(duration - this.envelope.release, this.time, this.amp)
+        this.envelope.triggerAttackRelease(duration + this.envelope.release, this.time, this.amp)
         
         this.disposeTime = time + duration + 0.1
-
         this.dispose(this.disposeTime)
-    }
-
-    cut(time) {
-        // this.disposeTime = time + this.synth.fadeOut + 1
-        // this.dispose(this.disposeTime)
     }
 }
 
