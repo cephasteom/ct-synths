@@ -2,7 +2,6 @@ import { Player, context, Transport } from "tone";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
-// Reinstate env?
 
 class Sampler extends BaseSynth {    
     synth;
@@ -37,6 +36,7 @@ class Sampler extends BaseSynth {
     }
 
     #mutatePlaybackRate(time, lag = 0.1) {
+        console.log(this.synth._activeSources)
         this.synth._activeSources
             .forEach(s => s 
                 && s.playbackRate.exponentialRampTo(this.#calculatePlaybackRate(), lag, time)

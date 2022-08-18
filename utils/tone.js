@@ -9,3 +9,4 @@ export function formatCurve(type) {
 }
 
 export const timeToEvent = (time) => time - immediate()
+export const doAtTime = (callback, time) => setTimeout(callback, timeToEvent(time) * 1000)

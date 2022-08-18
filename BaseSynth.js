@@ -1,7 +1,8 @@
 import { AmplitudeEnvelope, Panner } from "tone";
 import { getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
-import { formatCurve, timeToEvent } from "./utils/tone";
+import { doAtTime, formatCurve, timeToEvent } from "./utils/tone";
 
+// TODO: amp, vol, _amp, _vol
 class BaseSynth {
     time = null;
     dur = 1;
@@ -83,14 +84,14 @@ class BaseSynth {
     }
 
     dispose(time) {
-        this.disposeID = setTimeout(() => {
+        this.disposeID = doAtTime(() => {
             if(this.#disposed) return
             
             getDisposable(this).forEach(prop => prop.dispose())
             this.onDisposeAction && this.onDisposeAction()
             this.#disposed = true
             console.log('disposed!')
-        }, timeToEvent(time) * 1000)
+        }, time)
     } 
 
     set dur(value) { this.dur = value }
