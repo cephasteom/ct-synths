@@ -42,7 +42,6 @@ class Granular extends BaseSynth {
 
     play(params = {}, time) {
         this.time = time
-        console.log(params)
         this.setParams(this.#formatParams(params))
         
         const duration = (params.dur || this.dur)
@@ -54,7 +53,8 @@ class Granular extends BaseSynth {
     }
 
     set note(value) { 
-        this.pitchRamp.setValueAtTime((value - 60) * 100, this.time) 
+        const detune = (value - 60) * 100
+        this.pitchRamp.setValueAtTime(detune, this.time) 
     }
 
     set begin(value) { 
@@ -64,7 +64,9 @@ class Granular extends BaseSynth {
     set end(value) { this.synth.set({loopEnd: this.#bufferLength * value}) }
     set overlap(overlap) { this.synth.set({overlap}) }
 
-    set rate(value) { this.rateRamp.setValueAtTime(value, this.time) }
+    set rate(value) { 
+        this.rateRamp.setValueAtTime(value, this.time) 
+    }
     set size(grainSize) { this.synth.set({grainSize}) }
     set direction(value) { this.synth.set({reverse: value < 0})}
 

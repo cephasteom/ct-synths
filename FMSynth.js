@@ -24,7 +24,7 @@ class FM extends BaseSynth {
         this.time = time
         this.setParams(params)
         
-        this.synth.triggerAttackRelease(mtf(params.n) || 220, this.dur, time, this.amp * 1.25)
+        this.synth.triggerAttackRelease(mtf(params.n) || 220, this.dur, time, this.amp)
         
         this.disposeTime = time + this.dur + this.synth.envelope.release + 0.1
         this.dispose(this.disposeTime)
