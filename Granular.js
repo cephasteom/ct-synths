@@ -5,6 +5,7 @@ import { doAtTime } from "./utils/tone";
 // TODO: presets
 class Granular extends BaseSynth {    
     synth;
+    #n = 60
     #buffer
     #begin = 0
     #bufferLength
@@ -24,15 +25,25 @@ class Granular extends BaseSynth {
         this.synth.connect(this.envelope)
         this.envelope.set({attack: 0.01, decay: 0, sustain: 1, release: 0.1})
         this.rateRamp = new Signal(this.synth.playbackRate, 'number')
+        this.pitchRamp = new Signal(0, 'number')
         this.clock = new Clock(time => {
             // set playbackRate
-            this.synth.playbackRate !== this.rateRamp.value && this.synth.set({playbackRate: this.rateRamp.getValueAtTime(time)})
+            this.synth.playbackRate !== this.rateRamp.value && this.synth.set({playbackRate: this.rateRamp.getValueAtTime(time)});
+            // set detune value (cents)
+            this.synth.detune !== this.pitchRamp.value && this.synth.set({detune: this.pitchRamp.getValueAtTime(time)});
         }, 48).start();
+    }
+
+    #formatParams(params) {
+        return {
+            ...params,
+            note: params.n || this.#n
+        }
     }
 
     play(params = {}, time) {
         this.time = time
-        this.setParams(params)
+        this.setParams(this.#formatParams(params))
         
         const duration = (params.dur || this.dur)
         this.synth.start(this.time, this.#begin, duration)
@@ -40,6 +51,10 @@ class Granular extends BaseSynth {
         
         this.disposeTime = time + duration + 0.2
         this.dispose(this.disposeTime)
+    }
+
+    set note(value) { 
+        this.pitchRamp.setValueAtTime((value - 60) * 100, this.time) 
     }
 
     set begin(value) { 
@@ -53,11 +68,20 @@ class Granular extends BaseSynth {
     set size(grainSize) { this.synth.set({grainSize}) }
     set direction(value) { this.synth.set({reverse: value < 0})}
 
+    // Speed at which the playback moves through the buffer
     _rate(value, time, lag = 0.1) { 
         this.rateRamp.cancelScheduledValues(time)
         this.rateRamp.exponentialRampTo(value, lag, time)
     }
     _rate = this._rate.bind(this)
+    
+    _n(value, time, lag = 0.1) { 
+        this.pitchRamp.cancelScheduledValues(time)
+        this.pitchRamp.rampTo(Math.floor((value - 60) * 100), lag, time)
+    }
+    _n = this._n.bind(this)
+
+
 }
 
 export default Granular
