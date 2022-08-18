@@ -1,5 +1,5 @@
-import { AmplitudeEnvelope, Panner } from "tone";
-import { getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
+import { AmplitudeEnvelope, Gain, Panner } from "tone";
+import { getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable, mapToRange } from './utils/core'
 import { doAtTime, formatCurve, timeToEvent } from "./utils/tone";
 
 // TODO: amp, vol, _amp, _vol
@@ -15,8 +15,9 @@ class BaseSynth {
     disposeID = null;                                                                                                                               n = () => null;
     
     constructor() {
-        this.panner = new Panner(0)
-        this.envelope = new AmplitudeEnvelope({attack: 0.1, decay: 0.2, sustain: 0.5, release: 0.8})
+        this.gain = new Gain(1)
+        this.panner = new Panner(0).connect(this.gain)
+        this.envelope = new AmplitudeEnvelope({attack: 0.1, decay: 0.2, sustain: 0.5, release: 0.8}).disconnect()
         this.envelope.connect(this.panner)
     }
 
@@ -74,13 +75,13 @@ class BaseSynth {
     }
 
     connect(node) {
-        this.panner.disconnect()
-        this.panner.connect(node)
+        this.gain.disconnect()
+        this.gain.connect(node)
     }
 
     chain(...nodes) {
-        this.panner.disconnect()
-        this.panner.chain(...nodes)
+        this.gain.disconnect()
+        this.gain.chain(...nodes)
     }
 
     dispose(time) {
@@ -96,6 +97,7 @@ class BaseSynth {
 
     set dur(value) { this.dur = value }
     set amp(value) { this.amp = value }
+    set vol(value) { this.amp = value }
 
     set a(value) { this.envelope && (this.envelope.attack = value) }
     set d(value) { this.envelope && (this.envelope.decay = value) }
@@ -116,6 +118,11 @@ class BaseSynth {
     
     _pan(value, time, lag = 0.1) { this.panner.pan.rampTo(value, lag, time) }
     _pan = this._pan.bind(this)
+
+    _amp(value, time, lag = 0.1) { this.gain.gain.rampTo(value, lag, time) }
+    _amp = this._amp.bind(this)
+
+    _vol = this._amp
 
     get settable() { return this.#settable() }
     get mutable() { return this.#mutable() }

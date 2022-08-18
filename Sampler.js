@@ -36,7 +36,6 @@ class Sampler extends BaseSynth {
     }
 
     #mutatePlaybackRate(time, lag = 0.1) {
-        console.log(this.synth._activeSources)
         this.synth._activeSources
             .forEach(s => s 
                 && s.playbackRate.exponentialRampTo(this.#calculatePlaybackRate(), lag, time)

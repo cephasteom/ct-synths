@@ -28,3 +28,14 @@ export const isSettableKey = string => string.charAt(0) !== '_'
 export const isMutableKey = string => string.charAt(0) === '_'
 
 export const max = (a, b) => a > b ? a : b
+
+export const mapToRange = (x, inMin, inMax, outMin, outMax) => {
+    return ((x - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+}
+
+export const mapToLogRange = (x, inMin, inMax, outMin, outMax) => {
+    const logOutMin = Math.log(outMin ? outMin : 0.001)
+    const logOutMax = Math.log(outMax ? outMax : 0.001)
+    const scale = (logOutMax - logOutMin) / (inMax - inMin);
+    return Math.exp(logOutMin + scale * (x - inMin));
+}
