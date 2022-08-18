@@ -53,7 +53,7 @@ class BaseSynth {
         this.setParams(params)
         this.envelope.triggerAttackRelease(this.dur, time, this.amp)
         
-        this.disposeTime = time + this.dur + this.envelope.release + 0.1
+        this.disposeTime = time + this.dur + this.envelope.release + 0.5
         this.dispose(this.disposeTime)
     }
 
@@ -65,10 +65,11 @@ class BaseSynth {
     }
     
     cut(time) {
+        this.envelope.cancel(time)
         this.envelope.set({release: 0.1})
         this.envelope.triggerRelease(time)
         
-        this.disposeTime = time + this.envelope.release + 0.1
+        this.disposeTime = time + 0.6
         this.dispose(this.disposeTime)
     }
 
@@ -83,6 +84,8 @@ class BaseSynth {
     }
 
     dispose(time) {
+        this.disposeID && clearTimeout(this.disposeID)
+
         this.disposeID = doAtTime(() => {
             if(this.#disposed) return
             
