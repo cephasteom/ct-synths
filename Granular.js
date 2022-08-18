@@ -1,6 +1,5 @@
-import { GrainPlayer, context, Param, Signal, Loop, Transport, Clock } from "tone";
+import { GrainPlayer, context, Signal, Clock } from "tone";
 import BaseSynth from "./BaseSynth";
-import { doAtTime } from "./utils/tone";
 
 // TODO: presets
 class Granular extends BaseSynth {    
@@ -76,6 +75,7 @@ class Granular extends BaseSynth {
     }
     _rate = this._rate.bind(this)
     
+    // grain pitch - assumes note 60 is original speed of sample
     _n(value, time, lag = 0.1) { 
         this.pitchRamp.cancelScheduledValues(time)
         this.pitchRamp.rampTo(Math.floor((value - 60) * 100), lag, time)
