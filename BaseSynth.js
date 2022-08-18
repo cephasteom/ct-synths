@@ -1,8 +1,6 @@
 import { AmplitudeEnvelope, Gain, Panner } from "tone";
-import { getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable, mapToRange } from './utils/core'
-import { doAtTime, formatCurve, timeToEvent } from "./utils/tone";
-
-// TODO: amp, vol, _amp, _vol
+import { getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
+import { doAtTime, formatCurve } from "./utils/tone";
 class BaseSynth {
     time = null;
     dur = 1;
@@ -121,8 +119,10 @@ class BaseSynth {
 
     _amp(value, time, lag = 0.1) { this.gain.gain.rampTo(value, lag, time) }
     _amp = this._amp.bind(this)
+    
+    _vol(value, time, lag = 0.1) { this.gain.gain.rampTo(value, lag, time) }
+    _vol = this._vol.bind(this)
 
-    _vol = this._amp
 
     get settable() { return this.#settable() }
     get mutable() { return this.#mutable() }
