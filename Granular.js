@@ -1,11 +1,11 @@
-import { GrainPlayer, context, Signal, Clock } from "tone";
+import { GrainPlayer, context, Signal, Clock, Transport } from "tone";
 import BaseSynth from "./BaseSynth";
 
+const { bpm } = Transport;
 // TODO: presets
 class Granular extends BaseSynth {    
     synth;
     #n = 60
-    #buffer
     #begin = 0
     #bufferLength
     rateRamp
@@ -13,23 +13,21 @@ class Granular extends BaseSynth {
     
     constructor(buffer) {
         super()
-        this.#buffer = buffer
         this.#bufferLength = buffer.length/context.sampleRate
-        this.#initGraph()
+        this.#initGraph(buffer)
     }
 
-    #initGraph() {
-        this.synth = new GrainPlayer({loop: true, grainSize: 0.1, overlap: 0.05})
-        this.synth.buffer.set(this.#buffer)
+    #initGraph(buffer) {
+        this.synth = new GrainPlayer({loop: true, grainSize: 0.1, overlap: 0.05, url: buffer}).start()
         this.synth.connect(this.envelope)
         this.envelope.set({attack: 0.01, decay: 0, sustain: 1, release: 0.1})
         this.rateRamp = new Signal(this.synth.playbackRate, 'number')
         this.pitchRamp = new Signal(0, 'number')
         this.clock = new Clock(time => {
             // set playbackRate
-            this.synth.playbackRate !== this.rateRamp.value && this.synth.set({playbackRate: this.rateRamp.getValueAtTime(time)});
+            // this.synth.playbackRate !== this.rateRamp.value && this.synth.set({playbackRate: this.rateRamp.getValueAtTime(time)});
             // set detune value (cents)
-            this.synth.detune !== this.pitchRamp.value && this.synth.set({detune: this.pitchRamp.getValueAtTime(time)});
+            // this.synth.detune !== this.pitchRamp.value && this.synth.set({detune: this.pitchRamp.getValueAtTime(time)});
         }, 48).start();
     }
 
@@ -45,7 +43,7 @@ class Granular extends BaseSynth {
         this.setParams(this.#formatParams(params))
         
         const duration = (params.dur || this.dur)
-        this.synth.start(this.time, this.#begin, duration)
+        this.synth.restart(this.time, this.#begin, duration)
         this.envelope.triggerAttackRelease(duration - this.envelope.release, this.time, this.amp)
         
         this.disposeTime = time + duration + 0.5
@@ -54,7 +52,8 @@ class Granular extends BaseSynth {
 
     set note(value) { 
         const detune = (value - 60) * 100
-        this.pitchRamp.setValueAtTime(detune, this.time) 
+        this.pitchRamp.value = detune
+        this.synth.detune = detune
     }
 
     set begin(value) { 
@@ -72,14 +71,14 @@ class Granular extends BaseSynth {
 
     // Speed at which the playback moves through the buffer
     _rate(value, time, lag = 0.1) { 
-        this.rateRamp.cancelScheduledValues(time)
+        // this.rateRamp.cancelScheduledValues(time)
         this.rateRamp.exponentialRampTo(value, lag, time)
     }
     _rate = this._rate.bind(this)
     
     // grain pitch - assumes note 60 is original speed of sample
     _n(value, time, lag = 0.1) { 
-        this.pitchRamp.cancelScheduledValues(time)
+        // this.pitchRamp.cancelScheduledValues(time)
         this.pitchRamp.rampTo(Math.floor((value - 60) * 100), lag, time)
     }
     _n = this._n.bind(this)
