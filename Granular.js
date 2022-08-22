@@ -25,9 +25,9 @@ class Granular extends BaseSynth {
         this.pitchRamp = new Signal(0, 'number')
         this.clock = new Clock(time => {
             // set playbackRate
-            // this.synth.playbackRate !== this.rateRamp.value && this.synth.set({playbackRate: this.rateRamp.getValueAtTime(time)});
+            this.synth.playbackRate !== this.rateRamp.value && this.synth.set({playbackRate: this.rateRamp.getValueAtTime(time)});
             // set detune value (cents)
-            // this.synth.detune !== this.pitchRamp.value && this.synth.set({detune: this.pitchRamp.getValueAtTime(time)});
+            this.synth.detune !== this.pitchRamp.value && this.synth.set({detune: this.pitchRamp.getValueAtTime(time)});
         }, 48).start();
     }
 
@@ -64,26 +64,25 @@ class Granular extends BaseSynth {
     set overlap(overlap) { this.synth.set({overlap}) }
 
     set rate(value) { 
-        this.rateRamp.setValueAtTime(value, this.time) 
+        this.rateRamp.value = value
+        this.synth.playbackRate = value
     }
     set size(grainSize) { this.synth.set({grainSize}) }
     set direction(value) { this.synth.set({reverse: value < 0})}
 
     // Speed at which the playback moves through the buffer
     _rate(value, time, lag = 0.1) { 
-        // this.rateRamp.cancelScheduledValues(time)
-        this.rateRamp.exponentialRampTo(value, lag, time)
+        this.rateRamp.cancelScheduledValues(time)
+        this.rateRamp.rampTo(value, lag, time)
     }
     _rate = this._rate.bind(this)
     
     // grain pitch - assumes note 60 is original speed of sample
     _n(value, time, lag = 0.1) { 
-        // this.pitchRamp.cancelScheduledValues(time)
-        this.pitchRamp.rampTo(Math.floor((value - 60) * 100), lag, time)
+        this.pitchRamp.cancelScheduledValues(time)
+        this.pitchRamp.setValueAtTime(Math.floor((value - 60) * 100), lag, time)
     }
     _n = this._n.bind(this)
-
-
 }
 
 export default Granular
