@@ -1,4 +1,4 @@
-import { immediate } from "tone"
+import { immediate, Transport } from "tone"
 
 export function formatCurve(type) {
     const types = {
@@ -10,3 +10,6 @@ export function formatCurve(type) {
 
 export const timeToEvent = (time) => time - immediate()
 export const doAtTime = (callback, time) => setTimeout(callback, timeToEvent(time) * 1000)
+
+export const secondsToBeats = seconds => seconds / (60/Transport.bpm.value)
+export const beatsToSeconds = beats => beats * (60/Transport.bpm.value)

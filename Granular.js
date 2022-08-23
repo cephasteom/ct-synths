@@ -2,7 +2,6 @@ import { GrainPlayer, context, Signal, Clock, Transport } from "tone";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
-// TODO: snap
 class Granular extends BaseSynth {    
     synth;
     #q = 48
@@ -69,10 +68,7 @@ class Granular extends BaseSynth {
         this.synth.playbackRate = snap
     }
 
-    set begin(value) { 
-        this.#begin = this.#bufferLength * value
-        // this.synth.set({loopStart: this.#begin})
-    }
+    set begin(value) { this.#begin = this.#bufferLength * value }
     set end(value) { this.synth.set({loopEnd: this.#bufferLength * value}) }
     set overlap(overlap) { this.synth.set({overlap}) }
 
@@ -80,10 +76,10 @@ class Granular extends BaseSynth {
         this.rateRamp.value = value
         this.synth.playbackRate = value
     }
-    set size(grainSize) { this.synth.set({grainSize}) }
+    set size(value) { this.synth.set({grainSize: value}) }
     set direction(value) { this.synth.set({reverse: value < 0})}
 
-    // Speed at which the playback moves through the buffer
+    // Speed at which the playback moves through the buffer, overwritten by snap
     _rate(value, time, lag = 0.1) { 
         this.rateRamp.cancelScheduledValues(time)
         this.rateRamp.rampTo(value, lag, time)
@@ -92,7 +88,6 @@ class Granular extends BaseSynth {
     
     // grain pitch - assumes note 60 is original speed of sample
     _n(value, time, lag = 0.01) {
-        console.log(lag/10)
         this.pitchRamp.cancelScheduledValues(time)
         this.pitchRamp.rampTo(Math.floor((value - 60) * 100), lag/10, time)
     }
