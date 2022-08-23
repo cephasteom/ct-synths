@@ -1,14 +1,14 @@
 import { GrainPlayer, context, Signal, Clock, Transport } from "tone";
 import BaseSynth from "./BaseSynth";
 
-const { bpm } = Transport;
-
 // TODO: presets
 // TODO: snap
 class Granular extends BaseSynth {    
     synth;
+    #q = 48
     #n = 60
     #begin = 0
+    #snap
     #bufferLength
     rateRamp
     clock
@@ -20,7 +20,7 @@ class Granular extends BaseSynth {
     }
 
     #initGraph(buffer) {
-        this.synth = new GrainPlayer({loop: true, grainSize: 0.1, overlap: 0.05, url: buffer}).start()
+        this.synth = new GrainPlayer({loop: true, grainSize: 0.1, overlap: 0.05, url: buffer})
         this.synth.connect(this.envelope)
         this.envelope.set({attack: 0.1, decay: 0, sustain: 1, release: 0.1})
         this.rateRamp = new Signal(this.synth.playbackRate, 'number')
@@ -45,7 +45,8 @@ class Granular extends BaseSynth {
         this.setParams(this.#formatParams(params))
         
         const duration = (params.dur || this.dur)
-        this.synth.restart(this.time, this.#begin, duration)
+        this.synth.start(this.time, this.#begin, duration * 2) // * 2 to account for bug in grainplayer
+        
         this.envelope.triggerAttackRelease(duration - this.envelope.release, this.time, this.amp)
         
         this.disposeTime = time + duration + 0.5
@@ -58,9 +59,19 @@ class Granular extends BaseSynth {
         this.synth.detune = detune
     }
 
+    set q(value) { this.#q = value}
+
+    set snap(value) {
+        const { bpm } = Transport
+        const snapLength = (60/bpm.value/this.#q) * value
+        const snap = this.#bufferLength/snapLength
+        this.rateRamp.value = snap
+        this.synth.playbackRate = snap
+    }
+
     set begin(value) { 
         this.#begin = this.#bufferLength * value
-        this.synth.set({loopStart: this.#begin})
+        // this.synth.set({loopStart: this.#begin})
     }
     set end(value) { this.synth.set({loopEnd: this.#bufferLength * value}) }
     set overlap(overlap) { this.synth.set({overlap}) }
