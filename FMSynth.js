@@ -8,8 +8,8 @@ import BaseSynth from "./BaseSynth";
 class FM extends BaseSynth {    
     synth;
     
-    constructor() {
-        super()
+    constructor(fxParams) {
+        super(fxParams)
         this.#initGraph()
     }
 

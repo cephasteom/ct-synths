@@ -12,8 +12,8 @@ class Granular extends BaseSynth {
     rateRamp
     clock
     
-    constructor(buffer) {
-        super()
+    constructor(fxParams, buffer) {
+        super(fxParams)
         this.#bufferLength = buffer.length/context.sampleRate
         this.#initGraph(buffer)
     }

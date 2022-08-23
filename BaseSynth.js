@@ -1,4 +1,4 @@
-import { AmplitudeEnvelope, Gain, Panner } from "tone";
+import { AmplitudeEnvelope, Gain, Panner, Distortion, BitCrusher, Filter } from "tone";
 import { getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
 import { doAtTime, formatCurve } from "./utils/tone";
 class BaseSynth {
@@ -10,13 +10,32 @@ class BaseSynth {
     #disposed = false
     disposeTime;
     onDisposeAction;
-    disposeID = null;                                                                                                                               n = () => null;
+    disposeID = null;
+    fx = []
     
-    constructor() {
+    constructor(fxParams) {
         this.gain = new Gain(1)
         this.panner = new Panner(0).connect(this.gain)
         this.envelope = new AmplitudeEnvelope({attack: 0.1, decay: 0.2, sustain: 0.5, release: 0.8}).disconnect()
         this.envelope.connect(this.panner)
+        fxParams && this.#initFX(fxParams)
+    }
+    
+    #initFX(fxParams) {
+        this.fx = Object.entries(fxParams).map(([key, value]) => {
+            switch (key) {
+                case 'dist':
+                    return new Distortion({distortion: value})
+                case 'crush':
+                    return new BitCrusher({crush: value})
+                case 'hicut':
+                    return new Filter({frequency: value, type: "lowpass"})
+                case 'locut':
+                    return new Filter({frequency: value, type: "highpass"})
+                default:
+                    return false
+            }
+        }).filter(effect => effect)
     }
 
     #settable() {
@@ -75,19 +94,19 @@ class BaseSynth {
 
     connect(node) {
         this.gain.disconnect()
-        this.gain.connect(node)
+        this.gain.chain(...this.fx, node)
     }
 
     chain(...nodes) {
         this.gain.disconnect()
-        this.gain.chain(...nodes)
+        this.gain.chain(...this.fx, ...nodes)
     }
 
     dispose(time) {
         this.disposeID = doAtTime(() => {
             if(this.#disposed) return
             
-            getDisposable(this).forEach(prop => prop.dispose())
+            [...getDisposable(this), ...this.fx].forEach(prop => prop.dispose())
             this.onDisposeAction && this.onDisposeAction()
             this.#disposed = true
         }, time)

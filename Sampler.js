@@ -13,8 +13,8 @@ class Sampler extends BaseSynth {
     #snap = 1
     #playbackRate = 1
 
-    constructor(buffer) {
-        super()
+    constructor(fxParams, buffer) {
+        super(fxParams)
         this.#buffer = buffer
         this.#initGraph()
     }
