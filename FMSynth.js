@@ -47,7 +47,6 @@ class FM extends BaseSynth {
 
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time) }
     set modi(value) { this.synth.modulationIndex.setValueAtTime(value, this.time) }
-
     
     _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(value, lag, time) }
     _n = this._n.bind(this)
