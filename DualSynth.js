@@ -4,6 +4,7 @@ import { DuoSynth } from "tone";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
+// TODO: filter settings
 
 class DualSynth extends BaseSynth {    
     synth;
@@ -17,6 +18,7 @@ class DualSynth extends BaseSynth {
         this.synth = new DuoSynth()
         this.envelope.dispose() // not needed
         this.envelopes = [this.synth.voice0.envelope, this.synth.voice1.envelope]
+        this.filterEnvelopes = [this.synth.voice0.filterEnvelope, this.synth.voice1.filterEnvelope]
         this.synth.connect(this.panner)
     }
 
@@ -43,6 +45,21 @@ class DualSynth extends BaseSynth {
         this.acurve = formatCurve(value)
         this.dcurve = formatCurve(value)
         this.rcurve = formatCurve(value)
+    }
+
+    set filtera(value) { this.filterEnvelopes.forEach(env => env.attack = value) }
+    set filterd(value) { this.filterEnvelopes.forEach(env => env.decay = value) }
+    set filters(value) { this.filterEnvelopes.forEach(env => env.sustain = value) }
+    set filterr(value) { this.filterEnvelopes.forEach(env => env.release = value) }
+
+    set filteracurve(value) { this.filterEnvelopes.forEach(env => env.attackCurve = formatCurve(value)) }
+    set filterdcurve(value) { this.filterEnvelopes.forEach(env => env.decayCurve = formatCurve(value)) }
+    set filterrcurve(value) { this.filterEnvelopes.forEach(env => env.releaseCurve = formatCurve(value)) }
+
+    set filtercurve(value) {
+        this.filteracurve = formatCurve(value)
+        this.filterdcurve = formatCurve(value)
+        this.filterrcurve = formatCurve(value)
     }
 
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time) }
