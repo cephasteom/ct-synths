@@ -84,11 +84,8 @@ class BaseSynth {
     }
     
     cut(time) {
-        this.envelope.cancel(time)
-        this.envelope.set({release: 0.1})
-        this.envelope.triggerRelease(time)
-        
-        this.disposeTime = time + 0.6
+        this.gain.gain.rampTo(0, 0.1, time)
+        this.disposeTime = time + 0.2
         this.dispose(this.disposeTime)
     }
 

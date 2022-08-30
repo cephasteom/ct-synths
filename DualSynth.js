@@ -32,17 +32,6 @@ class DualSynth extends BaseSynth {
         this.dispose(this.disposeTime)
     }
 
-    cut(time) {
-        this.envelopes.forEach(env => {
-            env.cancel(time)
-            env.set({release: 0.1})
-            env.triggerRelease(time)
-        })
-        
-        this.disposeTime = time + 0.6
-        this.dispose(this.disposeTime)
-    }
-
     set a(value) { this.envelopes.forEach(env => env.attack = value) }
     set d(value) { this.envelopes.forEach(env => env.decay = value) }
     set s(value) { this.envelopes.forEach(env => env.sustain = value) }
