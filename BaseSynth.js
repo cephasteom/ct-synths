@@ -3,8 +3,8 @@ import { getDisposable, getClassSetters, getClassMethods, isMutableKey, getSched
 import { doAtTime, formatCurve } from "./utils/tone";
 class BaseSynth {
     time = null;
-    dur = 1;
-    amp = 1;
+    duration = 1;
+    amplitude = 1;
     envelope;
     self = this.constructor
     #disposed = false
@@ -18,7 +18,7 @@ class BaseSynth {
         this.panner = new Panner(0).connect(this.gain)
         this.envelope = new AmplitudeEnvelope({attack: 0.1, decay: 0.2, sustain: 0.5, release: 0.8}).disconnect()
         this.envelope.connect(this.panner)
-        fxParams && this.#initFX(fxParams)
+        // fxParams && this.#initFX(fxParams)
     }
     
     #initFX(fxParams) {
@@ -70,9 +70,9 @@ class BaseSynth {
     play(params = {}, time) {
         this.time = time
         this.setParams(params)
-        this.envelope.triggerAttackRelease(this.dur, time, this.amp)
+        this.envelope.triggerAttackRelease(this.duration, time, this.amplitude)
         
-        this.disposeTime = time + this.dur + this.envelope.release + 0.5
+        this.disposeTime = time + this.duration + this.envelope.release + 0.5
         this.dispose(this.disposeTime)
     }
 
@@ -110,9 +110,9 @@ class BaseSynth {
         }, time)
     } 
 
-    set dur(value) { this.dur = value }
-    set amp(value) { this.amp = value }
-    set vol(value) { this.amp = value }
+    set dur(value) { this.duration = value }
+    set amp(value) { this.amplitude = value }
+    set vol(value) { this.amplitude = value }
 
     set a(value) { this.envelope && (this.envelope.attack = value) }
     set d(value) { this.envelope && (this.envelope.decay = value) }
