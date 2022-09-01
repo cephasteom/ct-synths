@@ -8,7 +8,7 @@ class BaseSynth {
     envelope;
     self = this.constructor
     #disposed = false
-    disposeTime;
+    endTime;
     onDisposeAction;
     disposeID = null;
     fx = []
@@ -18,7 +18,7 @@ class BaseSynth {
         this.panner = new Panner(0).connect(this.gain)
         this.envelope = new AmplitudeEnvelope({attack: 0.1, decay: 0.2, sustain: 0.5, release: 0.8}).disconnect()
         this.envelope.connect(this.panner)
-        // fxParams && this.#initFX(fxParams)
+        fxParams && this.#initFX(fxParams)
     }
     
     #initFX(fxParams) {
@@ -72,8 +72,8 @@ class BaseSynth {
         this.setParams(params)
         this.envelope.triggerAttackRelease(this.duration, time, this.amplitude)
         
-        this.disposeTime = time + this.duration + this.envelope.release + 0.5
-        this.dispose(this.disposeTime)
+        this.endTime = time + this.duration + this.envelope.release + 0.5
+        this.dispose(this.endTime)
     }
 
     mutate(params = {}, time, lag) {
@@ -85,8 +85,8 @@ class BaseSynth {
     
     cut(time) {
         this.gain.gain.rampTo(0, 0.1, time)
-        this.disposeTime = time + 0.2
-        this.dispose(this.disposeTime)
+        this.endTime = time + 0.2
+        this.dispose(this.endTime)
     }
 
     connect(node) {
@@ -144,7 +144,7 @@ class BaseSynth {
     get settable() { return this.#settable() }
     get mutable() { return this.#mutable() }
     get automated() { return getSchedulable(this)}
-    get disposeTime() { return this.disposeTime }
+    get disposeTime() { return this.endTime }
 }
 
 export default BaseSynth

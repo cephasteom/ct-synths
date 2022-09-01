@@ -56,10 +56,10 @@ class Sampler extends BaseSynth {
         const duration = params.dur || (this.#buffer.length/context.sampleRate) / this.#playbackRate
 
         this.synth.start(this.time, this.#begin, duration)
-        this.envelope.triggerAttackRelease(duration, this.time, this.amp)
+        this.envelope.triggerAttackRelease(duration, this.time, this.amplitude)
         
-        this.disposeTime = time + duration + 0.1
-        this.dispose(this.disposeTime)
+        this.endTime = time + duration + 0.1
+        this.dispose(this.endTime)
     }
     
     set note(value) {

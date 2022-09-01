@@ -56,11 +56,11 @@ class FMSynth extends BaseSynth {
         this.setParams(params)
         this.note = params.n || 220
         
-        this.envelope.triggerAttackRelease(this.dur, time, this.amp * 0.5)
-        this.modulatorEnvelope.triggerAttackRelease(this.dur, time, this.amp * 0.5)
+        this.envelope.triggerAttackRelease(this.duration, time, this.amplitude * 0.5)
+        this.modulatorEnvelope.triggerAttackRelease(this.duration, time, this.amplitude * 0.5)
         
-        this.disposeTime = time + this.dur + this.envelope.release + 0.1
-        this.dispose(this.disposeTime)
+        this.endTime = time + this.duration + this.envelope.release + 0.1
+        this.dispose(this.endTime)
     }
 
     set note(value) { this.carrierFrequency.setValueAtTime(mtf(value), this.time) }
