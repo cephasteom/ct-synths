@@ -1,6 +1,6 @@
 import { mtf } from "./utils/core";
 import { formatCurve } from "./utils/tone";
-import { FMSynth } from "tone";
+import { FMSynth, mtof } from "tone";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
@@ -48,7 +48,7 @@ class FM extends BaseSynth {
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time) }
     set modi(value) { this.synth.modulationIndex.setValueAtTime(value, this.time) }
     
-    _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(value, lag, time) }
+    _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtof(value), lag, time) }
     _n = this._n.bind(this)
 
     _harm(value, time, lag = 0.1) { this.synth.harmonicity.rampTo(value, lag, time) }
