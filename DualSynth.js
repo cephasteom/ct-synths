@@ -47,19 +47,19 @@ class DualSynth extends BaseSynth {
         this.rcurve = formatCurve(value)
     }
 
-    set filtera(value) { this.filterEnvelopes.forEach(env => env.attack = value) }
-    set filterd(value) { this.filterEnvelopes.forEach(env => env.decay = value) }
-    set filters(value) { this.filterEnvelopes.forEach(env => env.sustain = value) }
-    set filterr(value) { this.filterEnvelopes.forEach(env => env.release = value) }
+    set moda(value) { this.filterEnvelopes.forEach(env => env.attack = value) }
+    set modd(value) { this.filterEnvelopes.forEach(env => env.decay = value) }
+    set mods(value) { this.filterEnvelopes.forEach(env => env.sustain = value) }
+    set modr(value) { this.filterEnvelopes.forEach(env => env.release = value) }
 
-    set filteracurve(value) { this.filterEnvelopes.forEach(env => env.attackCurve = formatCurve(value)) }
-    set filterdcurve(value) { this.filterEnvelopes.forEach(env => env.decayCurve = formatCurve(value)) }
-    set filterrcurve(value) { this.filterEnvelopes.forEach(env => env.releaseCurve = formatCurve(value)) }
+    set modacurve(value) { this.filterEnvelopes.forEach(env => env.attackCurve = formatCurve(value)) }
+    set moddcurve(value) { this.filterEnvelopes.forEach(env => env.decayCurve = formatCurve(value)) }
+    set modrcurve(value) { this.filterEnvelopes.forEach(env => env.releaseCurve = formatCurve(value)) }
 
-    set filtercurve(value) {
-        this.filteracurve = formatCurve(value)
-        this.filterdcurve = formatCurve(value)
-        this.filterrcurve = formatCurve(value)
+    set modcurve(value) {
+        this.modacurve = formatCurve(value)
+        this.moddcurve = formatCurve(value)
+        this.modrcurve = formatCurve(value)
     }
 
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time) }
