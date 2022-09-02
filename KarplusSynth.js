@@ -4,9 +4,7 @@ import BaseSynth from "./BaseSynth";
 
 // TODO: presets
 
-class Karplus extends BaseSynth {    
-    synth;
-    
+class Karplus extends BaseSynth {   
     constructor(fxParams) {
         super(fxParams)
         this.#initGraph()

@@ -4,9 +4,7 @@ import BaseSynth from "./BaseSynth";
 
 // TODO: presets
 
-class DrumSynth extends BaseSynth {    
-    synth;
-    
+class DrumSynth extends BaseSynth {
     constructor(fxParams) {
         super(fxParams)
         this.#initGraph()

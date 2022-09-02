@@ -12,6 +12,7 @@ class BaseSynth {
     endTime;
     onDisposeAction;
     disposeID = null;
+    synth
     fx = []
     
     constructor(params) {
@@ -132,9 +133,17 @@ class BaseSynth {
     }
 
     set pan(value) { this.panner.pan.setValueAtTime(value, 0) }
+    set detune(value) { this.synth.detune.setValueAtTime(value, 0) }
     
     _pan(value, time, lag = 0.1) { this.panner.pan.rampTo(value, lag, time) }
     _pan = this._pan.bind(this)
+
+    // TODO: can't get this working nicely...
+    _detune(value, time, lag = 0.1) { 
+        this.synth.detune.cancelScheduledValues(time)
+        this.synth.detune.rampTo(value, lag/10, time) 
+    }
+    _detune = this._detune.bind(this)
 
     _crush(value, time, lag = 0.1) {
         const crush = this.fx.find(fx => fx instanceof BitCrusher)

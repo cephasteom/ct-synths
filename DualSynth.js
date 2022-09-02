@@ -7,8 +7,6 @@ import BaseSynth from "./BaseSynth";
 // TODO: filter settings
 
 class DualSynth extends BaseSynth {    
-    synth;
-    
     constructor(fxParams) {
         super(fxParams)
         this.#initGraph()

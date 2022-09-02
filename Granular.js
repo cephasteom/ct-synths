@@ -3,7 +3,6 @@ import BaseSynth from "./BaseSynth";
 
 // TODO: presets
 class Granular extends BaseSynth {    
-    synth;
     #q = 48
     #n = 60
     #begin = 0

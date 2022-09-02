@@ -6,8 +6,6 @@ import BaseSynth from "./BaseSynth";
 // TODO: presets
 
 class FM extends BaseSynth {    
-    synth;
-    
     constructor(params) {
         super(params)
         this.#initGraph()
