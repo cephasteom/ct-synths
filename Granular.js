@@ -11,8 +11,8 @@ class Granular extends BaseSynth {
     rateRamp
     clock
     
-    constructor(buffer, fxParams) {
-        super(fxParams)
+    constructor(buffer, params) {
+        super(params)
         this.#bufferLength = buffer.length/context.sampleRate
         this.#initGraph(buffer)
     }
@@ -52,7 +52,7 @@ class Granular extends BaseSynth {
     }
 
     set note(value) { 
-        const detune = (value - 60) * 100
+        const detune = ((value + (this.octave * 12)) - 60) * 100
         this.pitchRamp.value = detune
         this.synth.detune = detune
     }
@@ -87,8 +87,9 @@ class Granular extends BaseSynth {
     
     // grain pitch - assumes note 60 is original speed of sample
     _n(value, time, lag = 0.01) {
+        const detune = ((value + (this.octave * 12)) - 60) * 100
         this.pitchRamp.cancelScheduledValues(time)
-        this.pitchRamp.rampTo(Math.floor((value - 60) * 100), lag/10, time)
+        this.pitchRamp.rampTo(Math.floor(detune), lag/10, time)
     }
     _n = this._n.bind(this)
 }

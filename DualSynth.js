@@ -18,6 +18,7 @@ class DualSynth extends BaseSynth {
         this.envelopes = [this.synth.voice0.envelope, this.synth.voice1.envelope]
         this.filterEnvelopes = [this.synth.voice0.filterEnvelope, this.synth.voice1.filterEnvelope]
         this.synth.connect(this.panner)
+        this.synth.harmonicity.value = 1.01
     }
 
     play(params = {}, time) {
