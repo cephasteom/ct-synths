@@ -5,6 +5,7 @@ class BaseSynth {
     time = null;
     duration = 1;
     amplitude = 1;
+    octave = 0
     envelope;
     self = this.constructor
     #disposed = false
@@ -13,21 +14,21 @@ class BaseSynth {
     disposeID = null;
     fx = []
     
-    constructor(fxParams) {
+    constructor(params) {
         this.gain = new Gain(1)
         this.panner = new Panner(0).connect(this.gain)
         this.envelope = new AmplitudeEnvelope({attack: 0.1, decay: 0.2, sustain: 0.5, release: 0.8}).disconnect()
         this.envelope.connect(this.panner)
-        fxParams && this.#initFX(fxParams)
+        params && this.#initFX(params)
     }
     
-    #initFX(fxParams) {
-        this.fx = Object.entries(fxParams).map(([key, value]) => {
+    #initFX(params) {
+        this.fx = Object.entries(params).map(([key, value]) => {
             switch (key) {
                 case 'dist':
                     return new Distortion({distortion: value})
                 case 'crush':
-                    return new BitCrusher({crush: value})
+                    return new BitCrusher({bits: value})
                 case 'hicut':
                     return new Filter({frequency: value, type: "lowpass"})
                 case 'locut':
@@ -113,6 +114,7 @@ class BaseSynth {
     set dur(value) { this.duration = value }
     set amp(value) { this.amplitude = value }
     set vol(value) { this.amplitude = value }
+    set oct(value) { this.octave = Math.floor(value) - 5 }
 
     set a(value) { this.envelope && (this.envelope.attack = value) }
     set d(value) { this.envelope && (this.envelope.decay = value) }
@@ -134,12 +136,17 @@ class BaseSynth {
     _pan(value, time, lag = 0.1) { this.panner.pan.rampTo(value, lag, time) }
     _pan = this._pan.bind(this)
 
+    _crush(value, time, lag = 0.1) {
+        const crush = this.fx.find(fx => fx instanceof BitCrusher)
+        crush && crush.bits.rampTo(value, lag, time)
+    }
+    _crush = this._crush.bind(this)
+     
     _amp(value, time, lag = 0.1) { this.gain.gain.rampTo(value, lag, time) }
     _amp = this._amp.bind(this)
     
     _vol(value, time, lag = 0.1) { this.gain.gain.rampTo(value, lag, time) }
     _vol = this._vol.bind(this)
-
 
     get settable() { return this.#settable() }
     get mutable() { return this.#mutable() }

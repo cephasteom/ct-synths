@@ -8,8 +8,8 @@ import BaseSynth from "./BaseSynth";
 class FM extends BaseSynth {    
     synth;
     
-    constructor(fxParams) {
-        super(fxParams)
+    constructor(params) {
+        super(params)
         this.#initGraph()
     }
 
@@ -24,7 +24,7 @@ class FM extends BaseSynth {
         this.time = time
         this.setParams(params)
         
-        this.synth.triggerAttackRelease(mtf(params.n) || 220, this.duration, time, this.amplitude)
+        this.synth.triggerAttackRelease(mtf(params.n + (this.octave * 12)) || 220, this.duration, time, this.amplitude)
         
         this.endTime = time + this.duration + this.synth.envelope.release + 0.1
         this.dispose(this.endTime)
@@ -48,7 +48,7 @@ class FM extends BaseSynth {
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time) }
     set modi(value) { this.synth.modulationIndex.setValueAtTime(value, this.time) }
     
-    _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtof(value), lag, time) }
+    _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtof(value + (this.octave * 12)), lag, time) }
     _n = this._n.bind(this)
 
     _harm(value, time, lag = 0.1) { this.synth.harmonicity.rampTo(value, lag, time) }
