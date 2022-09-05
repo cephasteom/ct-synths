@@ -63,6 +63,9 @@ class DualSynth extends BaseSynth {
 
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time) }
 
+    _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtf(value + (this.octave * 12)), lag, time) }
+    _n = this._n.bind(this) 
+
     _harm(value, time, lag = 0.1) { this.synth.harmonicity.rampTo(value, lag, time) }
     _harm = this._harm.bind(this)
 
