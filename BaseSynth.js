@@ -17,7 +17,7 @@ class BaseSynth {
     
     constructor(params) {
         this.gain = new Gain(1)
-        this.panner = new Panner(0).connect(this.gain)
+        this.panner = new Panner(0).connect(this.gain.input)
         this.envelope = new AmplitudeEnvelope({attack: 0.1, decay: 0.2, sustain: 0.5, release: 0.8}).disconnect()
         this.envelope.connect(this.panner)
         params && this.#initFX(params)

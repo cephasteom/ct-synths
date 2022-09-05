@@ -45,7 +45,7 @@ class Granular extends BaseSynth {
         const duration = (params.dur || this.duration)
         this.synth.start(this.time, this.#begin, duration * 2) // * 2 to account for bug in grainplayer
         
-        this.envelope.triggerAttackRelease(duration - this.envelope.release, this.time, this.amplitude)
+        this.envelope.triggerAttackRelease(duration, this.time, this.amplitude)
         
         this.endTime = time + duration + 0.5
         this.dispose(this.endTime)

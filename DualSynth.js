@@ -1,6 +1,6 @@
 import { mtf } from "./utils/core";
 import { formatCurve } from "./utils/tone";
-import { DuoSynth } from "tone";
+import { DuoSynth, immediate } from "tone";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
@@ -13,11 +13,11 @@ class DualSynth extends BaseSynth {
     }
 
     #initGraph() {
-        this.synth = new DuoSynth()
+        this.synth = new DuoSynth({volume: -12}) // two voices are too loud
         this.envelope.dispose() // not needed
         this.envelopes = [this.synth.voice0.envelope, this.synth.voice1.envelope]
         this.filterEnvelopes = [this.synth.voice0.filterEnvelope, this.synth.voice1.filterEnvelope]
-        this.synth.connect(this.panner)
+        this.synth.connect(this.gain)
         this.synth.harmonicity.value = 1.01
     }
 
