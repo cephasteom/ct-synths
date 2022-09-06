@@ -1,6 +1,6 @@
 import { mtf } from "./utils/core";
 import { formatCurve } from "./utils/tone";
-import { DuoSynth, immediate } from "tone";
+import { DuoSynth } from "tone";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
