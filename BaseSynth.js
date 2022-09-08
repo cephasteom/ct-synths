@@ -75,7 +75,7 @@ class BaseSynth {
         
         this.synth.triggerAttackRelease(mtf(params.n + (this.octave * 12)) || 220, this.duration, time, this.amplitude)
         
-        this.endTime = time + this.duration + this.envelope.release + 0.1
+        this.endTime = time + this.duration + this.envelope.release + 0.05
         this.dispose(this.endTime)
     }  
 
