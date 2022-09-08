@@ -11,11 +11,10 @@ class MtSynth extends BaseSynth {
     }
 
     #initGraph() {
-        this.synth = new MetalSynth()
+        this.synth = new MetalSynth({volume: -24})
         this.envelope.dispose() // not needed
-        this.envelopes = this.synth.envelope
+        this.envelope = this.synth.envelope
         this.synth.connect(this.panner)
-        console.log(this.synth._oscillators)
     }
 
     set harm(value) { this.synth.harmonicity = value }
