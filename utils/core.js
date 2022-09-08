@@ -39,3 +39,7 @@ export const mapToLogRange = (x, inMin, inMax, outMin, outMax) => {
     const scale = (logOutMax - logOutMin) / (inMax - inMin);
     return Math.exp(logOutMin + scale * (x - inMin));
 }
+
+export const wrap = (x, min, max) => {
+    return x >= min && x <= max ? x : x < min ? max : min
+}

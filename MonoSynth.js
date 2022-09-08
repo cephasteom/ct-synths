@@ -12,7 +12,7 @@ class MnSynth extends BaseSynth {
     #initGraph() {
         this.synth = new MonoSynth()
         this.envelope.dispose() // not needed
-        this.envelopes = this.synth.envelope
+        this.envelope = this.synth.envelope
         this.filterEnvelope = this.synth.filterEnvelope
         this.synth.connect(this.panner)
     }
@@ -25,11 +25,6 @@ class MnSynth extends BaseSynth {
     set modacurve(value) { this.filterEnvelope.attackCurve = formatCurve(value) }
     set moddcurve(value) { this.filterEnvelope.decayCurve = formatCurve(value) }
     set modrcurve(value) { this.filterEnvelope.releaseCurve = formatCurve(value) }
-
-    set quality(value) { 
-        this.synth.filter.set({Q: value})
-        console.log(value, this.synth.filter)
-    }
 }
 
 
