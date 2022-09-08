@@ -18,16 +18,6 @@ class MnSynth extends BaseSynth {
         this.synth.connect(this.panner)
     }
 
-    play(params = {}, time) {
-        this.time = time
-        this.setParams(params)
-        
-        this.synth.triggerAttackRelease(mtf(params.n + (this.octave * 12)) || 220, this.duration, time, this.amplitude * 0.5)
-        
-        this.endTime = time + this.duration + this.synth.voice0.envelope.release + 0.1
-        this.dispose(this.endTime)
-    }  
-
     set moda(value) { this.filterEnvelope.attack = value }
     set modd(value) { this.filterEnvelope.decay = value }
     set mods(value) { this.filterEnvelope.sustain = value }
@@ -36,16 +26,6 @@ class MnSynth extends BaseSynth {
     set modacurve(value) { this.filterEnvelope.attackCurve = formatCurve(value) }
     set moddcurve(value) { this.filterEnvelope.decayCurve = formatCurve(value) }
     set modrcurve(value) { this.filterEnvelope.releaseCurve = formatCurve(value) }
-
-    // LFOs
-    set depth(value) { this.synth.vibratoAmount.setValueAtTime(value > 1 ? 1 : value, this.time) }
-    set rate(value) { this.synth.vibratoRate.setValueAtTime(value, this.time) }
-
-    _depth(value, time, lag = 0.1) { this.synth.vibratoAmount.rampTo(value, lag, time) }
-    _depth = this._depth.bind(this)
-
-    _rate(value, time, lag = 0.1) { this.synth.vibratoRate.rampTo(value, lag, time) }
-    _rate = this._rate.bind(this)
 }
 
 

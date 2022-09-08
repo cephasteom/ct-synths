@@ -4,6 +4,7 @@ import Granular from "./Granular";
 import DrumSynth from "./DrumSynth";
 import KarplusSynth from "./KarplusSynth";
 import DuoSynth from "./DuoSynth";
+import MonoSynth from "./MonoSynth";
 
 export const CtFMSynth = FMSynth
 export const CtSampler = Sampler
@@ -11,3 +12,4 @@ export const CtGranular = Granular
 export const CtDrumSynth = DrumSynth
 export const CtKarplusSynth = KarplusSynth
 export const CtDuoSynth = DuoSynth
+export const CtMonoSynth = MonoSynth

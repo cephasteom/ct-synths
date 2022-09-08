@@ -18,16 +18,6 @@ class FM extends BaseSynth {
         this.synth.connect(this.panner)
     }
 
-    play(params = {}, time) {
-        this.time = time
-        this.setParams(params)
-        
-        this.synth.triggerAttackRelease(mtf(params.n + (this.octave * 12)) || 220, this.duration, time, this.amplitude)
-        
-        this.endTime = time + this.duration + this.synth.envelope.release + 0.1
-        this.dispose(this.endTime)
-    }
-
     set moda(value) { this.synth.modulationEnvelope.attack = value }
     set modd(value) { this.synth.modulationEnvelope.decay = value }
     set mods(value) { this.synth.modulationEnvelope.sustain = value }
