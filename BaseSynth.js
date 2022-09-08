@@ -1,5 +1,5 @@
 import { AmplitudeEnvelope, Gain, Panner, Distortion, BitCrusher, Filter } from "tone";
-import { getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
+import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
 import { doAtTime, formatCurve } from "./utils/tone";
 class BaseSynth {
     time = null;
@@ -134,6 +134,9 @@ class BaseSynth {
 
     set pan(value) { this.panner.pan.setValueAtTime(value, 0) }
     set detune(value) { this.synth.detune.setValueAtTime(value, 0) }
+
+    _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtf(value + (this.octave * 12)), lag, time) }
+    _n = this._n.bind(this)
     
     _pan(value, time, lag = 0.1) { this.panner.pan.rampTo(value, lag, time) }
     _pan = this._pan.bind(this)

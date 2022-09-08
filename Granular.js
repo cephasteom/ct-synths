@@ -1,12 +1,13 @@
 import { GrainPlayer, context, Signal, Clock, Transport } from "tone";
 import BaseSynth from "./BaseSynth";
+import { beatsToSeconds } from "./utils/tone";
 
 // TODO: presets
+// TODO: strange behaviour from grain size, seems to affect playback position
 class Granular extends BaseSynth {    
     #q = 48
     #n = 60
     #begin = 0
-    #snap
     #bufferLength
     rateRamp
     clock
@@ -23,11 +24,13 @@ class Granular extends BaseSynth {
         this.envelope.set({attack: 0.1, decay: 0, sustain: 1, release: 0.1})
         this.rateRamp = new Signal(this.synth.playbackRate, 'number')
         this.pitchRamp = new Signal(0, 'number')
+        this.sizeRamp = new Signal(this.synth.grainSize, 'number')
         this.clock = new Clock(time => {
-            // set playbackRate
-            this.synth.set({playbackRate: this.rateRamp.getValueAtTime(time)});
-            // set detune value (cents)
-            this.synth.set({detune: this.pitchRamp.getValueAtTime(time)});
+            this.synth.set({
+                playbackRate: this.rateRamp.getValueAtTime(time),
+                detune: this.pitchRamp.getValueAtTime(time),
+                grainSize: this.sizeRamp.getValueAtTime(time)
+            });
         }, 48).start();
     }
 
@@ -75,7 +78,10 @@ class Granular extends BaseSynth {
         this.rateRamp.value = value
         this.synth.playbackRate = value
     }
-    set size(value) { this.synth.set({grainSize: value}) }
+    set size(value) { 
+        const size = beatsToSeconds(value)
+        this.sizeRamp.setValueAtTime(size, this.time)
+    }
     set direction(value) { this.synth.set({reverse: value < 0})}
 
     // Speed at which the playback moves through the buffer, overwritten by snap
@@ -92,6 +98,15 @@ class Granular extends BaseSynth {
         this.pitchRamp.rampTo(Math.floor(detune), lag/10, time)
     }
     _n = this._n.bind(this)
+
+    // grain size
+    _size(value, time, lag = 0.01) {
+        const size = beatsToSeconds(value)
+        // find out length of samples
+        this.sizeRamp.cancelScheduledValues(time)
+        this.sizeRamp.rampTo(size, lag, time)
+    }
+    _size = this._size.bind(this)    
 }
 
 export default Granular

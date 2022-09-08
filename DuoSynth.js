@@ -4,8 +4,6 @@ import { DuoSynth } from "tone";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
-// TODO: filter settings
-
 class DualSynth extends BaseSynth {    
     constructor(fxParams) {
         super(fxParams)
@@ -13,12 +11,11 @@ class DualSynth extends BaseSynth {
     }
 
     #initGraph() {
-        this.synth = new DuoSynth({volume: -12}) // two voices are too loud
+        this.synth = new DuoSynth({volume: -12, harmonicity: 1.01}) // two voices are too loud
         this.envelope.dispose() // not needed
         this.envelopes = [this.synth.voice0.envelope, this.synth.voice1.envelope]
         this.filterEnvelopes = [this.synth.voice0.filterEnvelope, this.synth.voice1.filterEnvelope]
-        this.synth.connect(this.gain)
-        this.synth.harmonicity.value = 1.01
+        this.synth.connect(this.panner)
     }
 
     play(params = {}, time) {
@@ -62,9 +59,6 @@ class DualSynth extends BaseSynth {
     }
 
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time) }
-
-    _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtf(value + (this.octave * 12)), lag, time) }
-    _n = this._n.bind(this) 
 
     _harm(value, time, lag = 0.1) { this.synth.harmonicity.rampTo(value, lag, time) }
     _harm = this._harm.bind(this)
