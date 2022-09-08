@@ -97,7 +97,7 @@ class BaseSynth {
         this.gain.chain(...this.fx, node)
     }
 
-    chain(...nodes) {
+    chain(nodes) {
         this.gain.disconnect()
         this.gain.chain(...this.fx, ...nodes)
     }
