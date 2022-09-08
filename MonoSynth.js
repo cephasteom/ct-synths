@@ -1,4 +1,3 @@
-import { mtf } from "./utils/core";
 import { formatCurve } from "./utils/tone";
 import { MonoSynth } from "tone";
 import BaseSynth from "./BaseSynth";
@@ -26,6 +25,11 @@ class MnSynth extends BaseSynth {
     set modacurve(value) { this.filterEnvelope.attackCurve = formatCurve(value) }
     set moddcurve(value) { this.filterEnvelope.decayCurve = formatCurve(value) }
     set modrcurve(value) { this.filterEnvelope.releaseCurve = formatCurve(value) }
+
+    set quality(value) { 
+        this.synth.filter.set({Q: value})
+        console.log(value, this.synth.filter)
+    }
 }
 
 
