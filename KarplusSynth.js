@@ -1,4 +1,3 @@
-import { mtf } from "./utils/core";
 import { PluckSynth } from "tone";
 import BaseSynth from "./BaseSynth";
 
@@ -13,16 +12,6 @@ class Karplus extends BaseSynth {
         this.synth = new PluckSynth()
         this.envelope.set({attack: 0.01, decay: 0, sustain: 1, release: 0.1})
         this.synth.connect(this.envelope)
-    }
-
-    play(params = {}, time) {
-        this.time = time
-        this.setParams(params)
-        
-        this.synth.triggerAttackRelease(mtf(params.n + (this.octave * 12)) || 220, this.duration, time, this.amplitude)
-        
-        this.endTime = time + this.duration + this.envelope.release + 0.1
-        this.dispose(this.endTime)
     }
 
     set resonance(value) { this.synth.resonance = value }
