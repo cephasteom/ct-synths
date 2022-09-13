@@ -19,7 +19,10 @@ class Granular extends BaseSynth {
     }
 
     #initGraph(buffer) {
-        this.synth = new GrainPlayer({loop: true, grainSize: 0.1, overlap: 0.05, url: buffer})
+        this.synth = new GrainPlayer({
+            loop: true, 
+            url: buffer, 
+        })
         this.synth.connect(this.envelope)
         this.envelope.set({attack: 0.1, decay: 0, sustain: 1, release: 0.1})
         this.rateRamp = new Signal(this.synth.playbackRate, 'number')
@@ -72,7 +75,7 @@ class Granular extends BaseSynth {
 
     set begin(value) { this.#begin = this.#bufferLength * value }
     set end(value) { this.synth.set({loopEnd: this.#bufferLength * value}) }
-    set overlap(overlap) { this.synth.set({overlap}) }
+    set overlap(value) { this.synth.set({overlap: beatsToSeconds(value || 1/16)}) }
 
     set rate(value) { 
         this.rateRamp.value = value
@@ -80,6 +83,7 @@ class Granular extends BaseSynth {
     }
     set size(value) { 
         const size = beatsToSeconds(value)
+        this.synth.grainSize = size
         this.sizeRamp.setValueAtTime(size, this.time)
     }
     set direction(value) { this.synth.set({reverse: value < 0})}
