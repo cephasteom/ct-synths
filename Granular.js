@@ -19,6 +19,7 @@ class Granular extends BaseSynth {
     }
 
     #initGraph(buffer) {
+        // don't initialise values - causes bugs
         this.synth = new GrainPlayer({
             loop: true, 
             url: buffer, 
