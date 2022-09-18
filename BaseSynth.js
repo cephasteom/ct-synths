@@ -119,7 +119,6 @@ class BaseSynth {
     set amp(value) { this.amplitude = value }
     set vol(value) { this.amplitude = value }
     set oct(value) { this.octave = Math.floor(value) - 5 }
-    set osc(type) { this.synth.set({ oscillator: { type: formatOscType(type) } }) }
 
     set a(value) { this.envelope && (this.envelope.attack = value) }
     set d(value) { this.envelope && (this.envelope.decay = value) }
@@ -138,6 +137,12 @@ class BaseSynth {
 
     set pan(value) { this.panner.pan.setValueAtTime(value, 0) }
     set detune(value) { this.synth.detune.setValueAtTime(value, 0) }
+
+    set osc(type) { this.synth.set({ oscillator: { type: formatOscType(type) } }) }
+    set oscmodosc(type) { this.synth.set({ oscillator: { modulationType: formatOscType(type) } }) }
+    // TODO: mutable values?
+    set oscmodi(value) { this.synth.set({ oscillator: { modulationIndex: value } }) }
+    set oscharm(value) { this.synth.set({ oscillator: { harmonicity: value } }) }
 
     _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtf(value + (this.octave * 12)), lag, time) }
     _n = this._n.bind(this)
