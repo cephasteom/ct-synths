@@ -5,7 +5,8 @@ class BaseSynth {
     time = null;
     duration = 1;
     amplitude = 1;
-    octave = 0
+    octave = 0;
+    n = 60;
     envelope;
     self = this.constructor
     #disposed = false
@@ -64,6 +65,7 @@ class BaseSynth {
 
     setParams(params) {
         const settable = this.#settable()
+        console.log(settable)
         Object.entries(params).forEach(([key, value]) => {
             settable[key] && (settable[key](value))
         });
@@ -73,7 +75,7 @@ class BaseSynth {
         this.time = time
         this.setParams(params)
         
-        this.synth.triggerAttackRelease(mtf(params.n + (this.octave * 12)) || 220, this.duration, time, this.amplitude)
+        this.synth.triggerAttackRelease(mtf(this.n + (this.octave * 12)) || 220, this.duration, time, this.amplitude)
         
         this.endTime = time + this.duration + this.envelope.release + 0.05
         this.dispose(this.endTime)
@@ -113,6 +115,7 @@ class BaseSynth {
         }, time)
     } 
 
+    set n(value) { this.n(value) }
     set dur(value) { this.duration = value }
     set amp(value) { this.amplitude = value }
     set vol(value) { this.amplitude = value }
