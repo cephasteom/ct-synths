@@ -1,5 +1,5 @@
-import { mtf } from "./utils/core";
 import { formatCurve } from "./utils/tone";
+import { formatModOscType } from "./utils/oscillators";
 import { FMSynth } from "tone";
 import BaseSynth from "./BaseSynth";
 
@@ -33,8 +33,10 @@ class FM extends BaseSynth {
         this.modrcurve = formatCurve(value)
     }
 
+    set modosc(type) { this.synth.set({ modulation: { type: formatModOscType(type) } }) }
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time || 0) }
     set modi(value) { this.synth.modulationIndex.setValueAtTime(value, this.time || 0) }
+
 
     _harm(value, time, lag = 0.1) { this.synth.harmonicity.rampTo(value, lag, time) }
     _harm = this._harm.bind(this)

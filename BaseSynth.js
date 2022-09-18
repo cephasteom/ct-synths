@@ -1,6 +1,7 @@
 import { AmplitudeEnvelope, Gain, Panner, Distortion, BitCrusher, Filter } from "tone";
 import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
 import { doAtTime, formatCurve } from "./utils/tone";
+import { formatOscType } from "./utils/oscillators";
 class BaseSynth {
     time = null;
     duration = 1;
@@ -110,7 +111,6 @@ class BaseSynth {
             [...getDisposable(this), ...this.fx].forEach(prop => prop.dispose())
             this.onDisposeAction && this.onDisposeAction()
             this.#disposed = true
-            console.log('disposed!')
         }, time)
     } 
 
@@ -119,6 +119,7 @@ class BaseSynth {
     set amp(value) { this.amplitude = value }
     set vol(value) { this.amplitude = value }
     set oct(value) { this.octave = Math.floor(value) - 5 }
+    set osc(type) { this.synth.set({ oscillator: { type: formatOscType(type) } }) }
 
     set a(value) { this.envelope && (this.envelope.attack = value) }
     set d(value) { this.envelope && (this.envelope.decay = value) }
