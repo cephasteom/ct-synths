@@ -65,7 +65,6 @@ class BaseSynth {
 
     setParams(params) {
         const settable = this.#settable()
-        console.log(settable)
         Object.entries(params).forEach(([key, value]) => {
             settable[key] && (settable[key](value))
         });

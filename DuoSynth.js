@@ -58,14 +58,14 @@ class DualSynth extends BaseSynth {
         this.modrcurve = formatCurve(value)
     }
 
-    set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time) }
+    set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time || 0) }
 
     _harm(value, time, lag = 0.1) { this.synth.harmonicity.rampTo(value, lag, time) }
     _harm = this._harm.bind(this)
 
     // LFOs
     set depth(value) { this.synth.vibratoAmount.setValueAtTime(value > 1 ? 1 : value, this.time) }
-    set rate(value) { this.synth.vibratoRate.setValueAtTime(value, this.time) }
+    set rate(value) { this.synth.vibratoRate.setValueAtTime(value, this.time || 0) }
 
     _depth(value, time, lag = 0.1) { this.synth.vibratoAmount.rampTo(value, lag, time) }
     _depth = this._depth.bind(this)

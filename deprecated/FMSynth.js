@@ -80,8 +80,8 @@ class FMSynth extends BaseSynth {
         this.modrcurve = formatCurve(value)
     }
 
-    set harm(value) { this.harmonicity.setValueAtTime(value, this.time) }
-    set modi(value) { this.modulationIndex.setValueAtTime(value, this.time) }
+    set harm(value) { this.harmonicity.setValueAtTime(value, this.time || 0) }
+    set modi(value) { this.modulationIndex.setValueAtTime(value, this.time || 0) }
 
     _harm(value, time, lag = 0.1) { this.harmonicityRatio.rampTo(value, lag, time) }
     _harm = this._harm.bind(this)
