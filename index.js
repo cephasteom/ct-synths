@@ -6,6 +6,7 @@ import KarplusSynth from "./KarplusSynth";
 import DuoSynth from "./DuoSynth";
 import MonoSynth from "./MonoSynth";
 import MetalSynth from "./MetalSynth";
+import FlexSynth from "./FlexSynth";
 
 export const CtFMSynth = FMSynth
 export const CtSampler = Sampler
@@ -15,3 +16,4 @@ export const CtKarplusSynth = KarplusSynth
 export const CtDuoSynth = DuoSynth
 export const CtMonoSynth = MonoSynth
 export const CtMetalSynth = MetalSynth
+export const CtFlexSynth = FlexSynth
