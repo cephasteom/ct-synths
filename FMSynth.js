@@ -34,9 +34,10 @@ class FM extends BaseSynth {
     }
 
     set modosc(type) { this.synth.set({ modulation: { type: formatModOscType(type) } }) }
+    // set moddetune(value) { this.synth.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) }
+    
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time || 0) }
     set modi(value) { this.synth.modulationIndex.setValueAtTime(value, this.time || 0) }
-
 
     _harm(value, time, lag = 0.1) { this.synth.harmonicity.rampTo(value, lag, time) }
     _harm = this._harm.bind(this)

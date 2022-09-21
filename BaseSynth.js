@@ -3,13 +3,13 @@ import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, get
 import { doAtTime, formatCurve } from "./utils/tone";
 import { formatOscType } from "./utils/oscillators";
 class BaseSynth {
+    self = this.constructor
     time = null;
     duration = 1;
     amplitude = 1;
     octave = 0;
     n = 60;
     envelope;
-    self = this.constructor
     #disposed = false
     endTime;
     onDisposeAction;
@@ -144,16 +144,17 @@ class BaseSynth {
     set oscmodi(value) { this.synth.set({ oscillator: { modulationIndex: value } }) }
     set oscharm(value) { this.synth.set({ oscillator: { harmonicity: value } }) }
 
+    set moddetune(value) { this.synth.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) }
+
     _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtf(value + (this.octave * 12)), lag, time) }
     _n = this._n.bind(this)
     
     _pan(value, time, lag = 0.1) { this.panner.pan.rampTo(value, lag, time) }
     _pan = this._pan.bind(this)
 
-    // TODO: can't get this working nicely...
     _detune(value, time, lag = 0.1) { 
         this.synth.detune.cancelScheduledValues(time)
-        this.synth.detune.rampTo(value, lag/10, time) 
+        this.synth.detune.rampTo(value, lag, time) 
     }
     _detune = this._detune.bind(this)
 
@@ -168,6 +169,12 @@ class BaseSynth {
     
     _vol(value, time, lag = 0.1) { this.gain.gain.rampTo(value, lag, time) }
     _vol = this._vol.bind(this)
+
+    _moddetune(value, time, lag = 0.1) { 
+        this.synth.oscillator._oscillator._modulator?.detune.cancelScheduledValues(time)
+        this.synth.oscillator._oscillator._modulator?.detune.rampTo(value, lag, time) 
+    }
+    _moddetune = this._detune.bind(this)
 
     get settable() { return this.#settable() }
     get mutable() { return this.#mutable() }
