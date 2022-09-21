@@ -140,9 +140,8 @@ class BaseSynth {
 
     set osc(type) { this.synth.set({ oscillator: { type: formatOscType(type) } }) }
     set oscmodosc(type) { this.synth.set({ oscillator: { modulationType: formatOscType(type) } }) }
-    // TODO: mutable values?
-    set oscmodi(value) { this.synth.set({ oscillator: { modulationIndex: value } }) }
-    set oscharm(value) { this.synth.set({ oscillator: { harmonicity: value } }) }
+    set oscmodi(value) { this.synth.oscillator._oscillator.modulationIndex?.setValueAtTime(value,0) }
+    set oscharm(value) { this.synth.oscillator._oscillator.harmonicity?.setValueAtTime(value,0) }
 
     set modosc(type) { this.synth.oscillator._oscillator._modulator?.set({ type: formatModOscType(type) } )}
     set moddetune(value) { this.synth.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) }
@@ -158,6 +157,11 @@ class BaseSynth {
         this.synth.detune.rampTo(value, lag, time) 
     }
     _detune = this._detune.bind(this)
+    
+    _oscmodi(value, time, lag=0.1) { this.synth.oscillator._oscillator.modulationIndex?.rampTo(value, lag, time) }
+    _oscmodi = this._oscmodi.bind(this)
+    _oscharm(value, time, lag=0.1) { this.synth.oscillator._oscillator.harmonicity?.rampTo(value, lag, time) }
+    _oscharm = this._oscharm.bind(this)
 
     _crush(value, time, lag = 0.1) {
         const crush = this.fx.find(fx => fx instanceof BitCrusher)
