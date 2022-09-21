@@ -1,7 +1,7 @@
 import { AmplitudeEnvelope, Gain, Panner, Distortion, BitCrusher, Filter } from "tone";
 import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
 import { doAtTime, formatCurve } from "./utils/tone";
-import { formatOscType } from "./utils/oscillators";
+import { formatOscType, formatModOscType } from "./utils/oscillators";
 class BaseSynth {
     self = this.constructor
     time = null;
@@ -144,6 +144,7 @@ class BaseSynth {
     set oscmodi(value) { this.synth.set({ oscillator: { modulationIndex: value } }) }
     set oscharm(value) { this.synth.set({ oscillator: { harmonicity: value } }) }
 
+    set modosc(type) { this.synth.oscillator._oscillator._modulator?.set({ type: formatModOscType(type) } )}
     set moddetune(value) { this.synth.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) }
 
     _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtf(value + (this.octave * 12)), lag, time) }

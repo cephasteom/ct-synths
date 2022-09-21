@@ -18,7 +18,6 @@ class Flex extends BaseSynth {
         this.synth.connect(this.panner)
     }
 
-    set modosc(type) { this.synth.oscillator._oscillator._modulator?.set({ type: formatModOscType(type) } )}
     set spread(value) { this.synth.oscillator.set({spread: value})}
 
     set harm(value) { this.synth.oscillator._oscillator.harmonicity?.setValueAtTime(value, this.time || 0) }
