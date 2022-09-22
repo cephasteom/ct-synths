@@ -3,7 +3,9 @@ import { immediate, Transport } from "tone"
 export function formatCurve(type) {
     const types = {
         exp: 'exponential',
-        lin: 'linear'
+        lin: 'linear',
+        sine: 'sine',
+        bounce: 'bounce'
     }
     return Object.keys(types).includes(type) ? types[type] : 'linear'
 }

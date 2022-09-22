@@ -1,5 +1,3 @@
-import { formatCurve } from "./utils/tone";
-import { formatModOscType } from "./utils/oscillators";
 import { Synth } from "tone";
 import BaseSynth from "./BaseSynth";
 
@@ -17,9 +15,7 @@ class Flex extends BaseSynth {
         this.envelope = this.synth.envelope
         this.synth.connect(this.panner)
     }
-
-    set spread(value) { this.synth.oscillator.set({spread: value})}
-
+    
     set harm(value) { this.synth.oscillator._oscillator.harmonicity?.setValueAtTime(value, this.time || 0) }
     set modi(value) { this.synth.oscillator._oscillator.modulationIndex?.setValueAtTime(value, this.time || 0) }
 

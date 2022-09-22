@@ -1,5 +1,5 @@
 import { AmplitudeEnvelope, Gain, Panner, Distortion, BitCrusher, Filter } from "tone";
-import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
+import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable, min } from './utils/core'
 import { doAtTime, formatCurve } from "./utils/tone";
 import { formatOscType, formatModOscType } from "./utils/oscillators";
 class BaseSynth {
@@ -140,8 +140,10 @@ class BaseSynth {
 
     set osc(type) { this.synth.set({ oscillator: { type: formatOscType(type) } }) }
     set oscmodosc(type) { this.synth.set({ oscillator: { modulationType: formatOscType(type) } }) }
-    set oscmodi(value) { this.synth.oscillator._oscillator.modulationIndex?.setValueAtTime(value,0) }
-    set oscharm(value) { this.synth.oscillator._oscillator.harmonicity?.setValueAtTime(value,0) }
+    
+    set count(value) { this.synth.oscillator._oscillator.count = min(value, 10) }
+    set width(value) { this.synth.oscillator._oscillator.width?.setValueAtTime(value, 0) }
+    set spread(value) { this.synth.oscillator.set({spread: value})}
 
     set modosc(type) { this.synth.oscillator._oscillator._modulator?.set({ type: formatModOscType(type) } )}
     set moddetune(value) { this.synth.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) }
@@ -157,11 +159,9 @@ class BaseSynth {
         this.synth.detune.rampTo(value, lag, time) 
     }
     _detune = this._detune.bind(this)
-    
-    _oscmodi(value, time, lag=0.1) { this.synth.oscillator._oscillator.modulationIndex?.rampTo(value, lag, time) }
-    _oscmodi = this._oscmodi.bind(this)
-    _oscharm(value, time, lag=0.1) { this.synth.oscillator._oscillator.harmonicity?.rampTo(value, lag, time) }
-    _oscharm = this._oscharm.bind(this)
+
+    _width(value, time, lag=0.1) { this.synth.oscillator._oscillator.width?.rampTo(value, lag, time) }
+    _width = this._width.bind(this)
 
     _crush(value, time, lag = 0.1) {
         const crush = this.fx.find(fx => fx instanceof BitCrusher)
