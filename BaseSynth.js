@@ -162,12 +162,6 @@ class BaseSynth {
 
     _width(value, time, lag=0.1) { this.synth.oscillator._oscillator.width?.rampTo(value, lag, time) }
     _width = this._width.bind(this)
-
-    _crush(value, time, lag = 0.1) {
-        const crush = this.fx.find(fx => fx instanceof BitCrusher)
-        crush && crush.bits.rampTo(value, lag, time)
-    }
-    _crush = this._crush.bind(this)
      
     _amp(value, time, lag = 0.1) { this.gain.gain.rampTo(value, lag, time) }
     _amp = this._amp.bind(this)

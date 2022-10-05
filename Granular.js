@@ -14,7 +14,7 @@ class Granular extends BaseSynth {
     
     constructor(buffer, params) {
         super(params)
-        this.#bufferLength = buffer.length/context.sampleRate
+        this.#bufferLength = buffer && buffer.length/context.sampleRate
         this.#initGraph(buffer)
     }
 
