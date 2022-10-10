@@ -31,12 +31,18 @@ const synthMap = {
     sampler: Sampler,
 }
 
-export const synthParams = (type) => {
+
+const paramsMap = Object.keys(synthMap).reduce((obj, type) => {
     const synth = synthMap[type] && new synthMap[type]()
     const params = synth && [
         ...Object.keys(synth.settable),
         ...Object.keys(synth.mutable)
     ]
     synth && synth.dispose(immediate())
-    return params
-}
+    return {
+        ...obj,
+        [type]: params
+    }
+}, {})
+
+export const synthParams = (type) => paramsMap[type] || null

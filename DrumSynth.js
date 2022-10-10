@@ -1,4 +1,3 @@
-import { mtf } from "./utils/core";
 import { MembraneSynth } from "tone";
 import BaseSynth from "./BaseSynth";
 

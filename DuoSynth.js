@@ -1,6 +1,7 @@
-import { mtf } from "./utils/core";
+import { mtf, min } from "./utils/core";
 import { formatCurve } from "./utils/tone";
 import { DuoSynth } from "tone";
+import { formatOscType, formatModOscType } from "./utils/oscillators";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
@@ -14,6 +15,7 @@ class DualSynth extends BaseSynth {
         this.synth = new DuoSynth({volume: -12, harmonicity: 1.01}) // two voices are too loud
         this.envelope.dispose() // not needed
         this.envelopes = [this.synth.voice0.envelope, this.synth.voice1.envelope]
+        this.synths = [this.synth.voice0, this.synth.voice1]
         this.filterEnvelopes = [this.synth.voice0.filterEnvelope, this.synth.voice1.filterEnvelope]
         this.synth.connect(this.panner)
     }
@@ -73,25 +75,25 @@ class DualSynth extends BaseSynth {
     _rate(value, time, lag = 0.1) { this.synth.vibratoRate.rampTo(value, lag, time) }
     _rate = this._rate.bind(this)
 
-    _width(value, time, lag=0.1) { this.synth.oscillator._oscillator.width?.rampTo(value, lag, time) }
+    _width(value, time, lag=0.1) { this.synths.forEach(s => s.oscillator._oscillator.width?.rampTo(value, lag, time)) }
     _width = this._width.bind(this)
 
     _moddetune(value, time, lag = 0.1) { 
-        this.synth.oscillator._oscillator._modulator?.detune.cancelScheduledValues(time)
-        this.synth.oscillator._oscillator._modulator?.detune.rampTo(value, lag, time) 
+        this.synths.forEach(s => s.oscillator._oscillator._modulator?.detune.cancelScheduledValues(time))
+        this.synths.forEach(s => s.oscillator._oscillator._modulator?.detune.rampTo(value, lag, time))
     }
     _moddetune = this._detune.bind(this)
 
     // oscillator params
-    set osc(type) { this.synth.set({ oscillator: { type: formatOscType(type) } }) }
-    set oscmodosc(type) { this.synth.set({ oscillator: { modulationType: formatOscType(type) } }) }
+    set osc(type) { this.synths.forEach(s => s.set({ oscillator: { type: formatOscType(type) } })) }
+    set oscmodosc(type) { this.synths.forEach(s => s.set({ oscillator: { modulationType: formatOscType(type) } })) }
     
-    set count(value) { this.synth.oscillator._oscillator.count = min(value, 10) }
-    set width(value) { this.synth.oscillator._oscillator.width?.setValueAtTime(value, 0) }
-    set spread(value) { this.synth.oscillator.set({spread: value})}
+    set count(value) { this.synths.forEach(s => s.oscillator._oscillator.count = min(value, 10)) }
+    set width(value) { this.synths.forEach(s => s.oscillator._oscillator.width?.setValueAtTime(value, 0) )}
+    set spread(value) { this.synths.forEach(s => s.oscillator.set({spread: value}))}
 
-    set modosc(type) { this.synth.oscillator._oscillator._modulator?.set({ type: formatModOscType(type) } )}
-    set moddetune(value) { this.synth.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) }
+    set modosc(type) { this.synths.forEach(s => s.oscillator._oscillator._modulator?.set({ type: formatModOscType(type) } ))}
+    set moddetune(value) { this.synths.forEach(s => s.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) )}
     // !/ oscillator params
 }
 

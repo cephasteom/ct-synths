@@ -1,4 +1,3 @@
-import { formatCurve } from "./utils/tone";
 import { wrap } from "./utils/core";
 import { MetalSynth } from "tone";
 import BaseSynth from "./BaseSynth";
