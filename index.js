@@ -33,12 +33,14 @@ const synthMap = {
 
 
 const paramsMap = Object.keys(synthMap).reduce((obj, type) => {
-    const synth = synthMap[type] && new synthMap[type]()
+    let synth = synthMap[type] && new synthMap[type]()
     const params = synth && [
         ...Object.keys(synth.settable),
         ...Object.keys(synth.mutable)
     ]
     synth && synth.dispose(immediate())
+    synth = null
+
     return {
         ...obj,
         [type]: params
