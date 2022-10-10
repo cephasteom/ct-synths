@@ -138,16 +138,6 @@ class BaseSynth {
     set pan(value) { this.panner.pan.setValueAtTime(value, 0) }
     set detune(value) { this.synth.detune.setValueAtTime(value, 0) }
 
-    set osc(type) { this.synth.set({ oscillator: { type: formatOscType(type) } }) }
-    set oscmodosc(type) { this.synth.set({ oscillator: { modulationType: formatOscType(type) } }) }
-    
-    set count(value) { this.synth.oscillator._oscillator.count = min(value, 10) }
-    set width(value) { this.synth.oscillator._oscillator.width?.setValueAtTime(value, 0) }
-    set spread(value) { this.synth.oscillator.set({spread: value})}
-
-    set modosc(type) { this.synth.oscillator._oscillator._modulator?.set({ type: formatModOscType(type) } )}
-    set moddetune(value) { this.synth.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) }
-
     _n(value, time, lag = 0.1) { this.synth.frequency.rampTo(mtf(value + (this.octave * 12)), lag, time) }
     _n = this._n.bind(this)
     
@@ -159,21 +149,12 @@ class BaseSynth {
         this.synth.detune.rampTo(value, lag, time) 
     }
     _detune = this._detune.bind(this)
-
-    _width(value, time, lag=0.1) { this.synth.oscillator._oscillator.width?.rampTo(value, lag, time) }
-    _width = this._width.bind(this)
      
     _amp(value, time, lag = 0.1) { this.gain.gain.rampTo(value, lag, time) }
     _amp = this._amp.bind(this)
     
     _vol(value, time, lag = 0.1) { this.gain.gain.rampTo(value, lag, time) }
     _vol = this._vol.bind(this)
-
-    _moddetune(value, time, lag = 0.1) { 
-        this.synth.oscillator._oscillator._modulator?.detune.cancelScheduledValues(time)
-        this.synth.oscillator._oscillator._modulator?.detune.rampTo(value, lag, time) 
-    }
-    _moddetune = this._detune.bind(this)
 
     get settable() { return this.#settable() }
     get mutable() { return this.#mutable() }

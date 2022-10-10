@@ -72,6 +72,27 @@ class DualSynth extends BaseSynth {
 
     _rate(value, time, lag = 0.1) { this.synth.vibratoRate.rampTo(value, lag, time) }
     _rate = this._rate.bind(this)
+
+    _width(value, time, lag=0.1) { this.synth.oscillator._oscillator.width?.rampTo(value, lag, time) }
+    _width = this._width.bind(this)
+
+    _moddetune(value, time, lag = 0.1) { 
+        this.synth.oscillator._oscillator._modulator?.detune.cancelScheduledValues(time)
+        this.synth.oscillator._oscillator._modulator?.detune.rampTo(value, lag, time) 
+    }
+    _moddetune = this._detune.bind(this)
+
+    // oscillator params
+    set osc(type) { this.synth.set({ oscillator: { type: formatOscType(type) } }) }
+    set oscmodosc(type) { this.synth.set({ oscillator: { modulationType: formatOscType(type) } }) }
+    
+    set count(value) { this.synth.oscillator._oscillator.count = min(value, 10) }
+    set width(value) { this.synth.oscillator._oscillator.width?.setValueAtTime(value, 0) }
+    set spread(value) { this.synth.oscillator.set({spread: value})}
+
+    set modosc(type) { this.synth.oscillator._oscillator._modulator?.set({ type: formatModOscType(type) } )}
+    set moddetune(value) { this.synth.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) }
+    // !/ oscillator params
 }
 
 

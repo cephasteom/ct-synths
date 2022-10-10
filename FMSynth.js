@@ -18,6 +18,7 @@ class FM extends BaseSynth {
         this.synth.connect(this.panner)
     }
 
+    // Envelope params
     set moda(value) { this.synth.modulationEnvelope.attack = value }
     set modd(value) { this.synth.modulationEnvelope.decay = value }
     set mods(value) { this.synth.modulationEnvelope.sustain = value }
@@ -32,10 +33,19 @@ class FM extends BaseSynth {
         this.moddcurve = formatCurve(value)
         this.modrcurve = formatCurve(value)
     }
+    // !/ Envelope params
 
-    set modosc(type) { this.synth.set({ modulation: { type: formatModOscType(type) } }) }
-    // set moddetune(value) { this.synth.oscillator._oscillator._modulator?.detune.setValueAtTime(value, 0) }
+    // oscillator params
+    set osc(type) { this.synth.set({ oscillator: { type: formatOscType(type) } }) }
+    set oscmodosc(type) { this.synth.set({ oscillator: { modulationType: formatOscType(type) } }) }
     
+    set count(value) { this.synth.oscillator._oscillator.count = min(value, 10) }
+    set width(value) { this.synth.oscillator._oscillator.width?.setValueAtTime(value, 0) }
+    set spread(value) { this.synth.oscillator.set({spread: value})}
+
+    set modosc(type) { this.synth.oscillator._oscillator._modulator?.set({ type: formatModOscType(type) } )}
+    // !/ oscillator params
+
     set harm(value) { this.synth.harmonicity.setValueAtTime(value, this.time || 0) }
     set modi(value) { this.synth.modulationIndex.setValueAtTime(value, this.time || 0) }
 
@@ -44,6 +54,15 @@ class FM extends BaseSynth {
 
     _modi(value, time, lag = 0.1) { this.synth.modulationIndex.rampTo(value, lag, time) }
     _modi = this._modi.bind(this)
+
+    _width(value, time, lag=0.1) { this.synth.oscillator._oscillator.width?.rampTo(value, lag, time) }
+    _width = this._width.bind(this)
+
+    _moddetune(value, time, lag = 0.1) { 
+        this.synth.oscillator._oscillator._modulator?.detune.cancelScheduledValues(time)
+        this.synth.oscillator._oscillator._modulator?.detune.rampTo(value, lag, time) 
+    }
+    _moddetune = this._detune.bind(this)
 }
 
 
