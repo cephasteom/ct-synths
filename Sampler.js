@@ -79,7 +79,6 @@ class Sampler extends BaseSynth {
         const sampleLength = this.#buffer.length/context.sampleRate
         const snapLength = (60/bpm.value/this.#q) * value
         this.#snap = sampleLength/snapLength
-        console.log(this.#snap)
         this.#setPlaybackRate()
     }
 
