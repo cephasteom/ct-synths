@@ -1,14 +1,14 @@
 import { immediate } from "tone"
 
-import FMSynth from "./FMSynth";
-import Sampler from "./Sampler";
-import Granular from "./Granular";
-import DrumSynth from "./DrumSynth";
-import KarplusSynth from "./KarplusSynth";
-import DuoSynth from "./DuoSynth";
-import MonoSynth from "./MonoSynth";
-import MetalSynth from "./MetalSynth";
-import FlexSynth from "./FlexSynth";
+import FMSynth from "./tone-synths/FMSynth";
+import Sampler from "./tone-synths/Sampler";
+import Granular from "./tone-synths/Granular";
+import DrumSynth from "./tone-synths/DrumSynth";
+import KarplusSynth from "./tone-synths/KarplusSynth";
+import DuoSynth from "./tone-synths/DuoSynth";
+import MonoSynth from "./tone-synths/MonoSynth";
+import MetalSynth from "./tone-synths/MetalSynth";
+import FlexSynth from "./tone-synths/FlexSynth";
 
 export const CtFMSynth = FMSynth
 export const CtSampler = Sampler

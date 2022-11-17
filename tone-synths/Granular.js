@@ -1,6 +1,6 @@
 import { GrainPlayer, context, Signal, Clock, Transport } from "tone";
 import BaseSynth from "./BaseSynth";
-import { beatsToSeconds } from "./utils/tone";
+import { beatsToSeconds } from "../utils/tone";
 
 // TODO: presets
 // TODO: strange behaviour from grain size, seems to affect playback position

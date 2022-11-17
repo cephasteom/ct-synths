@@ -1,6 +1,7 @@
 import { AmplitudeEnvelope, Gain, Panner, Distortion, BitCrusher, Filter } from "tone";
-import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from './utils/core'
-import { doAtTime, formatCurve } from "./utils/tone";
+import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, getSchedulable } from '../utils/core'
+import { doAtTime, formatCurve } from "../utils/tone";
+
 class BaseSynth {
     self = this.constructor
     time = null;

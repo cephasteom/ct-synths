@@ -1,6 +1,6 @@
-import { formatCurve } from "./utils/tone";
-import { formatOscType, formatModOscType } from "./utils/oscillators";
-import { min } from "./utils/core";
+import { formatCurve } from "../utils/tone";
+import { formatOscType, formatModOscType } from "../utils/oscillators";
+import { min } from "../utils/core";
 import { FMSynth } from "tone";
 import BaseSynth from "./BaseSynth";
 

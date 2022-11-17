@@ -1,7 +1,7 @@
 import { Synth } from "tone";
-import { min } from "./utils/core";
+import { min } from "../utils/core";
 import BaseSynth from "./BaseSynth";
-import { formatOscType, formatModOscType } from "./utils/oscillators";
+import { formatOscType, formatModOscType } from "../utils/oscillators";
 
 // TODO: presets
 

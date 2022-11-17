@@ -1,7 +1,7 @@
-import { mtf, min } from "./utils/core";
-import { formatCurve } from "./utils/tone";
+import { mtf, min } from "../utils/core";
+import { formatCurve } from "../utils/tone";
 import { DuoSynth } from "tone";
-import { formatOscType, formatModOscType } from "./utils/oscillators";
+import { formatOscType, formatModOscType } from "../utils/oscillators";
 import BaseSynth from "./BaseSynth";
 
 // TODO: presets
