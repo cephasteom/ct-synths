@@ -21,7 +21,7 @@ class BaseSynth {
     n = 60
     params = {}
     // todo - get this dynamically from the patcher
-    voices = [1,1,1,1,1,1,1,1]
+    voices = [0,0,0,0,0,0,0,0]
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
     amp = 1
     json = new URL('./json/filter-synth.export.json', import.meta.url)
@@ -41,7 +41,7 @@ class BaseSynth {
             if(e.tag !== 'out4') return
             const [voice, n, status] = e.payload
             const index = voice - 1
-            this.voices[index] = status; // update voice status
+            this.voices[index] = n; // update voice status
             index === 7 && this.setParams(this.params) // if last voice, set params
         });
 
@@ -79,6 +79,7 @@ class BaseSynth {
     }
 
     setParams(params) {
+        console.log(this.voices)
         const settable = this.#settable()
         Object.entries(params).forEach(([key, value]) => {
             settable[key] && (settable[key](value))
@@ -87,14 +88,14 @@ class BaseSynth {
 
     setInactiveDeviceParams(name, value) {  
         this.voices.forEach((voice, index) => {
-            if(voice === 0) return // if voice is active, ignore
+            if(voice > 0) return // if voice is active, ignore
             this.device.parametersById.get(`poly/${index + 1}/${name}`).value = value
         })
     }
 
     setActiveDeviceParams(name, value, time) {
         this.voices.forEach((voice, index) => {
-            if(voice === 1) return // if voice is inactive, ignore
+            if(voice === 0) return // if voice is inactive, ignore
             doAtTime(() => this.device.parametersById.get(`poly/${index + 1}/${name}`).value = value, time)
         })
     }
@@ -109,14 +110,21 @@ class BaseSynth {
         let noteOffEvent = new MIDIEvent(this.time + (params.dur * 1000), 0, [128, params.n, 0]);
 
         // TODO: extend polyphony on the fly?
-        if(this.voices.every(v => v === 0)) return // if all voices are busy, ignore
+        if(this.voices.every(v => v > 0)) return // if all voices are busy, ignore
 
         this.device.scheduleEvent(noteOnEvent);
         this.device.scheduleEvent(noteOffEvent);
     }
 
+    // TODO: not working correctly
     cut(time) {
-
+        this.setActiveDeviceParams('r', 100, time)
+        this.voices.forEach((voice) => {
+            if(voice === 0) return // if voice is inactive, ignore
+            // TODO: how to cancel previous note off event?
+            let noteOffEvent = new MIDIEvent(time, 0, [128, voice, 0]);
+            this.device.scheduleEvent(noteOffEvent);
+        })
     }
 
     set amp(value) { this.amp = value }
