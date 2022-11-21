@@ -19,9 +19,10 @@ class BaseSynth {
     device = null
     duration = 1000
     n = 60
-    voices = {1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null, 8: null}
+    voices = [1,1,1,1,1,1,1,1]
+    activeVoices = []
     currentVoice = null
-    nextVoice = null
+    nextVoice = 0
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
     amp = 1
     json = new URL('./json/filter-synth.export.json', import.meta.url)
@@ -39,11 +40,17 @@ class BaseSynth {
         this.device.node.connect(this.gain._gainNode._nativeAudioNode);
         this.device.messageEvent.subscribe(e => {
             const [voice, n, status] = e.payload
-
-            e.tag === 'out3' && status === 0 && (this.currentVoice = voice);
-            e.tag === 'out3' && status === 0 && (console.log('current', voice));
-            e.tag === 'out4' && (this.voices = {...this.voices, [voice]: status})
-            e.tag === 'out4' && voice === 8 && this.calculateNextVoice()
+            const index = voice - 1
+            if(e.tag === 'out3') {
+                this.currentVoice = index
+                this.activeVoices = status === 1 
+                    ? this.activeVoices.filter(v => v !== index)
+                    : [...this.activeVoices, index]
+            }
+            if(e.tag === 'out4') {
+                this.voices[index] = status
+                voice === 8 && this.calculateNextVoice()
+            }
         });
     }
 
@@ -79,23 +86,14 @@ class BaseSynth {
     }
 
     calculateNextVoice() {
-        if(!this.nextVoice) return (this.nextVoice = 1)
-        
-        const currentIndex = this.currentVoice - 1
-        const availableVoices = Object.entries(this.voices)
-            .reduce((array, [key, value]) => {
-                return value === 1 ? [...array, +key - 1] : array
-            }, [])
-            
-        // if next index is available, use it
-        if(availableVoices.includes(currentIndex + 1)) {
-            this.nextVoice = currentIndex + 2
-        } else {
-            // otherwise use the first available voice after the current voice, wrapping around if necessary
-            const nextIndex = availableVoices.find(index => index > currentIndex)
-            this.nextVoice = nextIndex ? nextIndex + 1 : availableVoices[0] + 1
-        }
-        console.log('next', this.nextVoice)
+
+        const nextVoice = this.voices.findIndex((voice, i) => {
+            return voice === 1 // is available
+            && (this.currentVoice === 7 ? i < this.currentVoice : i > this.currentVoice) // is after current voice
+        })
+
+        this.nextVoice = nextVoice
+        console.log(this.currentVoice, this.nextVoice)
     }
 
     setParams(params) {
