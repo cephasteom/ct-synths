@@ -17,8 +17,9 @@ const dummy = new Tone.Oscillator({volume: -Infinity, frequency: 0, type: 'sine1
 class BaseSynth {
     self = this.constructor
     device = null
-    duration = 1000
+    duration = 100
     n = 60
+    params = {}
     // todo - get this dynamically from the patcher
     voices = [1,1,1,1,1,1,1,1]
     activeVoices = []
@@ -40,19 +41,13 @@ class BaseSynth {
         this.device = await createDevice({ context, patcher });
         this.device.node.connect(this.gain._gainNode._nativeAudioNode);
         this.device.messageEvent.subscribe(e => {
+            if(e.tag !== 'out4') return
             const [voice, n, status] = e.payload
             const index = voice - 1
-            if(e.tag === 'out3') {
-                status === 0 && (this.currentVoice = index)
-                this.activeVoices = status === 1 
-                    ? this.activeVoices.filter(v => v !== index)
-                    : [...this.activeVoices, index]
-            }
-            if(e.tag === 'out4') {
-                this.voices[index] = status
-                voice === 8 && this.calculateNextVoice()
-            }
+            this.voices[index] = status; // update voice status
+            index === 7 && this.setParams(this.params) // if last voice, set params
         });
+
     }
 
     connect(node) {
@@ -86,17 +81,6 @@ class BaseSynth {
         this.device.scheduleEvent(message);
     }
 
-    calculateNextVoice() {
-
-        const nextVoice = this.voices.findIndex((voice, i) => {
-            return voice === 1 // is available
-            && (this.currentVoice === 7 ? i < this.currentVoice : i > this.currentVoice) // is after current voice
-        })
-
-        this.nextVoice = nextVoice < 0 ? this.activeVoices[0] : nextVoice
-        console.log(this.currentVoice, this.nextVoice)
-    }
-
     setParams(params) {
         const settable = this.#settable()
         Object.entries(params).forEach(([key, value]) => {
@@ -104,17 +88,31 @@ class BaseSynth {
         });
     }
 
-    setDeviceParam(name, value) {  
-        doAtTime(() => this.device.parametersById.get(name).value = value, (this.time/1000) - 1)
+    setInactiveDeviceParams(name, value) {  
+        this.voices.forEach((voice, index) => {
+            if(voice === 0) return // if voice is active, ignore
+            this.device.parametersById.get(`poly/${index + 1}/${name}`).value = value
+        })
+    }
+
+    setActiveDeviceParams(name, value, time) {
+        this.voices.forEach((voice, index) => {
+            if(voice === 1) return // if voice is inactive, ignore
+            doAtTime(() => this.device.parametersById.get(`poly/${index + 1}/${name}`).value = value, time)
+        })
     }
 
     play(params = {}, time) {
         this.time = time * 1000
-        this.getVoiceData()
-        this.setParams(params)
+        this.params = params
         
-        let noteOnEvent = new MIDIEvent(this.time, 0, [144, this.n, 66 * this.amp]);
-        let noteOffEvent = new MIDIEvent(this.time + this.duration, 0, [128, this.n, 0]);
+        this.getVoiceData()
+        
+        let noteOnEvent = new MIDIEvent(this.time, 0, [144, params.n, 66 * this.amp]);
+        let noteOffEvent = new MIDIEvent(this.time + (params.dur * 1000), 0, [128, params.n, 0]);
+
+        // TODO: extend polyphony on the fly?
+        if(this.voices.every(v => v === 0)) return // if all voices are busy, ignore
 
         this.device.scheduleEvent(noteOnEvent);
         this.device.scheduleEvent(noteOffEvent);
@@ -124,23 +122,21 @@ class BaseSynth {
 
     }
 
-    set n(value) { this.n(value) }
-    set dur(value) { this.duration = value * 1000 }
-    set amp(value) { this.amp = value }
+    // set amp(value) { this.amp = value }
     set vol(value) { this.gain.gain.rampTo(value, 0.1, this.time/1000) }
-    set osc(type) { this.setDeviceParam('osc', this.oscTypes.indexOf(type) || 0) }
+    set osc(type) { this.setInactiveDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
 
-    set a(value) { this.setDeviceParam('a', value) }
-    set d(value) { this.setDeviceParam('d', value) }
-    set s(value) { this.setDeviceParam('s', value) }
-    set r(value) { this.setDeviceParam('r', value) }
+    // set a(value) { this.setInactiveDeviceParams('a', value) }
+    // set d(value) { this.setInactiveDeviceParams('d', value) }
+    // set s(value) { this.setInactiveDeviceParams('s', value) }
+    // set r(value) { this.setInactiveDeviceParams('r', value) }
 
-    set moda(value) { this.setDeviceParam('moda', value) }
-    set modd(value) { this.setDeviceParam('modd', value) }
-    set mods(value) { this.setDeviceParam('mods', value) }
-    set modr(value) { this.setDeviceParam('modr', value) }
+    // set moda(value) { this.setInactiveDeviceParams('moda', value) }
+    // set modd(value) { this.setInactiveDeviceParams('modd', value) }
+    // set mods(value) { this.setInactiveDeviceParams('mods', value) }
+    // set modr(value) { this.setInactiveDeviceParams('modr', value) }
 
-    set res(value) { this.setDeviceParam('res', value) }
+    // set res(value) { this.setInactiveDeviceParams('res', value) }
 }
 
 export default BaseSynth
