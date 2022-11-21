@@ -22,9 +22,6 @@ class BaseSynth {
     params = {}
     // todo - get this dynamically from the patcher
     voices = [1,1,1,1,1,1,1,1]
-    activeVoices = []
-    currentVoice = null
-    nextVoice = 0
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
     amp = 1
     json = new URL('./json/filter-synth.export.json', import.meta.url)
@@ -122,21 +119,21 @@ class BaseSynth {
 
     }
 
-    // set amp(value) { this.amp = value }
+    set amp(value) { this.amp = value }
     set vol(value) { this.gain.gain.rampTo(value, 0.1, this.time/1000) }
     set osc(type) { this.setInactiveDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
 
-    // set a(value) { this.setInactiveDeviceParams('a', value) }
-    // set d(value) { this.setInactiveDeviceParams('d', value) }
-    // set s(value) { this.setInactiveDeviceParams('s', value) }
-    // set r(value) { this.setInactiveDeviceParams('r', value) }
+    set a(value) { this.setInactiveDeviceParams('a', value) }
+    set d(value) { this.setInactiveDeviceParams('d', value) }
+    set s(value) { this.setInactiveDeviceParams('s', value) }
+    set r(value) { this.setInactiveDeviceParams('r', value) }
 
-    // set moda(value) { this.setInactiveDeviceParams('moda', value) }
-    // set modd(value) { this.setInactiveDeviceParams('modd', value) }
-    // set mods(value) { this.setInactiveDeviceParams('mods', value) }
-    // set modr(value) { this.setInactiveDeviceParams('modr', value) }
+    set moda(value) { this.setInactiveDeviceParams('moda', value) }
+    set modd(value) { this.setInactiveDeviceParams('modd', value) }
+    set mods(value) { this.setInactiveDeviceParams('mods', value) }
+    set modr(value) { this.setInactiveDeviceParams('modr', value) }
 
-    // set res(value) { this.setInactiveDeviceParams('res', value) }
+    set res(value) { this.setInactiveDeviceParams('res', value) }
 }
 
 export default BaseSynth
