@@ -19,6 +19,7 @@ class BaseSynth {
     device = null
     duration = 1000
     n = 60
+    // todo - get this dynamically from the patcher
     voices = [1,1,1,1,1,1,1,1]
     activeVoices = []
     currentVoice = null
@@ -42,7 +43,7 @@ class BaseSynth {
             const [voice, n, status] = e.payload
             const index = voice - 1
             if(e.tag === 'out3') {
-                this.currentVoice = index
+                status === 0 && (this.currentVoice = index)
                 this.activeVoices = status === 1 
                     ? this.activeVoices.filter(v => v !== index)
                     : [...this.activeVoices, index]
@@ -92,7 +93,7 @@ class BaseSynth {
             && (this.currentVoice === 7 ? i < this.currentVoice : i > this.currentVoice) // is after current voice
         })
 
-        this.nextVoice = nextVoice
+        this.nextVoice = nextVoice < 0 ? this.activeVoices[0] : nextVoice
         console.log(this.currentVoice, this.nextVoice)
     }
 
