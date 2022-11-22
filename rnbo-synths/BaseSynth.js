@@ -17,8 +17,6 @@ const dummy = new Tone.Oscillator({volume: -Infinity, frequency: 0, type: 'sine1
 class BaseSynth {
     self = this.constructor
     device = null
-    duration = 100
-    n = 60
     params = {}
     // todo - get this dynamically from the patcher
     voices = [0,0,0,0,0,0,0,0]
@@ -79,7 +77,6 @@ class BaseSynth {
     }
 
     setParams(params) {
-        console.log(this.voices)
         const settable = this.#settable()
         Object.entries(params).forEach(([key, value]) => {
             settable[key] && (settable[key](value))
@@ -93,38 +90,27 @@ class BaseSynth {
         })
     }
 
-    setActiveDeviceParams(name, value, time) {
-        this.voices.forEach((voice, index) => {
-            if(voice === 0) return // if voice is inactive, ignore
-            doAtTime(() => this.device.parametersById.get(`poly/${index + 1}/${name}`).value = value, time)
-        })
-    }
-
     play(params = {}, time) {
         this.time = time * 1000
         this.params = params
         
         this.getVoiceData()
         
-        let noteOnEvent = new MIDIEvent(this.time, 0, [144, params.n, 66 * this.amp]);
+        let noteOnEvent = new MIDIEvent(this.time, 0, [144, params.n, 66 * (params.n || this.amp)]);
         let noteOffEvent = new MIDIEvent(this.time + (params.dur * 1000), 0, [128, params.n, 0]);
-
+        
         // TODO: extend polyphony on the fly?
         if(this.voices.every(v => v > 0)) return // if all voices are busy, ignore
-
+        
         this.device.scheduleEvent(noteOnEvent);
-        this.device.scheduleEvent(noteOffEvent);
+        this.device.scheduleEvent(noteOffEvent)
     }
 
     // TODO: not working correctly
     cut(time) {
-        this.setActiveDeviceParams('r', 100, time)
-        this.voices.forEach((voice) => {
-            if(voice === 0) return // if voice is inactive, ignore
-            // TODO: how to cancel previous note off event?
-            let noteOffEvent = new MIDIEvent(time, 0, [128, voice, 0]);
-            this.device.scheduleEvent(noteOffEvent);
-        })
+        this.device.parametersById.get('r').value = 10
+        const message = new MessageEvent(time * 989, "cut", [ 1 ]);
+        this.device.scheduleEvent(message);
     }
 
     set amp(value) { this.amp = value }
