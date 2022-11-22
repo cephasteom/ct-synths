@@ -5,7 +5,7 @@ import { doAtTime, formatCurve } from "../utils/tone";
 import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
 
 // current problem - mutable params and lag
-
+// how to do n in the patch
 
 let context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
@@ -16,12 +16,12 @@ const dummy = new Tone.Oscillator({volume: -Infinity, frequency: 0, type: 'sine1
 
 class BaseSynth {
     self = this.constructor
-    device = null
+    defaults = {n: 60, dur: 1, amp: 1}
     params = {}
+    device = null
     // todo - get this dynamically from the patcher
     voices = [0,0,0,0,0,0,0,0]
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
-    amp = 1
     json = new URL('./json/filter-synth.export.json', import.meta.url)
     
     constructor() {
@@ -90,31 +90,44 @@ class BaseSynth {
         })
     }
 
-    play(params = {}, time) {
+    mutateParam(name, value, time, lag = 0.1) {
+        this.device.parametersById.get('lag').value = lag 
+        doAtTime(() => this.device.parametersById.get(name).value = value, time)
+    }
+
+    play(params = {}, time = Tone.now()) {
         this.time = time * 1000
-        this.params = params
+        this.params = {...this.defaults, ...params}
         
         this.getVoiceData()
         
-        let noteOnEvent = new MIDIEvent(this.time, 0, [144, params.n, 66 * (params.amp || this.amp)]);
-        let noteOffEvent = new MIDIEvent(this.time + (params.dur * 1000), 0, [128, params.n, 0]);
+        const {n, dur, amp} = this.params
+
+        let noteOnEvent = new MIDIEvent(this.time, 0, [144, n, 66 * amp]);
+        let noteOffEvent = new MIDIEvent(this.time + (dur * 1000), 0, [128, n, 0]);
         
-        // TODO: extend polyphony on the fly?
         if(this.voices.every(v => v > 0)) return // if all voices are busy, ignore
         
         this.device.scheduleEvent(noteOnEvent);
         this.device.scheduleEvent(noteOffEvent)
     }
 
-    // TODO: not working correctly
     cut(time) {
         const message = new MessageEvent(time * 989, "cut", [ 1 ]);
         this.device.scheduleEvent(message);
     }
 
-    set amp(value) { this.amp = value }
-    set vol(value) { this.gain.gain.rampTo(value, 0.1, this.time/1000) }
+    
+    mutate(params = {}, time, lag) {
+        const props = this.mutable
+        Object.entries(params).forEach(([key, value]) => {
+            props[key] && props[key](value, time, lag)
+        })
+    }
+
+    set vol(value) { this.setInactiveDeviceParams('vol', value) }
     set osc(type) { this.setInactiveDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
+    set res(value) { this.setInactiveDeviceParams('res', value) }
 
     set a(value) { this.setInactiveDeviceParams('a', value * 1000) }
     set d(value) { this.setInactiveDeviceParams('d', value * 1000) }
@@ -126,7 +139,17 @@ class BaseSynth {
     set mods(value) { this.setInactiveDeviceParams('mods', value * 1000) }
     set modr(value) { this.setInactiveDeviceParams('modr', value * 1000) }
 
-    set res(value) { this.setInactiveDeviceParams('res', value) }
+    _n(value, time, lag = 0.1) { this.mutateParam('n', value, time, lag)}
+    // TODO: do this programmatically
+    _n = this._n.bind(this)
+
+    _vol(value, time, lag = 0.1) { this.mutateParam('vol', value, time, lag)}
+    _vol = this._vol.bind(this)
+
+    _res(value, time, lag = 0.1) { this.mutateParam('res', value, time, lag)}
+    _res = this._res.bind(this)
+
+
 }
 
 export default BaseSynth
