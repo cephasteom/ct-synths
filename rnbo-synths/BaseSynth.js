@@ -4,7 +4,7 @@ import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, get
 import { doAtTime, formatCurve } from "../utils/tone";
 import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
 
-// current problem - how to implement cut...
+// current problem - mutable params and lag
 
 
 let context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
@@ -96,7 +96,7 @@ class BaseSynth {
         
         this.getVoiceData()
         
-        let noteOnEvent = new MIDIEvent(this.time, 0, [144, params.n, 66 * (params.n || this.amp)]);
+        let noteOnEvent = new MIDIEvent(this.time, 0, [144, params.n, 66 * (params.amp || this.amp)]);
         let noteOffEvent = new MIDIEvent(this.time + (params.dur * 1000), 0, [128, params.n, 0]);
         
         // TODO: extend polyphony on the fly?
@@ -108,7 +108,6 @@ class BaseSynth {
 
     // TODO: not working correctly
     cut(time) {
-        this.device.parametersById.get('r').value = 10
         const message = new MessageEvent(time * 989, "cut", [ 1 ]);
         this.device.scheduleEvent(message);
     }
@@ -117,15 +116,15 @@ class BaseSynth {
     set vol(value) { this.gain.gain.rampTo(value, 0.1, this.time/1000) }
     set osc(type) { this.setInactiveDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
 
-    set a(value) { this.setInactiveDeviceParams('a', value) }
-    set d(value) { this.setInactiveDeviceParams('d', value) }
-    set s(value) { this.setInactiveDeviceParams('s', value) }
-    set r(value) { this.setInactiveDeviceParams('r', value) }
+    set a(value) { this.setInactiveDeviceParams('a', value * 1000) }
+    set d(value) { this.setInactiveDeviceParams('d', value * 1000) }
+    set s(value) { this.setInactiveDeviceParams('s', value * 1000) }
+    set r(value) { this.setInactiveDeviceParams('r', value * 1000) }
 
-    set moda(value) { this.setInactiveDeviceParams('moda', value) }
-    set modd(value) { this.setInactiveDeviceParams('modd', value) }
-    set mods(value) { this.setInactiveDeviceParams('mods', value) }
-    set modr(value) { this.setInactiveDeviceParams('modr', value) }
+    set moda(value) { this.setInactiveDeviceParams('moda', value * 1000) }
+    set modd(value) { this.setInactiveDeviceParams('modd', value * 1000) }
+    set mods(value) { this.setInactiveDeviceParams('mods', value * 1000) }
+    set modr(value) { this.setInactiveDeviceParams('modr', value * 1000) }
 
     set res(value) { this.setInactiveDeviceParams('res', value) }
 }
