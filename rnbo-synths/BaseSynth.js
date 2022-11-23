@@ -4,8 +4,10 @@ import { mtf, getDisposable, getClassSetters, getClassMethods, isMutableKey, get
 import { doAtTime, formatCurve } from "../utils/tone";
 import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
 
-// current problem - mutable params and lag
-// how to do n in the patch
+// TODO: export latest synth
+// Move to filter synth...
+// binding done auto?
+
 
 let context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
@@ -20,7 +22,7 @@ class BaseSynth {
     params = {}
     device = null
     // todo - get this dynamically from the patcher
-    voices = [0,0,0,0,0,0,0,0]
+    voices = [0,0,0,0, 0,0,0,0, 0,0,0,0]
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
     json = new URL('./json/filter-synth.export.json', import.meta.url)
     
@@ -28,6 +30,12 @@ class BaseSynth {
         this.gain = new Gain(1);
         dummy.connect(this.gain);
         this.initDevice()
+        this.bindMutableProps()
+    }
+
+    bindMutableProps() {
+        const props = this.#mutable()
+        Object.keys(props).forEach((key) => this[key] = this[key].bind(this))
     }
 
     async initDevice()  {
@@ -45,9 +53,7 @@ class BaseSynth {
 
     }
 
-    connect(node) {
-        this.gain.connect(node);
-    }
+    connect(node) { this.gain.connect(node) }
 
     #settable() {
         return [
@@ -76,25 +82,6 @@ class BaseSynth {
         this.device.scheduleEvent(message);
     }
 
-    setParams(params) {
-        const settable = this.#settable()
-        Object.entries(params).forEach(([key, value]) => {
-            settable[key] && (settable[key](value))
-        });
-    }
-
-    setInactiveDeviceParams(name, value) {  
-        this.voices.forEach((voice, index) => {
-            if(voice > 0) return // if voice is active, ignore
-            this.device.parametersById.get(`poly/${index + 1}/${name}`).value = value
-        })
-    }
-
-    mutateParam(name, value, time, lag = 0.1) {
-        this.device.parametersById.get('lag').value = lag 
-        doAtTime(() => this.device.parametersById.get(name).value = value, time)
-    }
-
     play(params = {}, time = Tone.now()) {
         this.time = time * 1000
         this.params = {...this.defaults, ...params}
@@ -108,22 +95,24 @@ class BaseSynth {
         
         if(this.voices.every(v => v > 0)) return // if all voices are busy, ignore
         
+        this.device.parametersById.get('lag').value = 10;
         this.device.scheduleEvent(noteOnEvent);
         this.device.scheduleEvent(noteOffEvent)
     }
 
-    cut(time) {
-        const message = new MessageEvent(time * 989, "cut", [ 1 ]);
-        this.device.scheduleEvent(message);
+    setParams(params) {
+        const settable = this.#settable()
+        Object.entries(params).forEach(([key, value]) => {
+            settable[key] && (settable[key](value))
+        });
     }
 
-    
-    mutate(params = {}, time, lag) {
-        const props = this.mutable
-        Object.entries(params).forEach(([key, value]) => {
-            props[key] && props[key](value, time, lag)
+    setInactiveDeviceParams(name, value) {  
+        this.voices.forEach((voice, index) => {
+            if(voice > 0) return // if voice is active, ignore
+            this.device.parametersById.get(`poly/${index + 1}/${name}`).value = value
         })
-    }
+    }    
 
     set vol(value) { this.setInactiveDeviceParams('vol', value) }
     set osc(type) { this.setInactiveDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
@@ -139,16 +128,28 @@ class BaseSynth {
     set mods(value) { this.setInactiveDeviceParams('mods', value * 1000) }
     set modr(value) { this.setInactiveDeviceParams('modr', value * 1000) }
 
+    cut(time) {
+        const message = new MessageEvent(time * 989, "cut", [ 1 ]);
+        this.device.scheduleEvent(message);
+    }
+
+    mutate(params = {}, time, lag) {
+        const props = this.#mutable()
+        Object.entries(params).forEach(([key, value]) => {
+            props[key] && props[key](value, time, lag)
+        })
+    }
+
+    mutateParam(name, value, time, lag = 0.1) {
+        doAtTime(() => {
+            this.device.parametersById.get('lag').value = lag * 1000;
+            this.device.parametersById.get(name).value = value
+        }, time)
+    }
+
     _n(value, time, lag = 0.1) { this.mutateParam('n', value, time, lag)}
-    // TODO: do this programmatically
-    _n = this._n.bind(this)
-
     _vol(value, time, lag = 0.1) { this.mutateParam('vol', value, time, lag)}
-    _vol = this._vol.bind(this)
-
     _res(value, time, lag = 0.1) { this.mutateParam('res', value, time, lag)}
-    _res = this._res.bind(this)
-
 
 }
 
