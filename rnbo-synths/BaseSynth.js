@@ -35,6 +35,7 @@ class BaseSynth {
             if(index === this.voices.length - 1) { 
                 this.events.forEach(cb => cb()) // if last voice, schedule events
                 this.events = [] // clear events
+                console.log(this.voices)
             }
         });
     }  
@@ -88,7 +89,7 @@ class BaseSynth {
             ...this.events,
             () => {
                 // if all voices are busy, ignore
-                if(this.voices.every(v => v > 0)) return 
+                // if(this.voices.every(v => v > 0)) return 
                 
                 this.setParams(ps)
         
