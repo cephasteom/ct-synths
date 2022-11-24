@@ -15,8 +15,8 @@ class FilterSynth extends BaseSynth {
     /*
      * Settable params
     */
-    set osc(type) { this.setInactiveDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
-    set res(value) { this.setInactiveDeviceParams('res', value) }
+    set osc(type) { this.setDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
+    set res(value) { this.setDeviceParams('res', value) }
 
     /*
      * Mutable params

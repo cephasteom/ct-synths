@@ -6,7 +6,7 @@ import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
 // current issue:
-//  no really sure if _vol is working, _pan is certainly work strangely
+// all mutable params working, but after voice 16 they stop working
 
 // gain node doesn't work if there isn't a tone node connected to it
 // so we create a dummy node to connect to
@@ -18,6 +18,7 @@ class BaseSynth {
     device = null
     voices = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     events = []
+    mutation = null
     
     constructor() {
         this.gain = new Gain(1);
@@ -35,9 +36,12 @@ class BaseSynth {
             const index = voice - 1
             this.voices[index] = n; // update voice status
             
+            // if last voice, schedule events and mutation
             if(voice === this.voices.length) { 
-                this.events.forEach(cb => cb()) // if last voice, schedule events
-                this.events = [] // clear events
+                this.events.forEach(cb => cb()) 
+                this.mutation && this.mutation()
+                this.events = []
+                this.mutations = null
             }
         });
     }  
@@ -81,18 +85,11 @@ class BaseSynth {
 
     play(params = {}, time) {
         const ps = {...this.defaults, ...params}
-        
-        // messages the synth and sets params on reply
-        this.getVoiceData()
 
-        // create event callback to be triggered when we get status message back from synth
-        // ensures we have fresh data before setting params
+        // cue event callback to be triggered
         this.events = [
             ...this.events,
             () => {
-                // if all voices are busy, ignore
-                // if(this.voices.every(v => v > 0)) return 
-                
                 this.setParams(ps)
         
                 const {n, dur, amp} = ps
@@ -100,11 +97,14 @@ class BaseSynth {
                 let noteOffEvent = new MIDIEvent((time + dur) * 1000, 0, [128, n, 0]);
                 
                 // reset lag
-                this.device.parametersById.get('lag').value = 10;
+                this.setDeviceParams('lag', 0.01)
                 this.device.scheduleEvent(noteOnEvent);
                 this.device.scheduleEvent(noteOffEvent)
             }
         ]
+
+        // fetch fresh data from the synth, calls all cued events and mutations
+        this.getVoiceData()
         
     }
 
@@ -115,51 +115,57 @@ class BaseSynth {
         });
     }
 
-    setInactiveDeviceParams(name, value) {  
+    setDeviceParams(name, value, isActive = false) {
         this.voices.forEach((voice, index) => {
-            // if voice is active, ignore
-            if(voice > 0) return 
-            // target only params of inactive voices
+            if((!isActive && voice > 0) || (isActive && voice === 0)) return 
             this.device.parametersById.get(`poly/${index + 1}/${name}`).value = value
         })
-    }    
+    } 
 
     /*
      * Settable params
     */
-    set vol(value) { this.setInactiveDeviceParams('vol', value) }
-    set pan(value) { this.setInactiveDeviceParams('pan', (value + 1)/2) }
+    set vol(value) { this.setDeviceParams('vol', value * 0.5) }
+    set pan(value) { this.setDeviceParams('pan', (value + 1)/2) }
 
-    set a(value) { this.setInactiveDeviceParams('a', value * 1000) }
-    set d(value) { this.setInactiveDeviceParams('d', value * 1000) }
-    set s(value) { this.setInactiveDeviceParams('s', value * 1000) }
-    set r(value) { this.setInactiveDeviceParams('r', value * 1000) }
+    set a(value) { this.setDeviceParams('a', value * 1000) }
+    set d(value) { this.setDeviceParams('d', value * 1000) }
+    set s(value) { this.setDeviceParams('s', value * 1000) }
+    set r(value) { this.setDeviceParams('r', value * 1000) }
 
-    set moda(value) { this.setInactiveDeviceParams('moda', value * 1000) }
-    set modd(value) { this.setInactiveDeviceParams('modd', value * 1000) }
-    set mods(value) { this.setInactiveDeviceParams('mods', value * 1000) }
-    set modr(value) { this.setInactiveDeviceParams('modr', value * 1000) }
+    set moda(value) { this.setDeviceParams('moda', value * 1000) }
+    set modd(value) { this.setDeviceParams('modd', value * 1000) }
+    set mods(value) { this.setDeviceParams('mods', value * 1000) }
+    set modr(value) { this.setDeviceParams('modr', value * 1000) }
 
     mutate(params = {}, time, lag) {
         const props = this.mutable()
-        Object.entries(params).forEach(([key, value]) => {
-            props[key] && props[key](value, time, lag)
-        })
+
+        // cue up the mutation
+        const mutation = () => {
+            Object.entries(params).forEach(([key, value]) => {
+                props[key] && props[key](value, lag)
+            })
+        }
+        
+        // fetch fresh voice data and trigger mutations
+        doAtTime(() => {
+            this.mutation = mutation
+            this.getVoiceData()
+        }, time)
     }
 
-    mutateParam(name, value, time, lag = 0.1) {
-        doAtTime(() => {
-            this.device.parametersById.get('lag').value = lag * 1000;
-            this.device.parametersById.get(name).value = value
-        }, time)
+    mutateParam(name, value, lag = 0.1) {
+        this.setDeviceParams('lag', lag * 1000, true)
+        this.setDeviceParams(name, value, true)
     }
 
     /*
      * Mutable params
     */
-    _n(value, time, lag = 0.1) { this.mutateParam('n', value, time, lag)}
-    _vol(value, time, lag = 0.1) { this.mutateParam('vol', value, time, lag)}
-    _pan(value, time, lag = 0.1) { this.mutateParam('pan', (value + 1)/2, time, lag)}
+    _n(value, lag = 0.1) { this.mutateParam('n', value, lag)}
+    _vol(value, lag = 0.1) { this.mutateParam('vol', value * 0.5, lag)}
+    _pan(value, lag = 0.1) { this.mutateParam('pan', (value + 1)/2, lag)}
 
     cut(time) {
         const message = new MessageEvent((time * 1000) - 10, "cut", [ 1 ]);
