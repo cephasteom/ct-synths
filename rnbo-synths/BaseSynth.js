@@ -22,6 +22,7 @@ class BaseSynth {
     voices = [0,0,0,0, 0,0,0,0, 0,0,0,0]
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
     json = new URL('./json/filter-synth.export.json', import.meta.url)
+    events = []
     
     constructor() {
         this.gain = new Gain(1);
@@ -45,7 +46,11 @@ class BaseSynth {
             const [voice, n, status] = e.payload
             const index = voice - 1
             this.voices[index] = n; // update voice status
-            index === 7 && this.setParams(this.params) // if last voice, set params
+            
+            if(index === this.voices.length - 1) { 
+                this.events.forEach(cb => cb()) // if last voice, schedule events
+                this.events = [] // clear events
+            }
         });
 
     }
@@ -80,22 +85,32 @@ class BaseSynth {
     }
 
     play(params = {}, time) {
-        this.params = {...this.defaults, ...params}
+        const ps = {...this.defaults, ...params}
         
         // messages the synth and sets params on reply
         this.getVoiceData()
-        
-        // if all voices are busy, ignore
-        if(this.voices.every(v => v > 0)) return 
 
-        const {n, dur, amp} = this.params
-        let noteOnEvent = new MIDIEvent(time * 1000, 0, [144, n, 66 * amp]);
-        let noteOffEvent = new MIDIEvent((time + dur) * 1000, 0, [128, n, 0]);
+        // create event callback to be triggered when we get status message back from synth
+        // ensures we have fresh data before setting params
+        this.events = [
+            ...this.events,
+            () => {
+                // if all voices are busy, ignore
+                if(this.voices.every(v => v > 0)) return 
+                
+                this.setParams(ps)
         
-        // reset lag
-        this.device.parametersById.get('lag').value = 10;
-        this.device.scheduleEvent(noteOnEvent);
-        this.device.scheduleEvent(noteOffEvent)
+                const {n, dur, amp} = ps
+                let noteOnEvent = new MIDIEvent(time * 1000, 0, [144, n, 66 * amp]);
+                let noteOffEvent = new MIDIEvent((time + dur) * 1000, 0, [128, n, 0]);
+                
+                // reset lag
+                this.lag = 0.01
+                this.device.scheduleEvent(noteOnEvent);
+                this.device.scheduleEvent(noteOffEvent)
+            }
+        ]
+        
     }
 
     setParams(params) {
@@ -120,6 +135,7 @@ class BaseSynth {
     set vol(value) { this.setInactiveDeviceParams('vol', value) }
     set osc(type) { this.setInactiveDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
     set res(value) { this.setInactiveDeviceParams('res', value) }
+    set lag(value) { this.setInactiveDeviceParams('lag', value * 1000) }
 
     set a(value) { this.setInactiveDeviceParams('a', value * 1000) }
     set d(value) { this.setInactiveDeviceParams('d', value * 1000) }
