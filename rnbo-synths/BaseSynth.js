@@ -3,36 +3,23 @@ import { getClassSetters, getClassMethods, isMutableKey } from '../utils/core'
 import { doAtTime } from "../utils/tone";
 import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
 
-// export latest synth
-// Move to filter synth...
-
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
 // gain node doesn't work if there isn't a tone node connected to it
 // so we create a dummy node to connect to
 // hardly ideal, but it works
 const dummy = new Oscillator({volume: -Infinity, frequency: 0, type: 'sine1'}).start();
-
 class BaseSynth {
     self = this.constructor
     defaults = {n: 60, dur: 1, amp: 1}
     params = {}
     device = null
     voices = [0,0,0,0, 0,0,0,0, 0,0,0,0]
-    oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
-    json = new URL('./json/filter-synth.export.json', import.meta.url)
     events = []
     
     constructor() {
         this.gain = new Gain(1);
         dummy.connect(this.gain);
-        this.initDevice()
-        this.bindMutableProps()
-    }
-
-    bindMutableProps() {
-        const props = this.#mutable()
-        Object.keys(props).forEach((key) => this[key] = this[key].bind(this))
     }
 
     async initDevice()  {
@@ -51,7 +38,11 @@ class BaseSynth {
                 this.events = [] // clear events
             }
         });
+    }  
 
+    bindMutableProps() {
+        const props = this.#mutable()
+        Object.keys(props).forEach((key) => this[key] = this[key].bind(this))
     }
 
     connect(node) { this.gain.connect(node) }
@@ -132,9 +123,6 @@ class BaseSynth {
      * Settable params
     */
     set vol(value) { this.setInactiveDeviceParams('vol', value) }
-    set osc(type) { this.setInactiveDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
-    set res(value) { this.setInactiveDeviceParams('res', value) }
-    set lag(value) { this.setInactiveDeviceParams('lag', value * 1000) }
 
     set a(value) { this.setInactiveDeviceParams('a', value * 1000) }
     set d(value) { this.setInactiveDeviceParams('d', value * 1000) }
@@ -165,7 +153,6 @@ class BaseSynth {
     */
     _n(value, time, lag = 0.1) { this.mutateParam('n', value, time, lag)}
     _vol(value, time, lag = 0.1) { this.mutateParam('vol', value, time, lag)}
-    _res(value, time, lag = 0.1) { this.mutateParam('res', value, time, lag)}
 
     cut(time) {
         const message = new MessageEvent(time * 989, "cut", [ 1 ]);
