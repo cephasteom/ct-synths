@@ -5,15 +5,18 @@ import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
+// current issue:
+//  no really sure if _vol is working, _pan is certainly work strangely
+
 // gain node doesn't work if there isn't a tone node connected to it
 // so we create a dummy node to connect to
 // hardly ideal, but it works
 const dummy = new Oscillator({volume: -Infinity, frequency: 0, type: 'sine1'}).start();
 class BaseSynth {
     self = this.constructor
-    defaults = {n: 60, dur: 0.25, amp: 1, vol: 1, a: 0.01, d: 0.1, s: 0.5, r: 0.1, moda: 0.01, modd: 0.1, mods: 0.5, modr: 0.1}
+    defaults = {n: 60, dur: 0.25, amp: 1, vol: 1, a: 0.01, d: 0.1, s: 0.5, r: 0.1, moda: 0.01, modd: 0.1, mods: 0.5, modr: 0.1, pan: 0}
     device = null
-    voices = [0,0,0,0, 0,0,0,0, 0,0,0,0]
+    voices = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     events = []
     
     constructor() {
@@ -125,6 +128,7 @@ class BaseSynth {
      * Settable params
     */
     set vol(value) { this.setInactiveDeviceParams('vol', value) }
+    set pan(value) { this.setInactiveDeviceParams('pan', (value + 1)/2) }
 
     set a(value) { this.setInactiveDeviceParams('a', value * 1000) }
     set d(value) { this.setInactiveDeviceParams('d', value * 1000) }
@@ -155,6 +159,7 @@ class BaseSynth {
     */
     _n(value, time, lag = 0.1) { this.mutateParam('n', value, time, lag)}
     _vol(value, time, lag = 0.1) { this.mutateParam('vol', value, time, lag)}
+    _pan(value, time, lag = 0.1) { this.mutateParam('pan', (value + 1)/2, time, lag)}
 
     cut(time) {
         const message = new MessageEvent((time * 1000) - 10, "cut", [ 1 ]);
