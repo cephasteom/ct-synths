@@ -3,7 +3,6 @@ import { getClassSetters, getClassMethods, isMutableKey } from '../utils/core'
 import { doAtTime } from "../utils/tone";
 import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
 
-// TODO: cut now sounds bad!!
 // export latest synth
 // Move to filter synth...
 
@@ -105,7 +104,7 @@ class BaseSynth {
                 let noteOffEvent = new MIDIEvent((time + dur) * 1000, 0, [128, n, 0]);
                 
                 // reset lag
-                this.lag = 0.01
+                this.device.parametersById.get('lag').value = 10;
                 this.device.scheduleEvent(noteOnEvent);
                 this.device.scheduleEvent(noteOffEvent)
             }
