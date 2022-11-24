@@ -17,7 +17,7 @@ class BaseSynth {
     events = []
     
     constructor() {
-        this.gain = new Gain(1);
+        this.gain = new Gain(1).toDestination();
         dummy.connect(this.gain);
     }
 
@@ -40,13 +40,16 @@ class BaseSynth {
     }  
 
     bindMutableProps() {
-        const props = this.#mutable()
+        const props = this.mutable()
         Object.keys(props).forEach((key) => this[key] = this[key].bind(this))
     }
 
-    connect(node) { this.gain.connect(node) }
+    connect(node) { 
+        this.gain.disconnect();
+        this.gain.connect(node) 
+    }
 
-    #settable() {
+    settable() {
         return [
             ...getClassSetters(BaseSynth), 
             ...getClassSetters(this.self)
@@ -56,7 +59,7 @@ class BaseSynth {
         }), {})
     }
 
-    #mutable() {
+    mutable() {
         return [
             ...getClassMethods(BaseSynth), 
             ...getClassMethods(this.self)
@@ -103,7 +106,7 @@ class BaseSynth {
     }
 
     setParams(params) {
-        const settable = this.#settable()
+        const settable = this.settable()
         Object.entries(params).forEach(([key, value]) => {
             settable[key] && (settable[key](value))
         });
@@ -134,7 +137,7 @@ class BaseSynth {
     set modr(value) { this.setInactiveDeviceParams('modr', value * 1000) }
 
     mutate(params = {}, time, lag) {
-        const props = this.#mutable()
+        const props = this.mutable()
         Object.entries(params).forEach(([key, value]) => {
             props[key] && props[key](value, time, lag)
         })
@@ -154,7 +157,7 @@ class BaseSynth {
     _vol(value, time, lag = 0.1) { this.mutateParam('vol', value, time, lag)}
 
     cut(time) {
-        const message = new MessageEvent(time * 989, "cut", [ 1 ]);
+        const message = new MessageEvent((time * 1000) - 10, "cut", [ 1 ]);
         this.device.scheduleEvent(message);
     }
 }

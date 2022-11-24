@@ -31,7 +31,8 @@ const synthMap = {
     metal: MetalSynth,
     mono: MonoSynth,
     sampler: Sampler,
-    synth: FilterSynth
+    // needs to worked differently with rnbo synths
+    // synth: FilterSynth
 }
 
 
@@ -41,7 +42,7 @@ const paramsMap = Object.keys(synthMap).reduce((obj, type) => {
         ...Object.keys(synth.settable),
         ...Object.keys(synth.mutable)
     ]
-    synth && synth.dispose(immediate())
+    synth && synth.dispose && synth.dispose(immediate())
     synth = null
 
     return {
