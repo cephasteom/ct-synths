@@ -17,7 +17,7 @@ class BaseSynth {
     events = []
     
     constructor() {
-        this.gain = new Gain(1).toDestination();
+        this.gain = new Gain(1);
         dummy.connect(this.gain);
     }
 
@@ -35,7 +35,6 @@ class BaseSynth {
             if(voice === this.voices.length) { 
                 this.events.forEach(cb => cb()) // if last voice, schedule events
                 this.events = [] // clear events
-                console.log(this.voices)
             }
         });
     }  
@@ -47,7 +46,7 @@ class BaseSynth {
 
     connect(node) { 
         this.gain.disconnect();
-        this.gain.connect(node) 
+        this.gain.connect(node)
     }
 
     settable() {
