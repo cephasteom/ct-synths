@@ -1,10 +1,8 @@
 import BaseSynth from './BaseSynth';
 
 class FilterSynth extends BaseSynth {
-    self = this.constructor
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
     json = new URL('./json/filter-synth.export.json', import.meta.url)
-    events = []
     
     constructor() {
         super()
