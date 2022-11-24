@@ -9,6 +9,7 @@ import DuoSynth from "./tone-synths/DuoSynth";
 import MonoSynth from "./tone-synths/MonoSynth";
 import MetalSynth from "./tone-synths/MetalSynth";
 import FlexSynth from "./tone-synths/FlexSynth";
+import FilterSynth from "./rnbo-synths/FilterSynth";
 
 export const CtFMSynth = FMSynth
 export const CtSampler = Sampler
@@ -19,6 +20,7 @@ export const CtDuoSynth = DuoSynth
 export const CtMonoSynth = MonoSynth
 export const CtMetalSynth = MetalSynth
 export const CtFlexSynth = FlexSynth
+export const CtFilterSynth = FilterSynth
 
 const synthMap = {
     drum: DrumSynth, 
@@ -29,6 +31,7 @@ const synthMap = {
     metal: MetalSynth,
     mono: MonoSynth,
     sampler: Sampler,
+    synth: FilterSynth
 }
 
 
