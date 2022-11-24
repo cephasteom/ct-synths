@@ -1,5 +1,6 @@
 import BaseSynth from './BaseSynth';
-
+// todo: cutoff
+// limiter?
 class FilterSynth extends BaseSynth {
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
     json = new URL('./json/filter-synth.export.json', import.meta.url)
@@ -8,6 +9,7 @@ class FilterSynth extends BaseSynth {
         super()
         this.initDevice()
         this.bindMutableProps()
+        this.defaults = {...this.defaults, osc: 'tri', res: 0.5}
     }
 
     /*

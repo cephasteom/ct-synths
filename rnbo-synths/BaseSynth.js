@@ -11,7 +11,7 @@ const context = toneContext.rawContext._nativeAudioContext || toneContext.rawCon
 const dummy = new Oscillator({volume: -Infinity, frequency: 0, type: 'sine1'}).start();
 class BaseSynth {
     self = this.constructor
-    defaults = {n: 60, dur: 1, amp: 1, vol: 1}
+    defaults = {n: 60, dur: 0.25, amp: 1, vol: 1, a: 0.01, d: 0.1, s: 0.5, r: 0.1, moda: 0.01, modd: 0.1, mods: 0.5, modr: 0.1}
     device = null
     voices = [0,0,0,0, 0,0,0,0, 0,0,0,0]
     events = []
