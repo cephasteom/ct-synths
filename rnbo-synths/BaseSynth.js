@@ -27,12 +27,12 @@ class BaseSynth {
         this.device = await createDevice({ context, patcher });
         this.device.node.connect(this.gain._gainNode._nativeAudioNode);
         this.device.messageEvent.subscribe(e => {
-            if(e.tag !== 'out4') return
+            if(e.tag !== 'out3') return
             const [voice, n, status] = e.payload
             const index = voice - 1
             this.voices[index] = n; // update voice status
             
-            if(index === this.voices.length - 1) { 
+            if(voice === this.voices.length) { 
                 this.events.forEach(cb => cb()) // if last voice, schedule events
                 this.events = [] // clear events
                 console.log(this.voices)
