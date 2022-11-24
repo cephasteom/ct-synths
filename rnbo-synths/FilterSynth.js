@@ -21,7 +21,7 @@ class FilterSynth extends BaseSynth {
     /*
      * Mutable params
     */
-    _res(value, time, lag = 0.1) { this.mutateParam('res', value, time, lag)}
+    _res(value, lag = 0.1) { this.mutateParam('res', value, lag)}
 }
 
 export default FilterSynth

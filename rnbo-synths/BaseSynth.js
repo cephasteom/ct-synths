@@ -28,20 +28,23 @@ class BaseSynth {
     async initDevice()  {
         const rawPatcher = await fetch(this.json);
         const patcher = await rawPatcher.json();
+        
         this.device = await createDevice({ context, patcher });
         this.device.node.connect(this.gain._gainNode._nativeAudioNode);
+        
         this.device.messageEvent.subscribe(e => {
             if(e.tag !== 'out3') return
-            const [voice, n, status] = e.payload
-            const index = voice - 1
-            this.voices[index] = n; // update voice status
             
-            // if last voice, schedule events and mutation
+            const [voice, n] = e.payload
+            const index = voice - 1
+            this.voices[index] = n; // update voice with note number
+            
+            // if last voice, play cued events and mutation
             if(voice === this.voices.length) { 
                 this.events.forEach(cb => cb()) 
                 this.mutation && this.mutation()
                 this.events = []
-                this.mutations = null
+                this.mutation = null
             }
         });
     }  
@@ -103,7 +106,7 @@ class BaseSynth {
             }
         ]
 
-        // fetch fresh data from the synth, calls all cued events and mutations
+        // fetch fresh voice data and trigger events
         this.getVoiceData()
         
     }
