@@ -17,11 +17,13 @@ class FilterSynth extends BaseSynth {
     */
     set osc(type) { this.setDeviceParams('osc', this.oscTypes.indexOf(type) || 0) }
     set res(value) { this.setDeviceParams('res', value) }
+    set cutoff(value) { this.setDeviceParams('cutoff', value) }
 
     /*
      * Mutable params
     */
     _res(value, lag = 0.1) { this.mutateParam('res', value, lag)}
+    _cutoff(value, lag = 0.1) { this.mutateParam('cutoff', value, lag)}
 }
 
 export default FilterSynth
