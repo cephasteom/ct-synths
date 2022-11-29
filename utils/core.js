@@ -24,8 +24,8 @@ export function formatOscType(type) {
     return Object.keys(types).includes(type) ? types[type] : 'sine'
 }
 
-export const isSettableKey = string => string.charAt(0) !== '_'
-export const isMutableKey = string => string.charAt(0) === '_'
+export const isSettableKey = string => string.charAt(0) !== '_' && string !== 'constructor'
+export const isMutableKey = string => string.charAt(0) === '_' 
 
 export const max = (a, b) => a > b ? a : b
 export const min = (a, b) => a < b ? a : b

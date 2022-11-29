@@ -1,11 +1,9 @@
 import { context as toneContext, Oscillator, Gain } from 'tone';
-import { getClassSetters, getClassMethods, isMutableKey } from '../utils/core'
+import { getClassSetters, getClassMethods, isMutableKey, isSettableKey } from '../utils/core'
 import { doAtTime } from "../utils/tone";
 import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
-const isSettableKey = string => string.charAt(0) !== '_' && string !== 'constructor'
-const isMutableKey = string => string.charAt(0) === '_'
 
 // current issue:
 // all mutable params working, but after voice 16 they stop working
@@ -32,11 +30,12 @@ class BaseEffect {
         const patcher = await rawPatcher.json();
         
         this.device = await createDevice({ context, patcher });
-        this.device.node.connect(this.gain._gainNode._nativeAudioNode);
+        this.device.node.connect(this.output._gainNode._nativeAudioNode);
+        this.input._gainNode._nativeAudioNode.connect(this.device.node);
     }  
 
     bindMutableProps() {
-        const props = this.mutable()
+        const props = this.mutable
         Object.keys(props).forEach((key) => this[key] = this[key].bind(this))
     }
 
@@ -45,8 +44,18 @@ class BaseEffect {
         this.output.connect(node)
     }
 
-    setDeviceParam(name, value) {
-        this.device.parametersById.get(name).value = value
+    setParam(name, value, time) {
+        doAtTime(() => {
+            this.device.parametersById.get('lag').value = 0.01
+            this.device.parametersById.get(name).value = value
+        }, time)
+    }
+
+    mutateParam(name, value, time, lag = 0.1) {
+        doAtTime(() => {
+            this.device.parametersById.get('lag').value = lag
+            this.device.parametersById.get(name).value = value
+        }, time)
     }
 
     get settable() { 
@@ -64,8 +73,6 @@ class BaseEffect {
     get keys() {
         return Object.keys(this.settable)
     }
-
-    set lag(value) { this.setDeviceParam('lag', value) }
 }
 
 export default BaseEffect
