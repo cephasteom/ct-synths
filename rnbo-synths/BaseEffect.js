@@ -22,7 +22,6 @@ class BaseEffect {
     constructor() {
         this.output = new Gain(1);
         this.input = new Gain(1);
-        dummy.connect(this.output);
     }
 
     async initDevice()  {
@@ -32,6 +31,7 @@ class BaseEffect {
         this.device = await createDevice({ context, patcher });
         this.device.node.connect(this.output._gainNode._nativeAudioNode);
         this.input._gainNode._nativeAudioNode.connect(this.device.node);
+        dummy.connect(this.output);
     }  
 
     bindProps() {

@@ -7,8 +7,6 @@ class Reverb extends BaseEffect {
         super();
         this.initDevice();
         this.bindProps();
-        // TODO: set defaults?
-        this.defaults = { ...this.defaults, mix: 0 };
     }
 
     reverb(value, time = 0) { this.setParam("mix", value, time) }
