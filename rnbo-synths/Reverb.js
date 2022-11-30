@@ -6,7 +6,7 @@ class Reverb extends BaseEffect {
     constructor() {
         super();
         this.initDevice();
-        this.bindMutableProps();
+        this.bindProps();
         // TODO: set defaults?
         this.defaults = { ...this.defaults, mix: 0 };
     }

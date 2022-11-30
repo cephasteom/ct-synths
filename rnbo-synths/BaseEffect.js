@@ -34,9 +34,9 @@ class BaseEffect {
         this.input._gainNode._nativeAudioNode.connect(this.device.node);
     }  
 
-    bindMutableProps() {
-        const props = this.mutable
-        Object.keys(props).forEach((key) => this[key] = this[key].bind(this))
+    bindProps() {
+        const props = {...this.settable, ...this.mutable}
+        Object.keys(props).forEach(key => this[key] = this[key].bind(this))
     }
 
     connect(node) { 
@@ -72,6 +72,20 @@ class BaseEffect {
 
     get keys() {
         return Object.keys(this.settable)
+    }
+
+    set(params, time) {
+        const methods = this.settable
+        Object.entries(params).forEach(([key, value]) => {
+            methods[key] && methods[key](value, time)
+        })
+    }
+
+    mutate(params, time, lag) {
+        const methods = this.mutable
+        Object.entries(params).forEach(([key, value]) => {
+            methods[key] && methods[key](value, time, lag)
+        })
     }
 }
 
