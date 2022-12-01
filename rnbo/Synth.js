@@ -13,14 +13,14 @@ class Synth extends BaseSynth {
             ...this.defaults, 
             osc: 'sine', 
             cutoff: 15000, 
-            // res: 0, 
-            // modi: 0, 
-            // harm: 0,
+            res: 0, 
+            modi: 0, 
+            harm: 0,
             moda: 0.01,
             modd: 0.1,
             mods: 1,
             modr: 4, 
-            // drift: 0, 
+            drift: 0, 
         }
     }
 
