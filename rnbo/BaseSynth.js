@@ -125,7 +125,8 @@ class BaseSynth {
     setDeviceParams(name, value, isActive = false) {
         this.voices.forEach((voice, index) => {
             if((!isActive && voice > 0) || (isActive && voice === 0)) return 
-            this.device.parametersById.get(`poly/${index + 1}/${name}`).value = value
+            const p = this.device.parametersById.get(`poly/${index + 1}/${name}`)
+            p && (p.value = value)
         })
     } 
 
@@ -144,6 +145,11 @@ class BaseSynth {
     set modd(value) { this.setDeviceParams('modd', value * 1000) }
     set mods(value) { this.setDeviceParams('mods', value * 1000) }
     set modr(value) { this.setDeviceParams('modr', value * 1000) }
+
+    set fila(value) { this.setDeviceParams('fila', value * 1000) }
+    set fild(value) { this.setDeviceParams('fild', value * 1000) }
+    set fils(value) { this.setDeviceParams('fils', value * 1000) }
+    set filr(value) { this.setDeviceParams('filr', value * 1000) }
 
     mutate(params = {}, time, lag) {
         if(!this.ready) return
