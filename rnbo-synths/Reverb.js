@@ -1,7 +1,7 @@
 import BaseEffect from "./BaseEffect";
 
 class Reverb extends BaseEffect {
-    json = new URL("./json/rnbo.platereverb.json", import.meta.url);
+    json = new URL("./json/rnbo.platereverb2.json", import.meta.url);
 
     constructor() {
         super();
