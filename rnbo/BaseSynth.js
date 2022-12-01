@@ -1,4 +1,4 @@
-import { context as toneContext, Oscillator, Gain } from 'tone';
+import { context as toneContext, Oscillator, Gain, immediate } from 'tone';
 import { getClassSetters, getClassMethods, isMutableKey } from '../utils/core'
 import { doAtTime } from "../utils/tone";
 import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
@@ -90,6 +90,7 @@ class BaseSynth {
     }
 
     play(params = {}, time) {
+        console.log(immediate(), TimeNow)
         if(!this.ready) return
         const ps = {...this.defaults, ...params}
 
@@ -97,14 +98,16 @@ class BaseSynth {
         this.events = [
             ...this.events,
             () => {
-                this.setParams(ps)
-        
+                
                 const {n, dur, amp} = ps
                 let noteOnEvent = new MIDIEvent(time * 1000, 0, [144, n, 66 * amp]);
                 let noteOffEvent = new MIDIEvent((time + dur) * 1000, 0, [128, n, 0]);
                 
                 // reset lag
-                this.setDeviceParams('lag', 0.01)
+                doAtTime(() => {
+                    this.setDeviceParams('lag', 0.01)
+                    this.setParams(ps)
+                }, time)
                 this.device.scheduleEvent(noteOnEvent);
                 this.device.scheduleEvent(noteOffEvent)
             }
@@ -112,7 +115,6 @@ class BaseSynth {
 
         // fetch fresh voice data and trigger events
         this.getVoiceData()
-        
     }
 
     setParams(params) {
