@@ -19,6 +19,7 @@ class BaseSynth {
     voices = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]
     events = []
     mutation = null
+    ready = false
     
     constructor() {
         this.gain = new Gain(1);
@@ -47,6 +48,8 @@ class BaseSynth {
                 this.mutation = null
             }
         });
+
+        this.ready = true
     }  
 
     bindMutableProps() {
@@ -87,6 +90,7 @@ class BaseSynth {
     }
 
     play(params = {}, time) {
+        if(!this.ready) return
         const ps = {...this.defaults, ...params}
 
         // cue event callback to be triggered
@@ -142,6 +146,7 @@ class BaseSynth {
     set modr(value) { this.setDeviceParams('modr', value * 1000) }
 
     mutate(params = {}, time, lag) {
+        if(!this.ready) return
         const props = this.mutable()
 
         // cue up the mutation
@@ -171,6 +176,7 @@ class BaseSynth {
     _pan(value, lag = 0.1) { this.mutateParam('pan', (value + 1)/2, lag)}
 
     cut(time) {
+        if(!this.ready) return
         const message = new MessageEvent((time * 1000) - 10, "cut", [ 1 ]);
         this.device.scheduleEvent(message);
     }

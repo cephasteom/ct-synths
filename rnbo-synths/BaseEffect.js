@@ -18,6 +18,7 @@ class BaseEffect {
     defaults = {}
     device = null
     automated = []
+    ready = false
     
     constructor() {
         this.output = new Gain(1);
@@ -32,6 +33,7 @@ class BaseEffect {
         this.device.node.connect(this.output._gainNode._nativeAudioNode);
         this.input._gainNode._nativeAudioNode.connect(this.device.node);
         dummy.connect(this.output);
+        this.ready = true
     }  
 
     bindProps() {
@@ -45,6 +47,7 @@ class BaseEffect {
     }
 
     setParam(name, value, time) {
+        if(!this.ready) return
         doAtTime(() => {
             this.device.parametersById.get('lag').value = 0.01
             this.device.parametersById.get(name).value = value
@@ -52,6 +55,7 @@ class BaseEffect {
     }
 
     mutateParam(name, value, time, lag = 0.1) {
+        if(!this.ready) return
         doAtTime(() => {
             this.device.parametersById.get('lag').value = lag
             this.device.parametersById.get(name).value = value
