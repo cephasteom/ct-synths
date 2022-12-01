@@ -2,8 +2,8 @@ import BaseSynth from './BaseSynth';
 // limiter?
 class Synth extends BaseSynth {
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
-    // json = new URL('./json/filter-synth3.export.json', import.meta.url)
-    json = new URL('./json/filter-fm-synth.export.json', import.meta.url)
+    json = new URL('./json/filter-synth3.export.json', import.meta.url)
+    // json = new URL('./json/filter-fm-synth.export.json', import.meta.url)
     
     constructor() {
         super()

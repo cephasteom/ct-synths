@@ -90,7 +90,6 @@ class BaseSynth {
     }
 
     play(params = {}, time) {
-        console.log(immediate(), TimeNow)
         if(!this.ready) return
         const ps = {...this.defaults, ...params}
 
