@@ -2,7 +2,7 @@ import BaseSynth from './BaseSynth';
 // limiter?
 class Synth extends BaseSynth {
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
-    json = new URL('./json/filter-synth.export.json', import.meta.url)
+    json = new URL('./json/filter-synth3.export.json', import.meta.url)
     
     constructor() {
         super()
@@ -11,12 +11,8 @@ class Synth extends BaseSynth {
         this.defaults = {
             ...this.defaults, 
             osc: 'sine', 
-            // cutoff: 20000, 
+            cutoff: 15000, 
             // res: 0, 
-            fila: 0.01,
-            fild: 0.1,
-            fils: 1,
-            filr: 4,
             // modi: 0, 
             // harm: 0,
             moda: 0.01,
