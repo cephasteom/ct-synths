@@ -1,5 +1,7 @@
 import BaseSynth from './BaseSynth';
-// limiter?
+// todo: can't handle polyphony very well
+// idea: get max to handle more of the logic, sending a param value to all voices, to be held and set only when triggered.
+// This would probably mean quicker notes got confused...
 class Synth extends BaseSynth {
     oscTypes = ['sine', 'saw', 'tri', 'pulse', 'noise']
     json = new URL('./json/filter-synth3.export.json', import.meta.url)
