@@ -44,3 +44,5 @@ export const mapToLogRange = (x, inMin, inMax, outMin, outMax) => {
 export const wrap = (x, min, max) => {
     return x >= min && x <= max ? x : x < min ? max : min
 }
+
+export const isArray = a => Array.isArray(a)

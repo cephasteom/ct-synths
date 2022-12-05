@@ -2,6 +2,7 @@ import { context as toneContext, Gain } from 'tone';
 import { dummy } from './utils';
 import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
 import { beatsToSeconds } from "../utils/tone";
+import { isArray } from '../utils/core';
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
@@ -61,11 +62,13 @@ class BaseSynth {
 
         const {n, dur, amp} = params
 
-        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, n, 66 * (amp || 1)]);
-        const noteOffEvent = new MIDIEvent((time + beatsToSeconds(dur)) * 1000, 0, [128, n, 0]);
-
-        this.device.scheduleEvent(noteOnEvent);
-        this.device.scheduleEvent(noteOffEvent)
+        const notes = isArray(n) ? n : [n]
+        notes.forEach(note => {
+            const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, note, 66 * (amp || 1)]);
+            const noteOffEvent = new MIDIEvent((time + beatsToSeconds(dur)) * 1000, 0, [128, note, 0]);
+            this.device.scheduleEvent(noteOnEvent);
+            this.device.scheduleEvent(noteOffEvent)
+        })
     }
 
     cut(time) {
