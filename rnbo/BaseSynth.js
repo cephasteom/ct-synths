@@ -78,7 +78,11 @@ class BaseSynth {
 
     mutate(params = {}, time, lag = 0.1) {
         if(!this.ready) return
-        this.setParams(params, time)
+        
+        const { n: notes } = params
+        const n = isArray(notes) ? notes[0] : notes
+        
+        this.setParams({...params, n}, time)
         this.messageDevice('mutate', lag * 1000, time)
     }
 }
