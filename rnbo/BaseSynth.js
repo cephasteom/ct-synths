@@ -81,7 +81,6 @@ class BaseSynth {
         const { n: notes } = params
         const n = isArray(notes) ? notes[0] : notes
         const ps = n ? { ...params, n } : params
-
         this.setParams(ps, time)
         this.messageDevice('mutate', lag * 1000, time)
     }
