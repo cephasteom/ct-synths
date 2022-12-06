@@ -5,6 +5,8 @@ import { isArray } from '../utils/core';
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
+// TODO: be able to override generated methods
+
 class BaseSynth {
     self = this.constructor
     defaults = {}
@@ -28,7 +30,10 @@ class BaseSynth {
     }  
 
     initParams() {
-        this.params.forEach(key => this[key] = (value, time) => this.messageDevice(key, value, time))
+        this.params.forEach(key => {
+            if(this[key]) return
+            this[key] = (value, time) => this.messageDevice(key, value, time)
+        })
         Object.keys(this.settable).forEach(key => this[key] = this[key].bind(this))
     }
 
@@ -58,7 +63,6 @@ class BaseSynth {
         if(!this.ready) return
         
         this.setParams(params, time)
-
         const {n, dur, amp} = params
 
         const notes = isArray(n) ? n : [n]
@@ -78,12 +82,15 @@ class BaseSynth {
     mutate(params = {}, time, lag = 0.1) {
         if(!this.ready) return
         
-        const { n: notes } = params
-        const n = isArray(notes) ? notes[0] : notes
-        const ps = n ? { ...params, n } : params
-        this.setParams(ps, time)
+        this.setParams(params, time)
         this.messageDevice('mutate', lag * 1000, time)
     }
+
+    n(value, time) {
+        const note = isArray(value) ? value[0] : value
+        this.messageDevice('n', note, time)
+    }
+
 }
 
 export default BaseSynth
