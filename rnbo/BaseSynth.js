@@ -5,8 +5,8 @@ import { isArray } from '../utils/core';
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
-// TODO: be able to override generated methods
-
+// TODO: everything should be supplied either in ms or in seconds, not both
+// Complete this whilst in Zen...
 class BaseSynth {
     self = this.constructor
     defaults = {}
