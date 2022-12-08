@@ -13,6 +13,7 @@ class BaseSynth {
     device = null
     ready = false
     params = ['n', 'pan', 'vol', 'a', 'd', 's', 'r', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
+    defaults = {n: 60}
 
     constructor() {
         this.output = new Gain(1);
@@ -61,9 +62,9 @@ class BaseSynth {
 
     play(params = {}, time) {
         if(!this.ready) return
-        
-        this.setParams(params, time)
-        const {n, dur, amp} = params
+        const ps = { ...this.defaults, ...params }
+        this.setParams(ps, time)
+        const {n, dur, amp} = ps
 
         const notes = isArray(n) ? n : [n]
         notes.forEach(note => {
