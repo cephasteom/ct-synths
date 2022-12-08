@@ -2,20 +2,15 @@ import BaseSynth from "./BaseSynth";
 
 class Sampler extends BaseSynth {
     json = new URL('./json/sampler.export.json', import.meta.url)
-    params = [...this.params]
+    params = [...this.params, 'i']
 
-    constructor(dependenciesPath) {
+    constructor() {
         super()
-        this.initSampler(dependenciesPath)
         this.initParams()
-
     }
-
-    async initSampler(dependenciesPath = "/samples/samples.json") {
+    
+    async load(dependencies) {
         await this.initDevice()
-
-        let dependencies = await fetch(dependenciesPath);
-        dependencies = await dependencies.json();
 
         const results = await this.device.loadDataBufferDependencies(dependencies);
         results.forEach(result => {
