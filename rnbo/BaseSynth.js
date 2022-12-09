@@ -14,7 +14,7 @@ class BaseSynth {
     device = null
     ready = false
     params = ['n', 'pan', 'vol', 'a', 'd', 's', 'r', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
-    defaults = {n: 60}
+    defaults = {n: 60, pan: 0.5}
     // manually handle note on/off separate to n, to prevent stale note offs from truncating notes
     note = 0
 
@@ -69,12 +69,12 @@ class BaseSynth {
         this.setParams(ps, time)
         const {dur, amp} = ps
         
-        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, this.note%128, 66 * (amp || 1)]);
-        const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, this.note%128, 0]);
+        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, this.note, 66 * (amp || 1)]);
+        const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, this.note, 0]);
         this.device.scheduleEvent(noteOnEvent);
         this.device.scheduleEvent(noteOffEvent)
 
-        this.note++
+        this.note = (this.note + 1) % 128
     }
 
     cut(time) {
