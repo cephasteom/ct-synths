@@ -7,6 +7,7 @@ const context = toneContext.rawContext._nativeAudioContext || toneContext.rawCon
 
 // TODO: everything should be supplied either in ms or in seconds, not both
 // Complete this whilst in Zen...
+// TODO: polyphony needs to be handled within Zen, not here...
 class BaseSynth {
     self = this.constructor
     defaults = {}
@@ -14,6 +15,8 @@ class BaseSynth {
     ready = false
     params = ['n', 'pan', 'vol', 'a', 'd', 's', 'r', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
     defaults = {n: 60}
+    // manually handle note on/off separate to n, to prevent stale note offs from truncating notes
+    note = 0
 
     constructor() {
         this.output = new Gain(1);
@@ -64,15 +67,14 @@ class BaseSynth {
         if(!this.ready) return
         const ps = { ...this.defaults, ...params }
         this.setParams(ps, time)
-        const {n, dur, amp} = ps
+        const {dur, amp} = ps
+        
+        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, this.note%128, 66 * (amp || 1)]);
+        const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, this.note%128, 0]);
+        this.device.scheduleEvent(noteOnEvent);
+        this.device.scheduleEvent(noteOffEvent)
 
-        const notes = isArray(n) ? n : [n]
-        notes.forEach(note => {
-            const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, note, 66 * (amp || 1)]);
-            const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, note, 0]);
-            this.device.scheduleEvent(noteOnEvent);
-            this.device.scheduleEvent(noteOffEvent)
-        })
+        this.note++
     }
 
     cut(time) {
@@ -85,11 +87,6 @@ class BaseSynth {
         
         this.setParams(params, time)
         this.messageDevice('mutate', lag * 1000, time)
-    }
-
-    n(value, time) {
-        const note = isArray(value) ? value[0] : value
-        this.messageDevice('n', note, time)
     }
 
 }
