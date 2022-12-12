@@ -1,7 +1,6 @@
 import { context as toneContext, Gain } from 'tone';
 import { dummy } from './utils';
 import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
-import { isArray } from '../utils/core';
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
@@ -75,7 +74,6 @@ class BaseSynth {
         const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, this.note, 0]);
         this.device.scheduleEvent(noteOnEvent);
         this.device.scheduleEvent(noteOffEvent)
-
         
         this.note = (this.note + 1) % 128
     }
