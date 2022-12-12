@@ -64,7 +64,7 @@ class BaseSynth {
 
     play(params = {}, time) {
         if(!this.ready) return
-        const ps = { ...this.defaults, ...params }
+        const ps = {...this.defaults, ...params }
         this.setParams(ps, time)
         const {dur, n} = ps
         
