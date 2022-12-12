@@ -1,9 +1,11 @@
 import { min } from "../utils/core";
 import BaseSynth from "./BaseSynth";
 
+// TODO: if no duration, do the length of the sample
+
 class Sampler extends BaseSynth {
     json = new URL('./json/sampler.export.json', import.meta.url)
-    params = [...this.params, 'i', 'snap', 'bank']
+    params = [...this.params, 'i', 'snap', 'bank', 'begin', 'end', 'loop', 'rate']
     defaults = { ...this.defaults, i: 0, snap: 0 }
     banks = {}
     currentBank = null
