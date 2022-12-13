@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/cephasteom/ct-synths/issues"
   },
-  "homepage": "https://github.com/cephasteom/ct-synths#readme"
+  "homepage": "https://github.com/cephasteom/ct-synths#readme",
+  "dependencies": {
+    "@rnbo/js": "^1.0.1"
+  }
 }

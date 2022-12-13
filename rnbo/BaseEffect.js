@@ -1,25 +1,20 @@
-import { context as toneContext, Oscillator, Gain } from 'tone';
-import { getClassSetters, getClassMethods, isMutableKey, isSettableKey } from '../utils/core'
-import { doAtTime } from "../utils/tone";
-import { createDevice, MIDIEvent, TimeNow, MessageEvent } from '@rnbo/js'
+import { context as toneContext, Gain } from 'tone';
+import { dummy } from './utils';
+import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
-// current issue:
-// all mutable params working, but after voice 16 they stop working
-
-// gain node doesn't work if there isn't a tone node connected to it
-// so we create a dummy node to connect to
-// hardly ideal, but it works
-const dummy = new Oscillator({volume: -Infinity, frequency: 0, type: 'sine1'}).start();
-
+// TODO: everything should be supplied either in ms or in seconds, not both
+// Complete this whilst in Zen...
+// TODO: polyphony needs to be handled within Zen, not here...
 class BaseEffect {
     self = this.constructor
     defaults = {}
     device = null
-    automated = []
     ready = false
-    
+    params = []
+    defaults = {}
+
     constructor() {
         this.output = new Gain(1);
         this.input = new Gain(1);
@@ -34,11 +29,19 @@ class BaseEffect {
         this.input._gainNode._nativeAudioNode.connect(this.device.node);
         dummy.connect(this.output);
         this.ready = true
-    }  
+    }   
 
-    bindProps() {
-        const props = {...this.settable, ...this.mutable}
-        Object.keys(props).forEach(key => this[key] = this[key].bind(this))
+    initParams() {
+        this.params.forEach(key => {
+            if(this[key]) return
+            this[key] = (value, time) => this.messageDevice(key, value, time)
+        })
+        Object.keys(this.settable).forEach(key => this[key] = this[key].bind(this))
+    }
+
+    messageDevice(tag, payload, time) {
+        const message = new MessageEvent((time * 1000) - 10, tag, [ payload ]);
+        this.device.scheduleEvent(message);
     }
 
     connect(node) { 
@@ -46,51 +49,32 @@ class BaseEffect {
         this.output.connect(node)
     }
 
-    setParam(name, value, time) {
-        if(!this.ready) return
-        doAtTime(() => {
-            this.device.parametersById.get('lag').value = 0.01
-            this.device.parametersById.get(name).value = value
-        }, time)
-    }
-
-    mutateParam(name, value, time, lag = 0.1) {
-        if(!this.ready) return
-        doAtTime(() => {
-            this.device.parametersById.get('lag').value = lag
-            this.device.parametersById.get(name).value = value
-        }, time)
-    }
-
     get settable() { 
-        return getClassMethods(this.self)
-            .filter(isSettableKey)
-            .reduce((obj, key) => ({ ...obj, [key]: this[key] }), {})
+        return this.params.reduce((obj, key) => ({ ...obj, [key]: this[key] }), {})
     }
 
-    get mutable() {
-        return getClassMethods(this.self)
-            .filter(isMutableKey)
-            .reduce((obj, key) => ({ ...obj, [key]: this[key] }), {})
+    setParams(params, time) {
+        const settable = this.settable
+        Object.entries(params)
+            .forEach(([key, value]) => {
+                settable[key] && settable[key](value, time)
+            })
     }
 
-    get keys() {
-        return Object.keys(this.settable)
+    set(params = {}, time) {
+        if(!this.ready) return
+
+        this.setParams(params, time)
+        this.messageDevice('set', 1, time)
     }
 
-    set(params, time) {
-        const methods = this.settable
-        Object.entries(params).forEach(([key, value]) => {
-            methods[key] && methods[key](value, time)
-        })
+    mutate(params = {}, time, lag = 0.1) {
+        if(!this.ready) return
+        
+        this.setParams(params, time)
+        this.messageDevice('mutate', lag * 1000, time)
     }
 
-    mutate(params, time, lag) {
-        const methods = this.mutable
-        Object.entries(params).forEach(([key, value]) => {
-            methods[key] && methods[key](value, time, lag)
-        })
-    }
 }
 
 export default BaseEffect
