@@ -1,12 +1,8 @@
 import { context as toneContext, Gain } from 'tone';
 import { dummy } from './utils';
-import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
+import { createDevice, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
-
-// TODO: everything should be supplied either in ms or in seconds, not both
-// Complete this whilst in Zen...
-// TODO: polyphony needs to be handled within Zen, not here...
 class BaseEffect {
     self = this.constructor
     defaults = {}

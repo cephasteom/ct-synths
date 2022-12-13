@@ -1,7 +1,7 @@
 import BaseEffect from "./BaseEffect";
 class Reverb extends BaseEffect {
     json = new URL('./json/reverb.export.json', import.meta.url)
-    params = ['mix', 'size', 'decay', 'jitter', 'damp', 'diff']
+    params = ['reverb', 'size', 'decay', 'jitter', 'damp', 'diff']
 
     constructor() {
         super()
