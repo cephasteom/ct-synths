@@ -40,10 +40,6 @@ class Sampler extends BaseSynth {
                 : console.log(`Failed to load buffer with id ${result.id}, ${result.error}`);
         });
     }
-    
-    async initAndLoad(urls) {
-        await this.load(urls)
-    }
 
     async bank(name) {
         if(name === this.currentBank) return
