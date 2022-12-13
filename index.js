@@ -11,6 +11,7 @@ import MetalSynth from "./tone-synths/MetalSynth";
 import FlexSynth from "./tone-synths/FlexSynth";
 import Synth from "./rnbo/Synth";
 import Sampler from "./rnbo/Sampler";
+import Reverb from "./rnbo/Reverb";
 
 export const CtFMSynth = FMSynth
 // export const CtSampler = Sampler
@@ -23,6 +24,7 @@ export const CtMetalSynth = MetalSynth
 export const CtFlexSynth = FlexSynth
 export const CtSynth = Synth
 export const CtSampler = Sampler
+export const CtReverb = Reverb
 
 const synthMap = {
     drum: DrumSynth, 
