@@ -72,7 +72,6 @@ class BaseSynth {
         this.setParams(ps, time)
         const {dur, n, inst} = ps
         const midiChannel = (instMap[inst] || 1) - 1
-        console.log(inst, midiChannel)
         
         // use note numbers to handle on/off rather than pitch
         // send n as the velocity
