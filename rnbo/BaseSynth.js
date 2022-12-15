@@ -4,16 +4,13 @@ import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
-// TODO: everything should be supplied either in ms or in seconds, not both
-// Complete this whilst in Zen...
-// TODO: polyphony needs to be handled within Zen, not here...
 class BaseSynth {
     self = this.constructor
-    defaults = {}
     device = null
     ready = false
     params = ['n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
-    defaults = {n: 60, pan: 0.5}
+    defaults = {n: 60, pan: 0.5, vol: 1, amp: 1, a: 10, d: 100, s: 0.8, r: 1000}
+    state = {}
     // manually handle note on/off separate to n, to prevent stale note offs from truncating notes
     note = 0
 
@@ -58,6 +55,9 @@ class BaseSynth {
         const settable = this.settable
         Object.entries(params)
             .forEach(([key, value]) => {
+                // prevent needless event messages
+                if(this.state[key] === value) return
+                this.state[key] = value
                 settable[key] && settable[key](value, time)
             })
     }
