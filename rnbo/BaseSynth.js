@@ -45,7 +45,9 @@ class BaseSynth {
     }
 
     messageDevice(tag, payload, time) {
-        const message = new MessageEvent((time * 1000) - 10, tag, [ payload ]);
+        // trigger mutation slightly after events, to prevent conflict`
+        const isMutation = tag === 'mutate'
+        const message = new MessageEvent((time * 1000) + (isMutation ? 10 : 0), tag, [ payload ]);
         this.device.scheduleEvent(message);
     }
 
@@ -90,7 +92,6 @@ class BaseSynth {
 
     mutate(params = {}, time, lag = 0.1) {
         if(!this.ready) return
-        
         this.setParams(params, time)
         this.messageDevice('mutate', lag * 1000, time)
     }
