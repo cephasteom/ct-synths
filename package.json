@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/cephasteom/ct-synths#readme",
   "dependencies": {
-    "@rnbo/js": "^1.0.1"
+    "@rnbo/js": "^1.0.2"
   }
 }

@@ -4,9 +4,13 @@ import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
+const instMap = {
+    synth: 1,
+    sampler: 2,
+}
+
 // TODO: everything should be supplied either in ms or in seconds, not both
 // Complete this whilst in Zen...
-// TODO: polyphony needs to be handled within Zen, not here...
 class BaseSynth {
     self = this.constructor
     defaults = {}
@@ -66,12 +70,14 @@ class BaseSynth {
         if(!this.ready) return
         const ps = {...this.defaults, ...params }
         this.setParams(ps, time)
-        const {dur, n} = ps
+        const {dur, n, inst} = ps
+        const midiChannel = (instMap[inst] || 1) - 1
+        console.log(inst, midiChannel)
         
         // use note numbers to handle on/off rather than pitch
         // send n as the velocity
-        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, this.note, n]);
-        const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, this.note, 0]);
+        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144 + midiChannel, this.note, n]);
+        const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128 + midiChannel, this.note, 0]);
         this.device.scheduleEvent(noteOnEvent);
         this.device.scheduleEvent(noteOffEvent)
         
