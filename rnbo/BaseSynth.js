@@ -14,10 +14,10 @@ const instMap = {
 class BaseSynth {
     self = this.constructor
     defaults = {}
+    instDefaults = {}
     device = null
     ready = false
     params = ['n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
-    defaults = {n: 60, pan: 0.5}
     // manually handle note on/off separate to n, to prevent stale note offs from truncating notes
     note = 0
 
@@ -47,7 +47,7 @@ class BaseSynth {
     messageDevice(tag, payload, time) {
         // trigger mutation slightly after events, to prevent conflict`
         const isMutation = tag === 'mutate'
-        const message = new MessageEvent((time * 1000) + (isMutation ? 10 : 0), tag, [ payload ]);
+        const message = new MessageEvent((time * 1000) + (isMutation ? 10 : -10), tag, [ payload ]);
         this.device.scheduleEvent(message);
     }
 
@@ -70,7 +70,7 @@ class BaseSynth {
 
     play(params = {}, time) {
         if(!this.ready) return
-        const ps = {...this.defaults, ...params }
+        const ps = {...this.defaults, ...this.instDefaults[params.inst], ...params }
         this.setParams(ps, time)
         const {dur, n, inst} = ps
         const midiChannel = (instMap[inst] || 1) - 1
@@ -93,7 +93,7 @@ class BaseSynth {
     mutate(params = {}, time, lag = 0.1) {
         if(!this.ready) return
         this.setParams(params, time)
-        this.messageDevice('mutate', lag * 1000, time)
+        this.messageDevice('mutate', Math.floor(lag * 1000), time)
     }
 
 }
