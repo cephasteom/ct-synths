@@ -11,7 +11,7 @@ class Oto extends BaseSynth {
     params = [
         ...this.params, 
         'osc', 'res', 'cutoff', 'drift', // synth params
-        'i', 'snap', 'bank', 'begin', 'end', 'loop', 'rate', // sampler params
+        'i', 'snap', 'bank', 'begin', 'end', 'loop', 'rate', 'bpm', // sampler params
         'reverb', 'revfb1', 'revfb2', 'damp', 'diff', // reverb params
     ]
 
@@ -34,12 +34,14 @@ class Oto extends BaseSynth {
         });
     }
 
+    // Load banks of samples
     async bank(name) {
         if(name === this.currentBank) return
         this.currentBank = name 
         this.banks[name] && this.load(this.banks[name])
     }
 
+    // ensure that the sample index is within the range of the loaded samples
     i(value, time) {
         this.messageDevice('i', value%this.maxI, time)
     }
