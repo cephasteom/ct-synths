@@ -11,7 +11,8 @@ import { immediate } from "tone"
 // import FlexSynth from "./tone-synths/FlexSynth";
 import Synth from "./rnbo/Synth";
 import Sampler from "./rnbo/Sampler";
-import Reverb from "./rnbo/Reverb";
+// import Reverb from "./rnbo/Reverb";
+import Granulator from "./rnbo/Granulator";
 
 // export const CtFMSynth = FMSynth
 // export const CtSampler = Sampler
@@ -24,7 +25,9 @@ import Reverb from "./rnbo/Reverb";
 // export const CtFlexSynth = FlexSynth
 export const CtSynth = Synth
 export const CtSampler = Sampler
-export const CtReverb = Reverb
+export const CtGranulator = Granulator
+
+// export const CtReverb = Reverb
 
 const synthMap = {
     // drum: DrumSynth, 

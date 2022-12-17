@@ -1,11 +1,9 @@
 import { min } from "../utils/core";
 import BaseSynth from "./BaseSynth";
-
-// TODO: handle grainsize relative to bpm in max?
 class Granular extends BaseSynth {
     json = new URL('./json/granulator.export.json', import.meta.url)
     params = [...this.params, 'i', 'snap', 'bank', 'grainrate', 'grainsize', 'rate', 'bpm', 'direction']
-    defaults = { ...this.defaults, i: 0, snap: 0, rate: 1, a: 0, d: 10, s: 1, r: 100, bpm: 120, grainrate: 16, grainsize: 0.125, direction: 1 }
+    defaults = { ...this.defaults, i: 0, snap: 0, rate: 1, a: 0, d: 10, s: 1, r: 100, bpm: 60, grainrate: 16, grainsize: 0.125, direction: 1 }
     banks = {}
     currentBank = null
     maxI = null
