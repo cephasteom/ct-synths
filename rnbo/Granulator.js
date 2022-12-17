@@ -1,10 +1,11 @@
 import { min } from "../utils/core";
 import BaseSynth from "./BaseSynth";
 
-class Sampler extends BaseSynth {
-    json = new URL('./json/sampler.export.json', import.meta.url)
-    params = [...this.params, 'i', 'snap', 'bank', 'begin', 'end', 'loop', 'rate', 'bpm', 'oneshot']
-    defaults = { ...this.defaults, i: 0, snap: 0, rate: 1, a: 1, d: 10, s: 1, r: 100, bpm: 120, begin: 0, end: 1, loop: 0, oneshot: 0 }
+// TODO: handle grainsize relative to bpm in max?
+class Granular extends BaseSynth {
+    json = new URL('./json/granulator.export.json', import.meta.url)
+    params = [...this.params, 'i', 'snap', 'bank', 'grainrate', 'grainsize', 'rate', 'bpm', 'direction']
+    defaults = { ...this.defaults, i: 0, snap: 0, rate: 1, a: 0, d: 10, s: 1, r: 100, bpm: 120, grainrate: 16, grainsize: 0.125, direction: 1 }
     banks = {}
     currentBank = null
     maxI = null
@@ -15,17 +16,6 @@ class Sampler extends BaseSynth {
         this.initDevice()
     }
     
-    /*
-        *   Load a set of samples into the sampler
-        *   @param {Array} urls - an array of urls
-        *   @example
-        *   [
-        *       "https://tonejs.github.io/audio/505/kick.wav",
-        *       "https://tonejs.github.io/audio/505/snare.wav",
-        *       "https://tonejs.github.io/audio/505/hh.wav",
-        *   ];
-        * 
-    */
     async load(urls) {
         const dependencies = urls.map((file, i) => ({id: `b${i}`, file}))
         this.maxI = min(dependencies.length, 32)
@@ -50,4 +40,4 @@ class Sampler extends BaseSynth {
     }
 }
 
-export default Sampler
+export default Granular
