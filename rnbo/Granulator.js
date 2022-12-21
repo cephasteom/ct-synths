@@ -1,5 +1,6 @@
 import { min } from "../utils/core";
 import BaseSynth from "./BaseSynth";
+import Synth from "./Synth";
 class Granular extends BaseSynth {
     json = new URL('./json/granulator.export.json', import.meta.url)
     params = [...this.params, 'i', 'snap', 'bank', 'grainrate', 'grainsize', 'rate', 'bpm', 'direction']
@@ -15,6 +16,7 @@ class Granular extends BaseSynth {
     }
     
     async load(urls) {
+        this.ready = false
         const dependencies = urls.map((file, i) => ({id: `b${i}`, file}))
         this.maxI = min(dependencies.length, 32)
 
@@ -25,6 +27,7 @@ class Granular extends BaseSynth {
                 ? console.log(`Successfully loaded buffer with id ${result.id}`)
                 : console.log(`Failed to load buffer with id ${result.id}, ${result.error}`);
         });
+        this.ready = true
     }
 
     async bank(name) {
