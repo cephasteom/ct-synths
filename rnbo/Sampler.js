@@ -28,6 +28,7 @@ class Sampler extends BaseSynth {
         * 
     */
     async load(urls) {
+        this.ready = false
         const dependencies = urls.map((file, i) => ({id: `b${i}`, file}))
         this.maxI = min(dependencies.length, 32)
 
@@ -38,6 +39,7 @@ class Sampler extends BaseSynth {
                 ? console.log(`Successfully loaded buffer with id ${result.id}`)
                 : console.log(`Failed to load buffer with id ${result.id}, ${result.error}`);
         });
+        this.ready = true
     }
 
     async bank(name) {
