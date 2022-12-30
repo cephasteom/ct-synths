@@ -39,6 +39,8 @@ class Sampler extends BaseSynth {
                 ? console.log(`Successfully loaded buffer with id ${result.id}`)
                 : console.log(`Failed to load buffer with id ${result.id}, ${result.error}`);
         });
+
+        this.i(this.state.i || 0)
         this.ready = true
     }
 
