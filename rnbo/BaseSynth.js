@@ -32,13 +32,13 @@ class BaseSynth {
     initParams() {
         this.params.forEach(key => {
             if(this[key]) return
-            this[key] = (value, time) => this.messageDevice(key, value, time)
+            this[key] = (value, time, isMutation = 0) => this.messageDevice(key, [value, 0], time)
         })
         Object.keys(this.settable).forEach(key => this[key] = this[key].bind(this))
     }
 
     messageDevice(tag, payload, time) {
-        const message = new MessageEvent((time * 1000) - 10, tag, [ payload ]);
+        const message = new MessageEvent((time * 1000) - 10, tag, payload);
         this.device.scheduleEvent(message);
     }
 
@@ -51,21 +51,22 @@ class BaseSynth {
         return this.params.reduce((obj, key) => ({ ...obj, [key]: this[key] }), {})
     }
 
-    setParams(params, time) {
+    setParams(params, time, isMutation = 0) {
+        console.log(params, isMutation)
         const settable = this.settable
         Object.entries(params)
             .forEach(([key, value]) => {
                 // prevent needless event messages
                 if(this.state[key] === value) return
                 this.state[key] = value
-                settable[key] && settable[key](value, time)
+                settable[key] && settable[key](value, time, isMutation)
             })
     }
 
     play(params = {}, time) {
         if(!this.ready) return
         const ps = {...this.defaults, ...params }
-        this.setParams(ps, time)
+        this.setParams(ps, time, 0)
         const {dur, n} = ps
         
         // use note numbers to handle on/off rather than pitch
@@ -86,7 +87,7 @@ class BaseSynth {
     mutate(params = {}, time, lag = 0.1) {
         if(!this.ready) return
         
-        this.setParams(params, time)
+        this.setParams(params, time, 1)
         this.messageDevice('mutate', lag * 1000, time)
     }
 
