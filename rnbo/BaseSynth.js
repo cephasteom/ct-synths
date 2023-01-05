@@ -32,7 +32,7 @@ class BaseSynth {
     initParams() {
         this.params.forEach(key => {
             if(this[key]) return
-            this[key] = (value, time, isMutation = 0) => this.messageDevice(key, [value, 0], time)
+            this[key] = (value, time, isMutation = 0) => this.messageDevice(key, [value, isMutation], time)
         })
         Object.keys(this.settable).forEach(key => this[key] = this[key].bind(this))
     }
