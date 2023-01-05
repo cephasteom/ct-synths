@@ -52,12 +52,11 @@ class BaseSynth {
     }
 
     setParams(params, time, isMutation = 0) {
-        console.log(params, isMutation)
         const settable = this.settable
         Object.entries(params)
             .forEach(([key, value]) => {
-                // prevent needless event messages
-                if(this.state[key] === value) return
+                // prevent needless mutation messages
+                if(this.state[key] === value && isMutation) return
                 this.state[key] = value
                 settable[key] && settable[key](value, time, isMutation)
             })
