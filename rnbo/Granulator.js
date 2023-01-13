@@ -3,10 +3,23 @@ import BaseSynth from "./BaseSynth";
 
 // TODO: begin and end
 class Granular extends BaseSynth {
-    json = new URL('./json/granulator3.export.json', import.meta.url)
+    json = new URL('./json/granular3.export.json', import.meta.url)
     params = [...this.params, 'i', 'snap', 'bank', 'grainrate', 'grainsize', 'grainslope', 'grainpan', 'rate', 'bpm', 'direction', 'begin', 'end', 'loop']
     defaults = { 
-        // ...this.defaults, i: 0, snap: 0, rate: 1, a: 0, d: 10, s: 1, r: 100, bpm: 60, grainrate: 16, grainsize: 0.125, grainslope: 0.01, grainpan: 0.2, direction: 1 
+        ...this.defaults, 
+        i: 0, 
+        snap: 0, 
+        rate: 1, 
+        a: 0, 
+        d: 10, 
+        s: 1, 
+        r: 100, 
+        bpm: 60, 
+        grainrate: 16, 
+        grainsize: 0.125, 
+        grainslope: 0.01, 
+        grainpan: 0.2, 
+        direction: 1 
     }
     banks = {}
     currentBank = null

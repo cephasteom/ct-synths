@@ -70,7 +70,7 @@ class BaseSynth {
         
         // use note numbers to handle on/off rather than pitch
         // send n as the velocity
-        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, n, amp * 66]);
+        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, (n || 60), amp * 66]);
         const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, n, 0]);
         this.device.scheduleEvent(noteOnEvent);
         this.device.scheduleEvent(noteOffEvent)
