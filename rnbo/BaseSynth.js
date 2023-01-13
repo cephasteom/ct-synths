@@ -11,6 +11,8 @@ class BaseSynth {
     params = ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
     defaults = {dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, a: 10, d: 100, s: 0.8, r: 1000, moda: 10, modd: 100, mods: 0.8, modr: 1000, a: 10, d: 100, s: 1, r: 1000}
     state = {}
+    // manually handle note on/off separate to n, to prevent stale note offs from truncating notes
+    note = 0
 
     constructor() {
         this.output = new Gain(1);
@@ -64,10 +66,14 @@ class BaseSynth {
         if(!this.ready) return
         const ps = {...this.defaults, ...params }
         this.setParams(ps, time, 0)
-        const {n} = ps
+        const { n, amp, dur } = ps
         
-        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, n, 127 * amp]);
+        // use note numbers to handle on/off rather than pitch
+        // send n as the velocity
+        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, n, amp * 66]);
+        const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, n, 0]);
         this.device.scheduleEvent(noteOnEvent);
+        this.device.scheduleEvent(noteOffEvent)
     }
 
     cut(time) {
