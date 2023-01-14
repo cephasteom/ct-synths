@@ -3,7 +3,8 @@ import { dummy } from './utils';
 import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
-
+// TODO: this.mono -> send a cut message just before triggering the next note
+// Re-export granular so it only has 2 voices...
 class BaseSynth {
     self = this.constructor
     device = null
@@ -11,8 +12,6 @@ class BaseSynth {
     params = ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
     defaults = {dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, a: 10, d: 100, s: 0.8, r: 1000, moda: 10, modd: 100, mods: 0.8, modr: 1000, a: 10, d: 100, s: 1, r: 1000}
     state = {}
-    // manually handle note on/off separate to n, to prevent stale note offs from truncating notes
-    note = 0
 
     constructor() {
         this.output = new Gain(1);
@@ -66,19 +65,16 @@ class BaseSynth {
         if(!this.ready) return
         const ps = {...this.defaults, ...params }
         this.setParams(ps, time, 0)
-        const { n, amp, dur } = ps
+        const { n, amp } = ps
         
-        // use note numbers to handle on/off rather than pitch
-        // send n as the velocity
         const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, (n || 60), amp * 66]);
-        // const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, n, 0]);
         this.device.scheduleEvent(noteOnEvent);
-        // this.device.scheduleEvent(noteOffEvent)
     }
 
     cut(time) {
+        // TODO: cut time
         if(!this.ready) return
-        this.messageDevice('cut', 1, time)
+        this.messageDevice('cut', 10, time)
     }
 
     mutate(params = {}, time, lag = 0.1) {
