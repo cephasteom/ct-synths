@@ -65,10 +65,12 @@ class BaseSynth {
         if(!this.ready) return
         const ps = {...this.defaults, ...params }
         this.setParams(ps, time, 0)
-        const { n, amp } = ps
+        const { n, amp, dur } = ps
         
         const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, (n || 60), amp * 66]);
+        const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, n, 0]);
         this.device.scheduleEvent(noteOnEvent);
+        this.device.scheduleEvent(noteOffEvent)
     }
 
     cut(time) {
