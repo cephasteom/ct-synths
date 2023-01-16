@@ -5,7 +5,9 @@ import BaseSynth from "./BaseSynth";
 class Sampler extends BaseSynth {
     json = new URL('./json/sampler.export.json', import.meta.url)
     params = [...this.params, 'i', 'snap', 'bank', 'begin', 'end', 'loop', 'rate', 'bpm', 'oneshot', 'loopsize']
-    defaults = { ...this.defaults, i: 0, snap: 0, rate: 1, a: 1, d: 10, s: 1, r: 100, bpm: 120, begin: 0, end: 1, loop: 0, oneshot: 0, loopsize: 1 }
+    defaults = { ...this.defaults, 
+        i: 0, snap: 0, rate: 1, a: 1, d: 10, s: 1, r: 100, bpm: 120, begin: 0, end: 1, loop: 0, oneshot: 0, loopsize: 1 
+    }
     banks = {}
     currentBank = null
     maxI = null
