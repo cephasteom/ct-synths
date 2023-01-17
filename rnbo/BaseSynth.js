@@ -31,15 +31,16 @@ class BaseSynth {
     }  
 
     initParams() {
-        this.params.forEach(key => {
+        const ps = [...this.params, ...this.params.map(p => `_${p}`)]
+        ps.forEach(key => {
             if(this[key]) return
-            this[key] = (value, time, isMutation = 0) => this.messageDevice(key, [value, isMutation], time)
+            this[key] = (value, time) => this.messageDevice(key, value, time)
         })
         Object.keys(this.settable).forEach(key => this[key] = this[key].bind(this))
     }
 
     messageDevice(tag, payload, time) {
-        const message = new MessageEvent((time * 1000) - 10, tag, payload);
+        const message = new MessageEvent((time * 1000) - 10, tag, [ payload ]);
         this.device.scheduleEvent(message);
     }
 
@@ -52,43 +53,44 @@ class BaseSynth {
         return this.params.reduce((obj, key) => ({ ...obj, [key]: this[key] }), {})
     }
 
-    setParams(params, time, isMutation = 0) {
+    setParams(params, time) {
         const settable = this.settable
         Object.entries(params)
             .forEach(([key, value]) => {
-                // prevent needless mutation messages
-                if(this.state[key] === value && isMutation) return
+                // prevent needless messages
+                if(this.state[key] === value) return
                 this.state[key] = value
-                settable[key] && settable[key](value, time, isMutation)
+                settable[key] && settable[key](value, time)
             })
     }
 
     play(params = {}, time) {
         if(!this.ready) return
+
         const ps = {...this.defaults, ...params }
         this.setParams(ps, time, 0)
-        const { n, amp } = ps
+        const { n, amp, dur } = ps
         
-        n === this.state.last && this.cut(time - 10)
+        n === this.state.last && this.cut(time)
+        
         const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, (n || 60), amp * 66]);
         this.device.scheduleEvent(noteOnEvent);
-        this.state.last = n
         
-        // const { dur } = ps
-        // const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, n, 0]);
-        // this.device.scheduleEvent(noteOffEvent)
+        const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, n, 0]);
+        this.device.scheduleEvent(noteOffEvent)
+        
+        this.state.last = n
     }
 
     cut(time) {
-        // TODO: cut time
         if(!this.ready) return
         this.messageDevice('cut', 10, time)
     }
 
     mutate(params = {}, time, lag = 0.1) {
         if(!this.ready) return
-        
-        this.setParams(params, time, 1)
+        const ps = Object.entries(params).reduce((obj, [key, value]) => ({ ...obj, [`_${key}`]: value }), {})
+        this.setParams(ps, time, 1)
         this.messageDevice('mutate', lag * 1000, time)
     }
 
