@@ -31,7 +31,6 @@ class BaseSynth {
     }  
 
     initParams() {
-        console.log(this.params)
         this.params.forEach(key => {
             if(this[key]) return
             this[key] = (value, time) => this.messageDevice(key, value, time)
@@ -55,7 +54,6 @@ class BaseSynth {
 
     setParams(params, time) {
         const settable = this.settable
-        console.log(settable)
         Object.entries(params)
             .forEach(([key, value]) => {
                 this.state[key] = value
@@ -82,9 +80,9 @@ class BaseSynth {
         this.device.scheduleEvent(noteOffEvent)
     }
 
-    cut(time) {
+    cut(time, ms = 10) {
         if(!this.ready) return
-        this.messageDevice('cut', 10, time)
+        this.messageDevice('cut', ms, time)
     }
 
     mutate(params = {}, time, lag = 0.1) {
