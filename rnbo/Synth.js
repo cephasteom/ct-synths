@@ -7,6 +7,7 @@ class Synth extends BaseSynth {
 
     constructor() {
         super()
+        this.params = [...this.params, ...this.params.map(p => `_${p}`)]
         this.initDevice()
         this.initParams()
     }

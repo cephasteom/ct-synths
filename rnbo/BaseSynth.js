@@ -31,8 +31,8 @@ class BaseSynth {
     }  
 
     initParams() {
-        const ps = [...this.params, ...this.params.map(p => `_${p}`)]
-        ps.forEach(key => {
+        console.log(this.params)
+        this.params.forEach(key => {
             if(this[key]) return
             this[key] = (value, time) => this.messageDevice(key, value, time)
         })
@@ -55,10 +55,9 @@ class BaseSynth {
 
     setParams(params, time) {
         const settable = this.settable
+        console.log(settable)
         Object.entries(params)
             .forEach(([key, value]) => {
-                // prevent needless messages
-                if(this.state[key] === value) return
                 this.state[key] = value
                 settable[key] && settable[key](value, time)
             })
@@ -69,17 +68,18 @@ class BaseSynth {
 
         const ps = {...this.defaults, ...params }
         this.setParams(ps, time, 0)
+        
         const { n, amp, dur } = ps
         
+        // cut if the same note is played twice in a row to prevent pops
         n === this.state.last && this.cut(time)
+        this.state.last = n
         
         const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, (n || 60), amp * 66]);
         this.device.scheduleEvent(noteOnEvent);
         
         const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, n, 0]);
         this.device.scheduleEvent(noteOffEvent)
-        
-        this.state.last = n
     }
 
     cut(time) {
