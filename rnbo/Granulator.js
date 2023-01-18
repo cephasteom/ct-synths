@@ -3,7 +3,7 @@ import BaseSynth from "./BaseSynth";
 
 // TODO: begin and end
 class Granular extends BaseSynth {
-    json = new URL('./json/granular3.export.json', import.meta.url)
+    json = new URL('./json/granular.export.json', import.meta.url)
     params = [...this.params, 'i', 'snap', 'bank', 'grainrate', 'grainsize', 'grainslope', 'grainpan', 'rate', 'bpm', 'direction', 'begin', 'end', 'loop']
     defaults = { 
         ...this.defaults, 
@@ -56,7 +56,7 @@ class Granular extends BaseSynth {
     }
 
     i(value, time) {
-        this.messageDevice('i', [value%this.maxI, 0], time)
+        this.messageDevice('i', value%this.maxI, time)
     }
 }
 
