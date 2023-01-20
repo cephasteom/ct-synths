@@ -3,18 +3,21 @@ import { dummy } from './utils';
 import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
-// TODO: this.mono -> send a cut message just before triggering the next note
-// Re-export granular so it only has 2 voices...
+
 class BaseSynth {
     self = this.constructor
     device = null
     ready = false
     params = ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
+    static get baseKeys() {
+        return ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
+    }
     defaults = {dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, a: 10, d: 100, s: 0.8, r: 1000, moda: 10, modd: 100, mods: 0.8, modr: 1000, a: 10, d: 100, s: 1, r: 1000}
     state = {
         last: 60,
     }
 
+    
     constructor() {
         this.output = new Gain(1);
         dummy.connect(this.output);

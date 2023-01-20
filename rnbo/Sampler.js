@@ -8,6 +8,9 @@ class Sampler extends BaseSynth {
     defaults = { ...this.defaults, 
         i: 0, snap: 0, rate: 1, a: 5, d: 10, s: 1, r: 100, bpm: 120, begin: 0, end: 1, loop: 0, oneshot: 0, loopsize: 1 
     }
+    static get keys() {
+        return ['i', 'snap', 'bank', 'begin', 'end', 'loop', 'rate', 'bpm', 'oneshot', 'loopsize']
+    }
     banks = {}
     currentBank = null
     maxI = null

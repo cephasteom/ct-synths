@@ -3,6 +3,9 @@ import BaseSynth from "./BaseSynth";
 class Synth extends BaseSynth {
     json = new URL('./json/additive.export.json', import.meta.url)
     params = [...this.params, 'res', 'cutoff', 'drift', 'pmuln', 'pmul', 'pdisp', 'pexp']
+    static get keys() {
+        return ['res', 'cutoff', 'drift', 'pmuln', 'pmul', 'pdisp', 'pexp']
+    }
     defaults = { 
         ...this.defaults, 
         osc: 0, 

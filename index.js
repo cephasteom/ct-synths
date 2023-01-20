@@ -1,5 +1,3 @@
-import { immediate } from "tone"
-
 import Synth from "./rnbo/Synth";
 import Sampler from "./rnbo/Sampler";
 import Granulator from "./rnbo/Granulator";
@@ -10,33 +8,15 @@ export const CtSampler = Sampler
 export const CtGranulator = Granulator
 export const CtAdditive = Additive
 
-const synthMap = {
-    // drum: DrumSynth, 
-    // duo: DuoSynth,
-    // flex: FlexSynth,
-    // fm: FMSynth,
-    // granular: Granular,
-    // metal: MetalSynth,
-    // mono: MonoSynth,
-    // needs to worked differently with rnbo synths
-    // sampler: Sampler,
-    // synth: FilterSynth
-}
+console.log(Synth.defaults)
 
-
-const paramsMap = Object.keys(synthMap).reduce((obj, type) => {
-    let synth = synthMap[type] && new synthMap[type]()
-    const params = synth && [
-        ...Object.keys(synth.settable),
-        ...Object.keys(synth.mutable)
-    ]
-    synth && synth.dispose && synth.dispose(immediate())
-    synth = null
-
-    return {
-        ...obj,
-        [type]: params
+export const synthTypes = ['synth', 'sampler', 'granular', 'additive']
+export const synthParams = (type) => {
+    switch(type) {
+        case 'synth': return Synth.baseKeys.concat(Synth.keys).join(', ')
+        case 'sampler': return Synth.baseKeys.concat(Sampler.keys).join(', ')
+        case 'granular': return Synth.baseKeys.concat(Granulator.keys).join(', ')
+        case 'additive': return Synth.baseKeys.concat(Additive.keys).join(', ')
+        default: Synth.baseKeys
     }
-}, {})
-
-export const synthParams = (type) => paramsMap[type] || null
+}
