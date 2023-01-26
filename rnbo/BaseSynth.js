@@ -3,14 +3,22 @@ import { dummy } from './utils';
 import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
+const ps = [
+    'dur', 'n', 'pan', 'amp', 'vol', 
+    'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 
+    'moda', 'modd', 'mods', 'modr', 'modacurve', 'moddcurve', 'modrcurve', 
+    'fila', 'fild', 'fils', 'filr', 'filacurve', 'fildcurve', 'filrcurve', 
+    'res', 'cutoff',
+    'dist', 'drive'
+]
 
 class BaseSynth {
     self = this.constructor
     device = null
     ready = false
-    params = ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr', 'res', 'cutoff']
+    params = ps
     static get baseKeys() {
-        return ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr', 'res', 'cutoff']
+        return ps
     }
     defaults = {
         dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, 
