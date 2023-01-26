@@ -8,11 +8,17 @@ class BaseSynth {
     self = this.constructor
     device = null
     ready = false
-    params = ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
+    params = ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr', 'res', 'cutoff']
     static get baseKeys() {
-        return ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr']
+        return ['dur', 'n', 'pan', 'amp', 'vol', 'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 'moda', 'modd', 'mods', 'modr', 'fila', 'fild', 'fils', 'filr', 'res', 'cutoff']
     }
-    defaults = {dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, a: 10, d: 100, s: 0.8, r: 1000, moda: 10, modd: 100, mods: 0.8, modr: 1000, a: 10, d: 100, s: 1, r: 1000}
+    defaults = {
+        dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, 
+        a: 10, d: 100, s: 0.8, r: 1000, 
+        moda: 10, modd: 100, mods: 0.8, modr: 1000,
+        fila: 10, fild: 100, fils: 0.8, filr: 1000,
+        res: 0, cutoff: 20000,
+    }
     state = {
         last: 60,
     }
