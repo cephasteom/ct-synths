@@ -9,7 +9,8 @@ const ps = [
     'moda', 'modd', 'mods', 'modr', 'modacurve', 'moddcurve', 'modrcurve', 
     'fila', 'fild', 'fils', 'filr', 'filacurve', 'fildcurve', 'filrcurve', 
     'res', 'cutoff',
-    'dist', 'drive'
+    'dist', 'drive',
+    'ring', 'ringf', 'ringspread', 'ringmode'
 ]
 
 class BaseSynth {
@@ -26,6 +27,7 @@ class BaseSynth {
         moda: 10, modd: 100, mods: 0.8, modr: 1000,
         fila: 10, fild: 100, fils: 0.8, filr: 1000,
         res: 0, cutoff: 20000,
+        ring: 0, ringf: 0, ringspread: 0, ringmode: 0,
     }
     state = {
         last: 60,
