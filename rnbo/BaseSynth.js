@@ -10,7 +10,8 @@ const ps = [
     'fila', 'fild', 'fils', 'filr', 'filacurve', 'fildcurve', 'filrcurve', 
     'res', 'cutoff',
     'dist', 'drive',
-    'ring', 'ringf', 'ringspread', 'ringmode'
+    'ring', 'ringf', 'ringspread', 'ringmode',
+    'hicut', 'locut'
 ]
 
 class BaseSynth {
@@ -28,6 +29,7 @@ class BaseSynth {
         fila: 10, fild: 100, fils: 0.8, filr: 1000,
         res: 0, cutoff: 20000,
         ring: 0, ringf: 0, ringspread: 0, ringmode: 0,
+        hicut: 0, locut: 0
     }
     state = {
         last: 60,
@@ -84,6 +86,7 @@ class BaseSynth {
         if(!this.ready) return
 
         const ps = {...this.defaults, ...params }
+        console.log(ps.hicut)
         this.setParams(ps, time, 0)
         
         const { n, amp, dur } = ps
