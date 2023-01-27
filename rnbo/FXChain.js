@@ -20,7 +20,6 @@ class FXChain extends RNBODevice {
         hicut: 0, locut: 0,
         chdepth: 0, chlfo: 0, chspread: 0,
     }
-    state = {}
     
     constructor() {
         super()

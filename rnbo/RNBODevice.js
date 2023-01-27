@@ -1,11 +1,10 @@
 import { context as toneContext, Gain } from 'tone';
 import { dummy } from './utils';
-import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
+import { createDevice, MessageEvent } from '@rnbo/js'
 
 const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 
 class RNBODevice {
-    self = this.constructor
     device = null
     ready = false
     json = null
@@ -28,7 +27,7 @@ class RNBODevice {
         this.device = await createDevice({ context, patcher });
         this.device.node.connect(this.output._gainNode._nativeAudioNode);
         this.input._gainNode._nativeAudioNode.connect(this.device.node);
-        
+
         this.ready = true
     }  
 
