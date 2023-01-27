@@ -1,19 +1,11 @@
-import { context as toneContext, Gain } from 'tone';
-import { dummy } from './utils';
-import { createDevice, MIDIEvent, MessageEvent } from '@rnbo/js'
+import { MIDIEvent } from '@rnbo/js'
 import RNBODevice from './RNBODevice'
 
-const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
 const ps = [
     'dur', 'n', 'pan', 'amp', 'vol', 
     'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 
     'moda', 'modd', 'mods', 'modr', 'modacurve', 'moddcurve', 'modrcurve', 
     'fila', 'fild', 'fils', 'filr', 'filacurve', 'fildcurve', 'filrcurve', 
-    'res', 'cutoff',
-    'dist', 'drive',
-    'ring', 'ringf', 'ringspread', 'ringmode',
-    'chdepth', 'chlfo', 'chspread',
-    'hicut', 'locut',
 ]
 
 class BaseSynth extends RNBODevice {
@@ -40,7 +32,6 @@ class BaseSynth extends RNBODevice {
         const ps = {...this.defaults, ...params }
         const { n, amp, dur } = ps
 
-        // TODO: check this for pops, revert to this.state.last if necessary
         n === this.state.n && this.cut(time)
         this.setParams(ps, time, 0)
         
