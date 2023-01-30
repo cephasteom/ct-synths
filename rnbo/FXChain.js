@@ -12,7 +12,7 @@ const ps = [
 class FXChain extends RNBODevice {
     json = new URL('./json/fx.export.json', import.meta.url)
     params = ps
-    static get baseKeys() {
+    static get keys() {
         return ps
     }
     defaults = {
