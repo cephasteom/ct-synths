@@ -4,7 +4,7 @@ import RNBODevice from './RNBODevice'
 const ps = [
     'dist', 'drive',
     'ring', 'ringf', 'ringspread', 'ringmode',
-    'chdepth', 'chlfo', 'chspread',
+    'chorus', 'chdepth', 'chlfo', 'chspread',
     'hicut', 'locut',
     'delay', 'dtime', 'dfb', 'dspread', 'dcolour', 'dfilter',
 ]
@@ -16,10 +16,10 @@ class FXChain extends RNBODevice {
         return ps
     }
     defaults = {
-        dist: 0, drive: 0,
-        ring: 0, ringf: 0, ringspread: 0, ringmode: 0,
+        dist: 0, drive: 0.25,
+        ring: 0, ringf: 0.25, ringspread: 0, ringmode: 0,
         hicut: 0, locut: 0,
-        chdepth: 0, chlfo: 0, chspread: 0,
+        chorus: 0, chdepth: 0.25, chlfo: 0.25, chspread: 0.25,
         delay: 0, dtime: 0, dfb: 0, dspread: 0, dcolour: 0, dfilter: 0, 
     }
     
