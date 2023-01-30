@@ -6,6 +6,7 @@ const ps = [
     'ring', 'ringf', 'ringspread', 'ringmode',
     'chdepth', 'chlfo', 'chspread',
     'hicut', 'locut',
+    'delay', 'dtime', 'dfb', 'dspread', 'dcolour', 'dfilter',
 ]
 
 class FXChain extends RNBODevice {
@@ -19,6 +20,7 @@ class FXChain extends RNBODevice {
         ring: 0, ringf: 0, ringspread: 0, ringmode: 0,
         hicut: 0, locut: 0,
         chdepth: 0, chlfo: 0, chspread: 0,
+        delay: 0, dtime: 0, dfb: 0, dspread: 0, dcolour: 0, dfilter: 0, 
     }
     
     constructor() {
