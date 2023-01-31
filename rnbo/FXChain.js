@@ -7,6 +7,7 @@ const ps = [
     'chorus', 'chdepth', 'chlfo', 'chspread',
     'hicut', 'locut',
     'delay', 'dtime', 'dfb', 'dspread', 'dcolour', 'dfilter',
+    'reverb', 'rsize', 'rdamp', 'rdiff', 'rjitter', 'rdecay',
 ]
 
 class FXChain extends RNBODevice {
@@ -21,6 +22,7 @@ class FXChain extends RNBODevice {
         hicut: 0, locut: 0,
         chorus: 0, chdepth: 0.25, chlfo: 0.25, chspread: 0.25,
         delay: 0, dtime: 0, dfb: 0, dspread: 0, dcolour: 0, dfilter: 0, 
+        reverb: 0, rsize: 0.25, rdamp: 0.25, rdiff: 0.25, rjitter: 0, rdecay: 0.25
     }
     
     constructor() {
