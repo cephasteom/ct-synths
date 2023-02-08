@@ -1,12 +1,10 @@
 import BaseSynth from "./BaseSynth";
+import { synthParams } from "./data";
 
 class Synth extends BaseSynth {
     json = new URL('./json/synth.export.json', import.meta.url)
-    params = [...this.params, 'osc', 'drift', 'harm', 'modi']
-    static get keys() {
-        return ['osc', 'drift', 'harm', 'modi']
-    }
-    defaults = { ...this.defaults, osc: 0, res: 0, cutoff: 20000, drift: 0 }
+    params = [...this.params, ...synthParams]
+    defaults = { ...this.defaults, osc: 0, drift: 0 }
 
     constructor() {
         super()

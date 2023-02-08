@@ -1,13 +1,11 @@
 import { min } from "../utils/core";
 import BaseSynth from "./BaseSynth";
 
-// TODO: begin and end
+import { granularParams } from "./data";
+
 class Granular extends BaseSynth {
     json = new URL('./json/granular.export.json', import.meta.url)
-    params = [...this.params, 'i', 'snap', 'bank', 'grainrate', 'grainsize', 'grainslope', 'grainpan', 'rate', 'bpm', 'direction', 'begin', 'end', 'loop']
-    static get keys() {
-        return ['i', 'snap', 'bank', 'grainrate', 'grainsize', 'grainslope', 'grainpan', 'rate', 'bpm', 'direction', 'begin', 'end', 'loop']
-    }
+    params = [...this.params, ...granularParams]
     defaults = { 
         ...this.defaults, 
         i: 0, 

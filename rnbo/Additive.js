@@ -1,16 +1,12 @@
 import BaseSynth from "./BaseSynth";
+import { additiveParams } from "./data";
 
 class Synth extends BaseSynth {
     json = new URL('./json/additive.export.json', import.meta.url)
-    params = [...this.params, 'res', 'cutoff', 'drift', 'pmuln', 'pmul', 'pdisp', 'pexp']
-    static get keys() {
-        return ['res', 'cutoff', 'drift', 'pmuln', 'pmul', 'pdisp', 'pexp']
-    }
+    params = [...this.params, ...additiveParams]
     defaults = { 
         ...this.defaults, 
         osc: 0, 
-        res: 0, 
-        cutoff: 20000, 
         drift: 1, 
         pmuln: 0, // nth partial to multiply
         pmul: 0, // partial multiplier

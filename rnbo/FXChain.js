@@ -1,21 +1,10 @@
 import { MIDIEvent } from '@rnbo/js'
 import RNBODevice from './RNBODevice'
-
-const ps = [
-    'dist', 'drive',
-    'ring', 'ringf', 'ringspread', 'ringmode',
-    'chorus', 'chdepth', 'chlfo', 'chspread',
-    'hicut', 'locut',
-    'delay', 'dtime', 'dfb', 'dspread', 'dcolour', 'dfilter',
-    'reverb', 'rsize', 'rdamp', 'rdiff', 'rjitter', 'rdecay',
-]
+import { fxParams } from './data'
 
 class FXChain extends RNBODevice {
     json = new URL('./json/fx.export.json', import.meta.url)
-    params = ps
-    static get keys() {
-        return ps
-    }
+    params = fxParams
     defaults = {
         dist: 0, drive: 0.25,
         ring: 0, ringf: 0.25, ringspread: 0, ringmode: 0,

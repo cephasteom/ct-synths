@@ -1,18 +1,12 @@
 import { MIDIEvent } from '@rnbo/js'
 import RNBODevice from './RNBODevice'
-
-const ps = [
-    'dur', 'n', 'pan', 'amp', 'vol', 
-    'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 
-    'moda', 'modd', 'mods', 'modr', 'modacurve', 'moddcurve', 'modrcurve', 
-    'fila', 'fild', 'fils', 'filr', 'filacurve', 'fildcurve', 'filrcurve', 
-]
+import { baseSynthParams } from './data'
 
 class BaseSynth extends RNBODevice {
     self = this.constructor
-    params = ps
+    params = baseSynthParams
     static get baseKeys() {
-        return ps
+        return baseSynthParams
     }
     defaults = {
         dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, 

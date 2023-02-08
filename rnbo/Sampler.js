@@ -1,15 +1,13 @@
 import { min } from "../utils/core";
 import BaseSynth from "./BaseSynth";
+import { samplerParams } from "./data";
 
 // todo: mono mode
 class Sampler extends BaseSynth {
     json = new URL('./json/sampler.export.json', import.meta.url)
-    params = [...this.params, 'i', 'snap', 'bank', 'begin', 'end', 'loop', 'rate', 'bpm', 'oneshot', 'loopsize']
+    params = [...this.params, ...samplerParams]
     defaults = { ...this.defaults, 
         i: 0, snap: 0, rate: 1, a: 5, d: 10, s: 1, r: 100, bpm: 120, begin: 0, end: 1, loop: 0, oneshot: 0, loopsize: 1 
-    }
-    static get keys() {
-        return ['i', 'snap', 'bank', 'begin', 'end', 'loop', 'rate', 'bpm', 'oneshot', 'loopsize']
     }
     banks = {}
     currentBank = null
