@@ -1,4 +1,3 @@
-import { min } from "../utils/core";
 import BaseSynth from "./BaseSynth";
 
 import { granularParams } from "./data";
@@ -36,7 +35,7 @@ class Granular extends BaseSynth {
     async load(urls) {
         this.ready = false
         const dependencies = urls.map((file, i) => ({id: `b${i}`, file}))
-        this.maxI = min(dependencies.length, 32)
+        this.maxI = dependencies.length <= 32 ? dependencies.length : 32
 
         const results = await this.device.loadDataBufferDependencies(dependencies.splice(0, 32));
         
