@@ -1,4 +1,5 @@
 import BaseSynth from "./BaseSynth";
+import { min } from "./utils";
 
 import { granularParams } from "./data";
 
@@ -63,6 +64,7 @@ class Granular extends BaseSynth {
         if(!this.currentBank) return
         const index = value % this.maxI
         if(!this.loadedBuffers.includes(index)) {
+            console.log('hello')
             const fileResponse = await fetch(this.banks[this.currentBank][index]);
 	        fileResponse.arrayBuffer()
                 .then(arrayBuf => this.context.decodeAudioData(arrayBuf))
