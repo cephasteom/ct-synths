@@ -2,7 +2,6 @@ import BaseSynth from "./BaseSynth";
 import { samplerParams } from "./data";
 import { min } from "./utils";
 
-// todo: mono mode
 class Sampler extends BaseSynth {
     json = new URL('./json/sampler.export.json', import.meta.url)
     params = [...this.params, ...samplerParams]
@@ -56,7 +55,7 @@ class Sampler extends BaseSynth {
         Array.from({length: 32}, (_, i) => this.device.releaseDataBuffer(`b${i}`))
         this.loadedBuffers = []
         this.maxI = min(this.banks[name].length, 32)
-        // load entire bank
+        // don't load entire bank
         // this.load(this.banks[name])
     }
 
