@@ -55,8 +55,6 @@ class Sampler extends BaseSynth {
         Array.from({length: 32}, (_, i) => this.device.releaseDataBuffer(`b${i}`))
         this.loadedBuffers = []
         this.maxI = min(this.banks[name].length, 32)
-        // don't load entire bank
-        // this.load(this.banks[name])
     }
 
     async i(value, time) {
@@ -64,10 +62,12 @@ class Sampler extends BaseSynth {
         const index = value % this.maxI
         if(!this.loadedBuffers.includes(index)) {
             const fileResponse = await fetch(this.banks[this.currentBank][index]);
-	        const arrayBuf = await fileResponse.arrayBuffer();
-            const audioBuf = await this.context.decodeAudioData(arrayBuf);
-            this.device.setDataBuffer(`b${index}`, audioBuf)
-            this.loadedBuffers.push(index)
+	        fileResponse.arrayBuffer()
+                .then(arrayBuf => this.context.decodeAudioData(arrayBuf))
+                .then(audioBuf => {
+                    this.device.setDataBuffer(`b${index}`, audioBuf)
+                    this.loadedBuffers.push(index)
+                })
         } 
         this.messageDevice('i', index, time)
     }

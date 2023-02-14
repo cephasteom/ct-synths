@@ -23,6 +23,7 @@ class Granular extends BaseSynth {
     }
     banks = {}
     currentBank = null
+    loadedBuffers = []
     maxI = null
 
     constructor() {
@@ -50,13 +51,27 @@ class Granular extends BaseSynth {
     }
 
     async bank(name) {
-        if(name === this.currentBank) return
+        if(name === this.currentBank || !this.banks[name]) return
         this.currentBank = name 
-        this.banks[name] && this.load(this.banks[name])
+        // clear buffers to free up resources
+        Array.from({length: 32}, (_, i) => this.device.releaseDataBuffer(`b${i}`))
+        this.loadedBuffers = []
+        this.maxI = min(this.banks[name].length, 32)
     }
 
-    i(value, time) {
-        this.messageDevice('i', value%this.maxI, time)
+    async i(value, time) {
+        if(!this.currentBank) return
+        const index = value % this.maxI
+        if(!this.loadedBuffers.includes(index)) {
+            const fileResponse = await fetch(this.banks[this.currentBank][index]);
+	        fileResponse.arrayBuffer()
+                .then(arrayBuf => this.context.decodeAudioData(arrayBuf))
+                .then(audioBuf => {
+                    this.device.setDataBuffer(`b${index}`, audioBuf)
+                    this.loadedBuffers.push(index)
+                })
+        } 
+        this.messageDevice('i', index, time)
     }
 }
 
