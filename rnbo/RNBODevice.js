@@ -8,6 +8,7 @@ class RNBODevice {
     device = null
     ready = false
     json = null
+    context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
     
     state = {
         last: 60,
@@ -24,7 +25,7 @@ class RNBODevice {
         const rawPatcher = await fetch(this.json);
         const patcher = await rawPatcher.json();
         
-        this.device = await createDevice({ context, patcher });
+        this.device = await createDevice({ context: this.context, patcher });
         this.device.node.connect(this.output._gainNode._nativeAudioNode);
         this.input._gainNode._nativeAudioNode.connect(this.device.node);
 

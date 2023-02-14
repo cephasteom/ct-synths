@@ -1,5 +1,6 @@
 import BaseSynth from "./BaseSynth";
 import { samplerParams } from "./data";
+import { min } from "./utils";
 
 // todo: mono mode
 class Sampler extends BaseSynth {
@@ -10,6 +11,7 @@ class Sampler extends BaseSynth {
     }
     banks = {}
     currentBank = null
+    loadedBuffers = []
     maxI = null
 
     constructor() {
@@ -48,13 +50,27 @@ class Sampler extends BaseSynth {
     }
 
     async bank(name) {
-        if(name === this.currentBank) return
+        if(name === this.currentBank || !this.banks[name]) return
         this.currentBank = name 
-        this.banks[name] && this.load(this.banks[name])
+        // clear buffers to free up resources
+        Array.from({length: 32}, (_, i) => this.device.releaseDataBuffer(`b${i}`))
+        this.loadedBuffers = []
+        this.maxI = min(this.banks[name].length, 32)
+        // load entire bank
+        // this.load(this.banks[name])
     }
 
-    i(value, time) {
-        this.messageDevice('i', value%this.maxI, time)
+    async i(value, time) {
+        if(!this.currentBank) return
+        const index = value % this.maxI
+        if(!this.loadedBuffers.includes(index)) {
+            const fileResponse = await fetch(this.banks[this.currentBank][index]);
+	        const arrayBuf = await fileResponse.arrayBuffer();
+            const audioBuf = await this.context.decodeAudioData(arrayBuf);
+            this.device.setDataBuffer(`b${index}`, audioBuf)
+            this.loadedBuffers.push(index)
+        } 
+        this.messageDevice('i', index, time)
     }
 }
 
