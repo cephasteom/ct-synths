@@ -2,8 +2,6 @@ import { context as toneContext, Gain } from 'tone';
 import { dummy } from './utils';
 import { createDevice, MessageEvent } from '@rnbo/js'
 
-const context = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
-
 class RNBODevice {
     device = null
     ready = false
