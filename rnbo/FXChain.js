@@ -10,7 +10,7 @@ class FXChain extends RNBODevice {
         ring: 0, ringf: 0.25, ringspread: 0, ringmode: 0,
         hicut: 0, locut: 0,
         chorus: 0, chdepth: 0.25, chlfo: 0.25, chspread: 0.25,
-        delay: 0, dtime: 0, dfb: 0, dspread: 0, dcolour: 0, dfilter: 0, 
+        delay: 0, dtime: 500, dfb: 0.5, dspread: 0, dcolour: 0.25, dfilter: 0, 
         reverb: 0, rsize: 0.25, rdamp: 0.25, rdiff: 0.25, rjitter: 0, rdecay: 0.25
     }
     
