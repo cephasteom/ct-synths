@@ -7,6 +7,7 @@ export const fxParams = [
     'hicut', 'locut',
     'delay', 'dtime', 'dfb', 'dspread', 'dcolour', 'dfilter',
     'reverb', 'rsize', 'rdamp', 'rdiff', 'rjitter', 'rdecay',
+    'gain', 'lthresh'
 ]
 
 export const baseSynthParams = [
