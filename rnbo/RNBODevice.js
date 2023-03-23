@@ -14,7 +14,7 @@ class RNBODevice {
 
     constructor() {
         this.input = new Gain(1);
-        this.output = new Gain(1);
+        this.output = new Gain(1).toDestination();
         dummy.connect(this.output);
         dummy.connect(this.input);
     }
