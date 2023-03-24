@@ -34,7 +34,6 @@ class BaseSynth extends RNBODevice {
     }
 
     release(n, time) {
-        console.log(n, time)
         // listen for note off messages
         this.messageDevice('hold', 1, time)
         // schedule note off event
