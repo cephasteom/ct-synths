@@ -9,7 +9,7 @@ class BaseSynth extends RNBODevice {
         return baseSynthParams
     }
     defaults = {
-        dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, 
+        dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, hold: 0,
         a: 10, d: 100, s: 0.8, r: 1000, 
         moda: 10, modd: 100, mods: 0.8, modr: 1000,
         fila: 10, fild: 100, fils: 0.8, filr: 1000,
@@ -31,9 +31,14 @@ class BaseSynth extends RNBODevice {
         
         const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, (n || 60), amp * 66]);
         this.device.scheduleEvent(noteOnEvent);
-        
-        // TODO: I don't think we are using this...
-        const noteOffEvent = new MIDIEvent((time * 1000) + (dur || 500), 0, [128, n, 0]);
+    }
+
+    release(n, time) {
+        console.log(n, time)
+        // listen for note off messages
+        this.messageDevice('hold', 1, time)
+        // schedule note off event
+        const noteOffEvent = new MIDIEvent(time * 1000 + 10, 0, [128, n, 0]);
         this.device.scheduleEvent(noteOffEvent)
     }
 

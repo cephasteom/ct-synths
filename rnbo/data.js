@@ -11,7 +11,7 @@ export const fxParams = [
 ]
 
 export const baseSynthParams = [
-    'dur', 'n', 'pan', 'amp', 'vol', 
+    'dur', 'n', 'pan', 'amp', 'vol', 'hold',
     'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 
     'moda', 'modd', 'mods', 'modr', 'modacurve', 'moddcurve', 'modrcurve', 
     'fila', 'fild', 'fils', 'filr', 'filacurve', 'fildcurve', 'filrcurve', 
