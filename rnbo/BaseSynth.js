@@ -21,10 +21,11 @@ class BaseSynth extends RNBODevice {
     }
 
     play(params = {}, time) {
+        
         if(!this.ready) return
 
         const ps = {...this.defaults, ...params }
-        const { n, amp, dur } = ps
+        const { n, amp } = ps
 
         n === this.state.n && this.cut(time)
         this.setParams(ps, time, 0)
@@ -37,7 +38,7 @@ class BaseSynth extends RNBODevice {
         // listen for note off messages
         this.messageDevice('hold', 1, time)
         // schedule note off event
-        const noteOffEvent = new MIDIEvent(time * 1000 + 10, 0, [128, n, 0]);
+        const noteOffEvent = new MIDIEvent((time * 1000) + 10, 0, [128, n, 0]);
         this.device.scheduleEvent(noteOffEvent)
     }
 
