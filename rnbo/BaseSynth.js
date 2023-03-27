@@ -35,8 +35,6 @@ class BaseSynth extends RNBODevice {
     }
 
     release(n, time) {
-        // listen for note off messages
-        this.messageDevice('hold', 1, time)
         // schedule note off event
         const noteOffEvent = new MIDIEvent((time * 1000) + 10, 0, [128, n, 0]);
         this.device.scheduleEvent(noteOffEvent)

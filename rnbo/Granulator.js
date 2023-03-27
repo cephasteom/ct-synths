@@ -27,12 +27,17 @@ class Granular extends BaseSynth {
     loadedBuffers = []
     maxI = null
 
-    constructor() {
+    constructor(urls) {
         super()
         this.params = [...this.params, ...this.params.map(p => `_${p}`)]
         this.initParams()
-        this.initDevice()
+        this.init(urls)
     }
+
+    async init(urls) {
+        await this.initDevice()
+        urls && this.load(urls)
+    } 
     
     async load(urls) {
         this.ready = false
