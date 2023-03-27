@@ -20,7 +20,10 @@ class Granular extends BaseSynth {
         grainsize: 0.125, 
         grainslope: 0.01, 
         grainpan: 0.2, 
-        direction: 1 
+        direction: 1,
+        begin: 0,
+        end: 1,
+    
     }
     banks = {}
     currentBank = null
