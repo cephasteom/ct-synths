@@ -30,7 +30,7 @@ class BaseSynth extends RNBODevice {
         n === this.state.n && this.cut(time)
         this.setParams(ps, time, 0)
         
-        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, (n || 60), amp * 66]);
+        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, (n || 60), amp * 127]);
         this.device.scheduleEvent(noteOnEvent);
     }
 
