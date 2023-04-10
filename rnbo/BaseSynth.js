@@ -13,7 +13,7 @@ class BaseSynth extends RNBODevice {
         a: 10, d: 100, s: 0.8, r: 1000, 
         moda: 10, modd: 100, mods: 0.8, modr: 1000,
         fila: 10, fild: 100, fils: 0.8, filr: 1000,
-        res: 0, cutoff: 20000,
+        res: 0, cutoff: 20000, detune: 0,
     }
     
     constructor() {

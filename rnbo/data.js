@@ -15,7 +15,7 @@ export const baseSynthParams = [
     'a', 'd', 's', 'r', 'acurve', 'dcurve', 'rcurve', 
     'moda', 'modd', 'mods', 'modr', 'modacurve', 'moddcurve', 'modrcurve', 
     'fila', 'fild', 'fils', 'filr', 'filacurve', 'fildcurve', 'filrcurve', 
-    'res', 'cutoff'
+    'res', 'cutoff', 'detune'
 ]
 
 export const additiveParams = ['drift', 'pmuln', 'pmul', 'pdisp', 'pexp']
