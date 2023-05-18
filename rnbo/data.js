@@ -26,12 +26,15 @@ export const samplerParams = ['i', 'snap', 'bank', 'begin', 'end', 'loop', 'rate
 
 export const synthParams = ['osc', 'drift', 'harm', 'modi']
 
+export const acidParams = ['osc', 'slide', 'fil', 'sub']
+
 export const params = (type) => {
     switch(type) {
         case 'synth': return baseSynthParams.concat(synthParams).join(', ')
         case 'sampler': return baseSynthParams.concat(samplerParams).join(', ')
         case 'granular': return baseSynthParams.concat(granularParams).join(', ')
         case 'additive': return baseSynthParams.concat(additiveParams).join(', ')
+        case 'acid': return baseSynthParams.concat(acidParams).join(', ')
         case 'fx': return fxParams.join(', ')
         default: 'invalid or no type'
     }
