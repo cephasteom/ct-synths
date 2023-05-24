@@ -25,6 +25,8 @@ A library of instruments and FX build with RNBO, exported to wasm and ready for 
 * rand: 0 - 1. Randomly delay harmonic amp envelope retriggering.
 * slide: ms. Slide between different pitches.
 * pitch: 0 - 1. Bends pitch with amplitude envelope. 0.5 is no bend. 0 bend down. 1 bend up.
+* moda: ms. How long the drone envelope takes to rise
+* modd: ms. How long the drone envelope takes to fall
 
 ## FX
 

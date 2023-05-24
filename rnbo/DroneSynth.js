@@ -9,7 +9,7 @@ class DroneSynth extends BaseSynth {
         ...this.defaults, 
         vol: 1, amp: 1,
         lforate: 0.1, lfodepth: 0.1, spread: 1, offset: 0, damp: 0.5, dynamic: 0.5, rand: 1, slide: 100, pitch: 0.5,
-        dur: 40000, a: 5000, d: 5000, s: 1, r: 1000, res: 1
+        dur: 40000, a: 1000, d: 0, s: 1, r: 1000, res: 1, moda: 5000, modd: 5000
     }
 
     constructor() {
