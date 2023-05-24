@@ -28,6 +28,8 @@ export const synthParams = ['osc', 'drift', 'harm', 'modi']
 
 export const acidParams = ['osc', 'slide', 'fil', 'sub']
 
+export const subParams = ['fat', 'slide']
+
 export const droneParams = ['lforate', 'lfodepth', 'spread', 'offset', 'damp', 'dynamic', 'rand', 'slide', 'pitch']
 
 export const params = (type) => {
