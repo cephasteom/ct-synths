@@ -28,6 +28,9 @@ A library of instruments and FX build with RNBO, exported to wasm and ready for 
 * moda: ms. How long the drone envelope takes to rise
 * modd: ms. How long the drone envelope takes to fall
 
+## Sub
+* fat: 0 - 1. Amount of fm.
+* slide: ms.
 ## FX
 
 ### FX chain
