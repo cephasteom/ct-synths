@@ -9,7 +9,8 @@ class SubSynth extends BaseSynth {
         ...this.defaults, 
         slide: 10, fat: 0.5, 
         dur: 1000, a: 100, d: 100, s: 0.75, r: 1000, fila: 0, fild: 100, fils: 1, filr: 100, res: 0,
-        moda: 10, modd: 0
+        moda: 10, modd: 0,
+        lfodepth: 0, lforate: 1,
     }
 
     constructor() {

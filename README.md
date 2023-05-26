@@ -31,6 +31,8 @@ A library of instruments and FX build with RNBO, exported to wasm and ready for 
 ## Sub
 * fat: 0 - 1. Amount of fm.
 * slide: ms.
+* lforate: ms. LFO on amplitude.
+* lfodepth: 0 - 1. LFO on amplitude.
 ## FX
 
 ### FX chain
