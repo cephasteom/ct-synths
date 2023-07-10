@@ -61,11 +61,11 @@ class RNBODevice {
             })
     }
 
-    mutate(params = {}, time, lag = 0.1) {
+    mutate(params = {}, time, lag = 100) {
         if(!this.ready) return
         const ps = Object.entries(params).reduce((obj, [key, value]) => ({ ...obj, [`_${key}`]: value }), {})
         this.setParams(ps, time, 1)
-        this.messageDevice('mutate', lag * 1000, time)
+        this.messageDevice('mutate', lag, time)
     }
 
 }
