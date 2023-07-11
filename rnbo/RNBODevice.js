@@ -53,7 +53,6 @@ class RNBODevice {
     }
 
     setParams(params, time) {
-        console.log(params)
         const settable = this.settable
         Object.entries(params)
             .forEach(([key, value]) => {
