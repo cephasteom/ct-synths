@@ -3,6 +3,11 @@ import RNBODevice from './RNBODevice'
 import { fxParams } from './data'
 import type { Dictionary } from '../types'
 
+/**
+ * The FX Chain applied to the output of each stream.
+ * @example
+ * s0.p.reverb.set(0.5)
+ */ 
 class FXChain extends RNBODevice {
     /** @hidden */
     json = new URL('./json/fx.export.json', import.meta.url)
@@ -21,6 +26,7 @@ class FXChain extends RNBODevice {
         gain: 1, lthresh: 1
     }
     
+    /** @hidden */
     constructor() {
         super()
         this.initDevice()
@@ -81,6 +87,7 @@ class FXChain extends RNBODevice {
         this.params = Object.getOwnPropertyNames(this)
     }
 
+    /** @hidden */
     set(params: Dictionary = {}, time: number) {
         if(!this.ready) return
         const ps = {...this.defaults, ...params }

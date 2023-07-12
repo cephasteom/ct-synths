@@ -1,7 +1,11 @@
 import BaseSynth from "./BaseSynth";
-import { synthParams } from "./data";
 import type { Dictionary } from "../types";
 
+/**
+ * An all purpose synth with filters and FM
+ * @example
+ * s0.p.set({inst: 'synth'})
+ */ 
 class Synth extends BaseSynth {
 
     /** @hidden */
