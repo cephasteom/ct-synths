@@ -86,6 +86,7 @@ class RNBODevice {
 
     /** @hidden */
     setParams(params: Dictionary, time: number) {
+        // TODO: replace with this.params.includes(key) etc...
         const settable = this.settable
         Object.entries(params)
             .forEach(([key, value]) => {
