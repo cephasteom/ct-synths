@@ -1,12 +1,13 @@
 import BaseSynth from "./BaseSynth";
 import { synthParams } from "./data";
+import type { Dictionary } from "../types";
 
 class Synth extends BaseSynth {
     
-    params = [...this.params, ...synthParams]
-    defaults = { ...this.defaults, osc: 0, drift: 0 }
+    params: string[] = [...this.params, ...synthParams]
+    defaults: Dictionary = { ...this.defaults, osc: 0, drift: 0 }
 
-    constructor(args = {}) {
+    constructor(args: any = {}) {
         super()
         this.json = args.lite 
             ? new URL('./json/synth-lite.export.json', import.meta.url)

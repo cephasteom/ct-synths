@@ -32,7 +32,7 @@ export const subParams = ['fat', 'slide', 'lforate', 'lfodepth']
 
 export const droneParams = ['lforate', 'lfodepth', 'spread', 'offset', 'damp', 'dynamic', 'rand', 'slide', 'pitch']
 
-export const params = (type) => {
+export const params = (type: string) => {
     switch(type) {
         case 'synth': return baseSynthParams.concat(synthParams).join(', ')
         case 'sampler': return baseSynthParams.concat(samplerParams).join(', ')
