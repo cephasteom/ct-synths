@@ -1,6 +1,7 @@
 import { MIDIEvent } from '@rnbo/js'
 import RNBODevice from './RNBODevice'
 import { fxParams } from './data'
+import type { Dictionary } from '../types'
 
 class FXChain extends RNBODevice {
     /** @hidden */
@@ -80,7 +81,7 @@ class FXChain extends RNBODevice {
         this.params = Object.getOwnPropertyNames(this)
     }
 
-    set(params = {}, time) {
+    set(params: Dictionary = {}, time: number) {
         if(!this.ready) return
         const ps = {...this.defaults, ...params }
         this.setParams(ps, time)
@@ -108,20 +109,21 @@ class FXChain extends RNBODevice {
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    drive(value: number = 0, time: number): void { this.messageDevice('drive', value, time) }
+    drive(value: number = 0.5, time: number): void { this.messageDevice('drive', value, time) }
 
     /**
      * Mutate the distortion drive
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _drive(value: number = 0, time: number): void { this.messageDevice('_drive', value, time) }
+    _drive(value: number = 0.5, time: number): void { this.messageDevice('_drive', value, time) }
 
     /**
      * Ring modulator amount
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
+    
     ring(value: number = 0, time: number): void { this.messageDevice('ring', value, time) }
 
     /**
@@ -136,14 +138,14 @@ class FXChain extends RNBODevice {
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    ringf(value: number = 0, time: number): void { this.messageDevice('ringf', value, time) }
+    ringf(value: number = 0.25, time: number): void { this.messageDevice('ringf', value, time) }
 
     /**
      * Mutate the ring modulator pitch
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _ringf(value: number = 0, time: number): void { this.messageDevice('_ringf', value, time) }
+    _ringf(value: number = 0.25, time: number): void { this.messageDevice('_ringf', value, time) }
 
     /**
      * Ring modulator spread
@@ -192,48 +194,49 @@ class FXChain extends RNBODevice {
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */
-    chdepth(value: number = 0, time: number): void { this.messageDevice('chdepth', value, time) }
+    chdepth(value: number = 0.25, time: number): void { this.messageDevice('chdepth', value, time) }
 
     /**
      * Mutate the chorus depth
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _chdepth(value: number = 0, time: number): void { this.messageDevice('_chdepth', value, time) }
+    _chdepth(value: number = 0.25, time: number): void { this.messageDevice('_chdepth', value, time) }
 
     /**
      * Chorus LFO
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    chlfo(value: number = 0, time: number): void { this.messageDevice('chlfo', value, time) }
+    chlfo(value: number = 0.25, time: number): void { this.messageDevice('chlfo', value, time) }
 
     /**
      * Mutate the chorus LFO
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _chlfo(value: number = 0, time: number): void { this.messageDevice('_chlfo', value, time) }
+    _chlfo(value: number = 0.25, time: number): void { this.messageDevice('_chlfo', value, time) }
 
     /**
      * Chorus spread
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    chspread(value: number = 0, time: number): void { this.messageDevice('chspread', value, time) }
+    chspread(value: number = 0.25, time: number): void { this.messageDevice('chspread', value, time) }
 
     /**
      * Mutate the chorus spread
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _chspread(value: number = 0, time: number): void { this.messageDevice('_chspread', value, time) }
+    _chspread(value: number = 0.25, time: number): void { this.messageDevice('_chspread', value, time) }
 
     /**
      * Hicut filter
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */
+    
     hicut(value: number = 0, time: number): void { this.messageDevice('hicut', value, time) }
 
     /**
@@ -276,28 +279,28 @@ class FXChain extends RNBODevice {
      * @param value - in ms
      * @param {number} time - time to set parameter in seconds
      */ 
-    dtime(value: number = 0, time: number): void { this.messageDevice('dtime', value, time) }
+    dtime(value: number = 500, time: number): void { this.messageDevice('dtime', value, time) }
 
     /**
      * Mutate the delay time - may cause clicks
      * @param value - in ms
      * @param {number} time - time of mutation
      */ 
-    _dtime(value: number = 0, time: number): void { this.messageDevice('_dtime', value, time) }
+    _dtime(value: number = 500, time: number): void { this.messageDevice('_dtime', value, time) }
 
     /**
      * Delay feedback
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    dfb(value: number = 0, time: number): void { this.messageDevice('dfb', value, time) }
+    dfb(value: number = 0.5, time: number): void { this.messageDevice('dfb', value, time) }
 
     /**
      * Mutate the delay feedback
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _dfb(value: number = 0, time: number): void { this.messageDevice('_dfb', value, time) }
+    _dfb(value: number = 0.5, time: number): void { this.messageDevice('_dfb', value, time) }
 
     /**
      * Delay spread
@@ -318,20 +321,21 @@ class FXChain extends RNBODevice {
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */
-    dcolour(value: number = 0, time: number): void { this.messageDevice('dcolour', value, time) }
+    dcolour(value: number = 0.25, time: number): void { this.messageDevice('dcolour', value, time) }
 
     /**
      * Mutate the delay colour
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _dcolour(value: number = 0, time: number): void { this.messageDevice('_dcolour', value, time) }
+    _dcolour(value: number = 0.25, time: number): void { this.messageDevice('_dcolour', value, time) }
 
     /**
      * Delay filter
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
+    
     dfilter(value: number = 0, time: number): void { this.messageDevice('dfilter', value, time) }
 
     /**
@@ -360,42 +364,42 @@ class FXChain extends RNBODevice {
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    rsize(value: number = 0, time: number): void { this.messageDevice('rsize', value, time) }
+    rsize(value: number = 0.25, time: number): void { this.messageDevice('rsize', value, time) }
 
     /**
      * Mutate the reverb size
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _rsize(value: number = 0, time: number): void { this.messageDevice('_rsize', value, time) }
+    _rsize(value: number = 0.25, time: number): void { this.messageDevice('_rsize', value, time) }
 
     /**
      * Reverb dampening
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    rdamp(value: number = 0, time: number): void { this.messageDevice('rdamp', value, time) }
+    rdamp(value: number = 0.25, time: number): void { this.messageDevice('rdamp', value, time) }
 
     /**
      * Mutate the reverb dampening
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _rdamp(value: number = 0, time: number): void { this.messageDevice('_rdamp', value, time) }
+    _rdamp(value: number = 0.25, time: number): void { this.messageDevice('_rdamp', value, time) }
 
     /**
      * Reverb diffusion
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    rdiff(value: number = 0, time: number): void { this.messageDevice('rdiff', value, time) }
+    rdiff(value: number = 0.25, time: number): void { this.messageDevice('rdiff', value, time) }
 
     /**
      * Mutate the reverb diffusion
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _rdiff(value: number = 0, time: number): void { this.messageDevice('_rdiff', value, time) }
+    _rdiff(value: number = 0.25, time: number): void { this.messageDevice('_rdiff', value, time) }
 
     /**
      * Reverb jitter
@@ -416,28 +420,28 @@ class FXChain extends RNBODevice {
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    rdecay(value: number = 0, time: number): void { this.messageDevice('rdecay', value, time) }
+    rdecay(value: number = 0.25, time: number): void { this.messageDevice('rdecay', value, time) }
 
     /**
      * Mutate the reverb decay
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _rdecay(value: number = 0, time: number): void { this.messageDevice('_rdecay', value, time) }
+    _rdecay(value: number = 0.25, time: number): void { this.messageDevice('_rdecay', value, time) }
 
     /**
      * Gain of channel
      * @param value - 0 to 1
      * @param {number} time - time to set parameter in seconds
      */ 
-    gain(value: number = 0, time: number): void { this.messageDevice('gain', value, time) }
+    gain(value: number = 1, time: number): void { this.messageDevice('gain', value, time) }
 
     /**
      * Mutate the gain of channel
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _gain(value: number = 0, time: number): void { this.messageDevice('_gain', value, time) }
+    _gain(value: number = 1, time: number): void { this.messageDevice('_gain', value, time) }
 
     /**
      * Limiter threshold
@@ -445,14 +449,14 @@ class FXChain extends RNBODevice {
      * @param {number} time - time to set parameter in seconds
      * @param {number} time - time to set parameter in seconds
      */ 
-    lthresh(value: number = 0, time: number): void { this.messageDevice('lthresh', value, time) }
+    lthresh(value: number = 1, time: number): void { this.messageDevice('lthresh', value, time) }
 
     /**
      * Mutate the limiter threshold
      * @param value - 0 to 1
      * @param {number} time - time of mutation
      */ 
-    _lthresh(value: number = 0, time: number): void { this.messageDevice('_lthresh', value, time) }
+    _lthresh(value: number = 1, time: number): void { this.messageDevice('_lthresh', value, time) }
 }
 
 export default FXChain
