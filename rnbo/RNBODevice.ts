@@ -75,24 +75,23 @@ class RNBODevice {
         this.output.connect(node)
     }
 
-    /** @hidden */
-    get settable() { 
-        return this.params.reduce((obj, key) => ({ 
-            ...obj, 
-            // @ts-ignore
-            [key]: this[key] 
-        }), {})
-    }
+    // /** @hidden */
+    // get settable() { 
+    //     return this.params.reduce((obj, key) => ({ 
+    //         ...obj, 
+    //         // @ts-ignore
+    //         [key]: this[key] 
+    //     }), {})
+    // }
 
     /** @hidden */
     setParams(params: Dictionary, time: number) {
-        // TODO: replace with this.params.includes(key) etc...
-        const settable = this.settable
         Object.entries(params)
+            .filter(([key, _]: [string, any]) => this.params.includes(key)) 
             .forEach(([key, value]) => {
                 this.state[key] = value
                 // @ts-ignore
-                settable[key] && settable[key](value, time)
+                this[key] && this[key](value, time)
             })
     }
 

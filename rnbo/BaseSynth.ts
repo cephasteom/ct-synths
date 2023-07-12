@@ -26,7 +26,7 @@ class BaseSynth extends RNBODevice {
     
     constructor() {
         super()
-        this.params = baseSynthParams
+        // this.params = baseSynthParams
         this.dur = this.dur.bind(this)
         this.n = this.n.bind(this)
         this._n = this._n.bind(this)
@@ -126,6 +126,12 @@ class BaseSynth extends RNBODevice {
      * @returns {void}
      */ 
     n(value: number, time: number): void { this.messageDevice('n', value, time) }
+
+    /**
+     * Mutate the midi note number of an event
+     * @param {number} value - midi note number
+     * @param {number} time - time of mutation
+     */ 
     _n(value: number, time: number): void { this.messageDevice('_n', value, time) }
 
     /**
@@ -136,6 +142,12 @@ class BaseSynth extends RNBODevice {
      * @returns {void}
      */ 
     pan(value: number, time: number): void { this.messageDevice('pan', value, time) }
+
+    /**
+     * Mutate the pan of an event
+     * @param {number} value - pan value, from 0 to 1
+     * @param {number} time - time of mutation
+     */ 
     _pan(value: number, time: number): void { this.messageDevice('_pan', value, time) }
 
 
@@ -147,6 +159,12 @@ class BaseSynth extends RNBODevice {
      * @returns {void}
      */ 
     amp(value: number, time: number): void { this.messageDevice('amp', value, time) }
+
+    /**
+     * Mutate the amplitude of an event
+     * @param {number} value - amplitude value, from 0 to 1
+     * @param {number} time - time of mutation
+     */ 
     _amp(value: number, time: number): void { this.messageDevice('_amp', value, time) }
 
     /**
@@ -157,6 +175,12 @@ class BaseSynth extends RNBODevice {
      * @returns {void}
      */ 
     vol(value: number, time: number): void { this.messageDevice('vol', value, time) }
+
+    /**
+     * Mutate the volume of an event
+     * @param {number} value - volume value, from 0 to 1
+     * @param {number} time - time of mutation
+     */ 
     _vol(value: number, time: number): void { this.messageDevice('_vol', value, time) }
 
     /**
@@ -355,6 +379,12 @@ class BaseSynth extends RNBODevice {
      * @returns {void}
      */ 
     res(value: number, time: number): void { this.messageDevice('res', value, time) }
+
+    /**
+     * Mutate the resonance of the filter
+     * @param {number} value - resonance value, from 0 to 1
+     * @param {number} time - time of mutation
+     */ 
     _res(value: number, time: number): void { this.messageDevice('_res', value, time) }
 
     /**
@@ -365,6 +395,12 @@ class BaseSynth extends RNBODevice {
      * @returns {void}
      */ 
     cutoff(value: number, time: number): void { this.messageDevice('cutoff', value, time) }
+
+    /**
+     * Mutate the cutoff of the filter
+     * @param {number} value - cutoff value, in Hz
+     * @param {number} time - time of mutation
+     */ 
     _cutoff(value: number, time: number): void { this.messageDevice('_cutoff', value, time) }
 
     /**
@@ -375,6 +411,12 @@ class BaseSynth extends RNBODevice {
      * @returns {void}
      */ 
     detune(value: number, time: number): void { this.messageDevice('detune', value, time) }
+
+    /**
+     * Mutate the detune of the pitch
+     * @param {number} value - detune value, in semitones
+     * @param {number} time - time of mutation
+     */ 
     _detune(value: number, time: number): void { this.messageDevice('_detune', value, time) }
 }
 
