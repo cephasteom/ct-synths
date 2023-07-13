@@ -4,7 +4,7 @@ import { fxParams } from './data'
 import type { Dictionary } from '../types'
 
 /**
- * The FX Chain applied to the output of each stream.
+ * The chain of effect applied to the output of each stream. Each effect remains inactive until the amount is set to a value greater than 0.
  * @example
  * s0.p.reverb.set(0.5)
  */ 

@@ -1,6 +1,6 @@
 import Synth from "./rnbo/Synth";
 import Sampler from "./rnbo/Sampler";
-import Granulator from "./rnbo/Granulator";
+import Granulator from "./rnbo/Granular";
 import Additive from "./rnbo/Additive";
 import AcidSynth from "./rnbo/AcidSynth";
 import DroneSynth from "./rnbo/DroneSynth";
