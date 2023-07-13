@@ -332,7 +332,9 @@ class FXChain extends RNBODevice {
      * Reverb size
      * @param value - 0 to 1
      */ 
-    rsize(value: number = 0.25, time: number): void { this.messageDevice('rsize', value, time) }
+    rsize(value: number = 0.25, time: number): void { 
+        this.messageDevice('rsize', value, time) 
+    }
 
     /**
      * Mutate the reverb size

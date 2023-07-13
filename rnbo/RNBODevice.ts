@@ -81,6 +81,7 @@ class RNBODevice {
         Object.entries(params)
             .filter(([key, _]: [string, any]) => this.params.includes(key)) 
             .forEach(([key, value]) => {
+                if(this.state[key] === value) return
                 this.state[key] = value
                 // @ts-ignore
                 this[key] && this[key](value, time)
