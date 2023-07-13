@@ -64,7 +64,6 @@ class BaseSynth extends RNBODevice {
     /**
      * Trigger a musical event with the given parameters, at the given time.
      * @param {Dictionary} params - parameters to set
-     * @param {number} time - time to trigger event in seconds
      * @hidden
      */ 
     play(params: Dictionary = {}, time: number): void {
@@ -83,7 +82,7 @@ class BaseSynth extends RNBODevice {
     /**
      * Release any events playing at the given note
      * @param {number} n - midi note number
-     * @param {number} time - time to release note
+     * @hidden
      */ 
     release(n: number, time: number): void {
         if(!this.ready) return
@@ -94,8 +93,8 @@ class BaseSynth extends RNBODevice {
 
     /**
      * Cut all events playing at the given time
-     * @param {number} time - time to cut events
      * @param {number} ms - time in ms taken to release events
+     * @hidden
      */ 
     cut(time: number, ms: number = 10): void {
         if(!this.ready) return
@@ -105,35 +104,30 @@ class BaseSynth extends RNBODevice {
     /**
      * Set the duration of an event
      * @param {number} value - duration in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     dur(value: number = 1000, time: number): void { this.messageDevice('dur', value, time) }
 
     /**
      * Set the midi note number of an event
      * @param {number} value - midi note number
-     * @param {number} time - time to set parameter in seconds
      */ 
     n(value: number = 60, time: number): void { this.messageDevice('n', value, time) }
 
     /**
      * Mutate the midi note number of an event
      * @param {number} value - midi note number
-     * @param {number} time - time of mutation
      */ 
     _n(value: number = 60, time: number): void { this.messageDevice('_n', value, time) }
 
     /**
      * Set the pan of an event
      * @param {number} value - pan value, from 0 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     pan(value: number = 0.5, time: number): void { this.messageDevice('pan', value, time) }
 
     /**
      * Mutate the pan of an event
      * @param {number} value - pan value, from 0 to 1
-     * @param {number} time - time of mutation
      */ 
     _pan(value: number = 0.5, time: number): void { this.messageDevice('_pan', value, time) }
 
@@ -141,224 +135,192 @@ class BaseSynth extends RNBODevice {
     /**
      * Set the amplitude of an event
      * @param {number} value - amplitude value, from 0 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     amp(value: number = 1, time: number): void { this.messageDevice('amp', value, time) }
 
     /**
      * Mutate the amplitude of an event
      * @param {number} value - amplitude value, from 0 to 1
-     * @param {number} time - time of mutation
      */ 
     _amp(value: number = 1, time: number): void { this.messageDevice('_amp', value, time) }
 
     /**
      * Set the volume of an event
      * @param {number} value - volume value, from 0 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     vol(value: number = 1, time: number): void { this.messageDevice('vol', value, time) }
 
     /**
      * Mutate the volume of an event
      * @param {number} value - volume value, from 0 to 1
-     * @param {number} time - time of mutation
      */ 
     _vol(value: number = 1, time: number): void { this.messageDevice('_vol', value, time) }
 
     /**
      * Set the hold of an event
      * @param {number} value - hold value, from 0 to 1??
-     * @param {number} time - time to set parameter in seconds
      */ 
     hold(value: number, time: number) { this.messageDevice('hold', value, time) }
 
     /**
      * Set the attack of an event
      * @param {number} value - attack value in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     a(value: number = 10, time: number): void { this.messageDevice('a', value, time) }
 
     /**
      * Set the decay of an event
      * @param {number} value - decay value in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     d(value: number = 100, time: number): void { this.messageDevice('d', value, time) }
 
     /**
      * Set the sustain of an event
      * @param {number} value - sustain value, from 0 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     s(value: number = 0.5, time: number): void { this.messageDevice('s', value, time) }
 
     /**
      * Set the release of an event
      * @param {number} value - release value in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     r(value: number = 1000, time: number): void { this.messageDevice('r', value, time) }
 
     /**
      * Set the attack curve of an event
      * @param {number} value - attack curve value, from -1 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     acurve(value: number, time: number): void { this.messageDevice('acurve', value, time) }
 
     /**
      * Set the decay curve of an event
      * @param {number} value - decay curve value, from -1 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     dcurve(value: number, time: number): void { this.messageDevice('dcurve', value, time) }
 
     /**
      * Set the release curve of an event
      * @param {number} value - release curve value, from -1 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     rcurve(value: number, time: number): void { this.messageDevice('rcurve', value, time) }
 
     /**
      * Set the attack of the modulation envelope of an event
      * @param {number} value - attack value in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     moda(value: number = 10, time: number): void { this.messageDevice('moda', value, time) }
 
     /**
      * Set the decay of the modulation envelope of an event
      * @param {number} value - decay value in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     modd(value: number = 100, time: number): void { this.messageDevice('modd', value, time) }
 
     /**
      * Set the sustain of the modulation envelope of an event
      * @param {number} value - sustain value, from 0 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     mods(value: number = 0.8, time: number): void { this.messageDevice('mods', value, time) }
 
     /**
      * Set the release of the modulation envelope of an event
      * @param {number} value - release value in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     modr(value: number = 1000, time: number): void { this.messageDevice('modr', value, time) }
 
     /**
      * Set the attack curve of the modulation envelope of an event
      * @param {number} value - attack curve value, from -1 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     modacurve(value: number, time: number): void { this.messageDevice('modacurve', value, time) }
 
     /**
      * Set the decay curve of the modulation envelope of an event
      * @param {number} value - decay curve value, from -1 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     moddcurve(value: number, time: number): void { this.messageDevice('moddcurve', value, time) }
 
     /**
      * Set the release curve of the modulation envelope of an event
      * @param {number} value - release curve value, from -1 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     modrcurve(value: number, time: number): void { this.messageDevice('modrcurve', value, time) }
 
     /**
      * Set the attack of the filter envelope of an event
      * @param {number} value - attack value in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     fila(value: number = 10, time: number): void { this.messageDevice('fila', value, time) }
 
     /**
      * Set the decay of the filter envelope of an event
      * @param {number} value - decay value in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     fild(value: number = 100, time: number): void { this.messageDevice('fild', value, time) }
 
     /**
      * Set the sustain of the filter envelope of an event
      * @param {number} value - sustain value, from 0 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     fils(value: number = 0.8, time: number): void { this.messageDevice('fils', value, time) }
 
     /**
      * Set the release of the filter envelope of an event
      * @param {number} value - release value in ms
-     * @param {number} time - time to set parameter in seconds
      */ 
     filr(value: number = 1000, time: number): void { this.messageDevice('filr', value, time) }
 
     /**
      * Set the attack curve of the filter envelope of an event
      * @param {number} value - attack curve value, from -1 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     filacurve(value: number, time: number): void { this.messageDevice('filacurve', value, time) }
 
     /**
      * Set the decay curve of the filter envelope of an event
      * @param {number} value - decay curve value, from -1 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     fildcurve(value: number, time: number): void { this.messageDevice('fildcurve', value, time) }
 
     /**
      * Set the release curve of the filter envelope of an event
      * @param {number} value - release curve value, from -1 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     filrcurve(value: number, time: number): void { this.messageDevice('filrcurve', value, time) }
 
     /**
      * Set the resonance of the filter of an event
      * @param {number} value - resonance value, from 0 to 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     res(value: number = 0, time: number): void { this.messageDevice('res', value, time) }
 
     /**
      * Mutate the resonance of the filter
      * @param {number} value - resonance value, from 0 to 1
-     * @param {number} time - time of mutation
      */ 
     _res(value: number = 0, time: number): void { this.messageDevice('_res', value, time) }
 
     /**
      * Set the cutoff of the filter of an event
      * @param {number} value - cutoff value, in Hz
-     * @param {number} time - time to set parameter in seconds
      */ 
     cutoff(value: number = 20000, time: number): void { this.messageDevice('cutoff', value, time) }
 
     /**
      * Mutate the cutoff of the filter
      * @param {number} value - cutoff value, in Hz
-     * @param {number} time - time of mutation
      */ 
     _cutoff(value: number = 20000, time: number): void { this.messageDevice('_cutoff', value, time) }
 
     /**
      * Detune the pitch of an event
      * @param {number} value - detune value, in semitones
-     * @param {number} time - time to set parameter in seconds
      */ 
     detune(value: number = 0, time: number): void { this.messageDevice('detune', value, time) }
 
     /**
      * Mutate the detune of the pitch
      * @param {number} value - detune value, in semitones
-     * @param {number} time - time of mutation
      */ 
     _detune(value: number = 0, time: number): void { this.messageDevice('_detune', value, time) }
 }

@@ -53,49 +53,42 @@ class SubSynth extends BaseSynth {
     /**
      * Synth fatness - amount of FM applied
      * @param value - 0 is not fat, 1 is max fat
-     * @param {number} time - time to set parameter in seconds
      */
     fat(value: number = 0, time: number): void { this.messageDevice('fat', value, time) }
     
     /**
      * Mutate the synth fatness
      * @param value - 0 is not fat, 1 is max fat
-     * @param {number} time - time of mutation
      */
     _fat(value: number = 0, time: number): void { this.messageDevice('_fat', value, time) }
     
     /**
      * Portamento time
      * @param value - portamento time in ms
-     * @param {number} time - time to set parameter in ms
      */
     slide(value: number = 10, time: number): void { this.messageDevice('slide', value, time) } 
 
     /**
      * LFO rate
      * @param value - LFO rate in Hz
-     * @param {number} time - time to set parameter in seconds
      */
     lforate(value: number = 1, time: number): void { this.messageDevice('lforate', value, time) }
 
     /**
      * Mutate the LFO rate
      * @param value - LFO rate in Hz
-     * @param {number} time - time of mutation
      */
     _lforate(value: number = 1, time: number): void { this.messageDevice('_lforate', value, time) }
     
     /**
      * LFO depth
      * @param value - LFO depth, 0 to 1
-     * @param {number} time - time to set parameter in seconds
      */
     lfodepth(value: number = 0, time: number): void { this.messageDevice('lfodepth', value, time) }
     
     /**
      * Mutate the LFO depth
      * @param value - LFO depth, 0 to 1
-     * @param {number} time - time of mutation
      */
     _lfodepth(value: number = 0, time: number): void { this.messageDevice('_lfodepth', value, time) }
 }

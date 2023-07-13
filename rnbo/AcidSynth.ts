@@ -36,49 +36,42 @@ class AcidSynth extends BaseSynth {
     /**
      * The oscillator type
      * @param value - Sine wave is 0, sawtooth is 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     osc(value: number = 0.6, time: number): void { this.messageDevice('osc', value, time) }
 
     /**
      * Mutate the oscillator type
      * @param value - Sine wave is 0, sawtooth is 1
-     * @param {number} time - time of mutation
      */ 
     _osc(value: number = 0.6, time: number): void { this.messageDevice('_osc', value, time) }
 
     /**
      * Portamento time
      * @param value - portamento time in ms
-     * @param {number} time - time to set parameter in ms
      */
     slide(value: number = 10, time: number): void { this.messageDevice('slide', value, time) } 
 
     /**
      * Filter gain amount
      * @param value - 0 is no filter, 1 is max filter
-     * @param {number} time - time to set parameter in ms
      */
     fil(value: number = 0.5, time: number): void { this.messageDevice('fil', value, time) }
     
     /**
      * Mutate filter gain amount
      * @param value - 0 is no filter, 1 is max filter
-     * @param {number} time - time of mutation
      */
     _fil(value: number = 0.5, time: number): void { this.messageDevice('_fil', value, time) }
     
     /**
      * Sub oscillator gain amount
      * @param value - 0 is no sub, 1 is max sub
-     * @param {number} time - time to set parameter in ms
      */
     sub(value: number = 0.5, time: number): void { this.messageDevice('sub', value, time) }
 
     /**
      * Mutate sub oscillator gain amount
      * @param value - 0 is no sub, 1 is max sub
-     * @param {number} time - time of mutation
      */
     _sub(value: number = 0.5, time: number): void { this.messageDevice('_sub', value, time) } 
 }

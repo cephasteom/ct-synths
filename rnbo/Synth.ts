@@ -31,56 +31,48 @@ class Synth extends BaseSynth {
     /**
      * The oscillator type
      * @param value - Sine wave is 0, sawtooth is 1
-     * @param {number} time - time to set parameter in seconds
      */ 
     osc(value: number = 0, time: number): void { this.messageDevice('osc', value, time) }
 
     /**
      * Mutate the oscillator type
      * @param value - Sine wave is 0, sawtooth is 1
-     * @param {number} time - time of mutation
      */ 
     _osc(value: number = 0, time: number): void { this.messageDevice('_osc', value, time) }
 
     /**
      * The oscillator drift
      * @param value - 0 is no drift, 1 is max drift
-     * @param {number} time - time to set parameter in seconds
      */
     drift(value: number = 0, time: number): void { this.messageDevice('drift', value, time) } 
 
     /**
      * Mutate the oscillator drift
      * @param value - 0 is no drift, 1 is max drift
-     * @param {number} time - time of mutation
      */ 
     _drift(value: number = 0, time: number): void { this.messageDevice('_drift', value, time) }
 
     /**
      * The modulation index
      * @param value - 0+
-     * @param {number} time - time to set parameter in seconds
      */
     modi(value: number = 0, time: number): void { this.messageDevice('modi', value, time) } 
 
     /**
      * Mutate the modulation index
      * @param value - 0+
-     * @param {number} time - time of mutation
      */ 
     _modi(value: number = 0, time: number): void { this.messageDevice('_modi', value, time) }
 
     /**
      * The harmonicity ratio
      * @param value - number > 0
-     * @param {number} time - time to set parameter in seconds
      */
     harm(value: number = 1, time: number): void { this.messageDevice('harm', value, time) } 
 
     /**
      * Mutate the harmonicity ratio
      * @param value - number > 0
-     * @param {number} time - time of mutation
      */
     _harm(value: number = 1, time: number): void { this.messageDevice('_harm', value, time) }
 }

@@ -101,7 +101,6 @@ class Sampler extends BaseSynth {
     /**
      * Index of sample in bank
      * @param value - index of sample in bank
-     * @param time - time to set sample
      */ 
     async i(value: number, time: number) {
         if(!this.currentBank) return
@@ -124,63 +123,54 @@ class Sampler extends BaseSynth {
     /**
      * Snap sample length to divisions of a beat
      * @param value - number of divisions to snap to, 0 means don't snap
-     * @param time - time to set snap
      */
     snap(value: number = 0, time: number): void { this.messageDevice('snap', value, time) } 
 
     /**
      * Playback rate
      * @param value - playback rate, > 0 is forward, < 0 is reverse. 1 is normal speed, 2 is double speed, etc.
-     * @param time - time to set playback rate
      */
     rate(value: number = 1, time: number): void { this.messageDevice('rate', value, time) }
     
     /**
      * Mutate playback rate
      * @param value - playback rate, > 0 is forward, < 0 is reverse. 1 is normal speed, 2 is double speed, etc.
-     * @param time - time to set playback rate
      */
     _rate(value: number = 1, time: number): void { this.messageDevice('_rate', value, time) } 
     
     /**
      * Playback position start
      * @param value - playback position start, 0 is the beginning of the sample, 1 is the end
-     * @param time - time to set begin
      */
     begin(value: number = 0, time: number): void { this.messageDevice('begin', value, time) }
     
     /**
      * Playback position end
      * @param value - playback position end, 0 is the beginning of the sample, 1 is the end
-     * @param time - time to set begin
      */
     end(value: number = 1, time: number): void { this.messageDevice('end', value, time) }
 
     /**
      * Loop, whether to loop when playback reaches the end of the sample or loopsize (see loopsize)
      * @param value - loop, 0 is off, 1 is on
-     * @param time - time to set loop
      */
     loop(value: number = 0, time: number): void { this.messageDevice('loop', value, time) }
 
     /**
      * Loop size, the size of the loop
      * @param value - loop size, 0 - 1
-     * @param time - time to set loop size
      */ 
     loopsize(value: number = 1, time: number): void { this.messageDevice('loopsize', value, time) }
 
     /**
      * Mutate loop size, the size of the loop
      * @param value - loop size, 0 - 1
-     * @param time - time to set loop size
      */
     _loopsize(value: number = 1, time: number): void { this.messageDevice('_loopsize', value, time) }
     
     /**
      * Oneshot, always play the entire sample or not
      * @param value - oneshot, 0 is off, 1 is on
-     * @param time - time to set oneshot
      */
     oneshot(value: number = 0, time: number): void { this.messageDevice('oneshot', value, time) } 
     
@@ -188,7 +178,6 @@ class Sampler extends BaseSynth {
      * Bpm, beats per minute. Zen passes this value for you.
      * Used to calculate grainsize and grainrate in beats
      * @param value - bpm, beats per minute
-     * @param time - time to set bpm
      * @hidden
      */
     bpm(value: number = 120, time: number): void { this.messageDevice('bpm', value, time) } 

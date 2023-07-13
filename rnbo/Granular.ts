@@ -113,7 +113,6 @@ class Granular extends BaseSynth {
     /**
      * Index of sample in bank
      * @param value - index of sample in bank
-     * @param time - time to set sample
      */ 
     async i(value: number, time: number) {
         if(!this.currentBank) return
@@ -136,112 +135,96 @@ class Granular extends BaseSynth {
     /**
      * Snap sample length to divisions of a beat
      * @param value - number of divisions to snap to, 0 means don't snap
-     * @param time - time to set snap
      */
     snap(value: number = 0, time: number): void { this.messageDevice('snap', value, time) } 
 
     /**
      * Playback rate
      * @param value - playback rate, > 0 is forward, < 0 is reverse. 1 is normal speed, 2 is double speed, etc.
-     * @param time - time to set playback rate
      */
     rate(value: number = 1, time: number): void { this.messageDevice('rate', value, time) }
     
     /**
      * Mutate playback rate
      * @param value - playback rate, > 0 is forward, < 0 is reverse. 1 is normal speed, 2 is double speed, etc.
-     * @param time - time to set playback rate
      */
     _rate(value: number = 1, time: number): void { this.messageDevice('_rate', value, time) } 
 
     /**
      * Grain rate
      * @param value - grain rate, number of grains per cycle or canvas
-     * @param time - time to set grain rate
      */
     grainrate(value: number = 16, time: number): void { this.messageDevice('grainrate', value, time) }
     
     /**
      * Mutate grain rate
      * @param value - grain rate, number of grains per cycle or canvas
-     * @param time - time to set grain rate
      */
     _grainrate(value: number = 16, time: number): void { this.messageDevice('_grainrate', value, time) } 
 
     /**
      * Grain size
      * @param value - grain size, length of grain in beats
-     * @param time - time to set grain size
      */
     grainsize(value: number = 0.125, time: number): void { this.messageDevice('grainsize', value, time) }
 
     /**
      * Mutate grain size
      * @param value - grain size, length of grain in beats
-     * @param time - time to set grain size
      */
     _grainsize(value: number = 0.125, time: number): void { this.messageDevice('_grainsize', value, time) }
 
     /**
      * Grain slope
      * @param value - grain slope, attack of grain, 0 - 1
-     * @param time - time to set grain slope
      */
     grainslope(value: number = 0.01, time: number): void { this.messageDevice('grainslope', value, time) }
     
     /**
      * Mutate grain slope
      * @param value - grain slope, attack of grain, 0 - 1
-     * @param time - time to set grain slope
      */
     _grainslope(value: number = 0.01, time: number): void { this.messageDevice('_grainslope', value, time) }
     
     /**
      * Grain pan
      * @param value - grain pan, amount of randomess in grain panning, 0 - 1
-     * @param time - time to set grain pan
      */
     grainpan(value: number = 0.2, time: number): void { this.messageDevice('grainpan', value, time) }
     
     /**
      * Mutate grain pan
      * @param value - grain pan, amount of randomess in grain panning, 0 - 1
-     * @param time - time to set grain pan
      */
     _grainpan(value: number = 0.2, time: number): void { this.messageDevice('_grainpan', value, time) }
 
     /**
      * Playback direction
      * @param value - playback direction, 1 = forward, -1 = backward
-     * @param time - time to set direction
      */
     direction(value: number = 1, time: number): void { this.messageDevice('direction', value, time) }
     
     /**
      * Mutate playback direction
      * @param value - playback direction, 1 = forward, -1 = backward
-     * @param time - time to set direction
      */
     _direction(value: number = 1, time: number): void { this.messageDevice('_direction', value, time) }
     
     /**
      * Playback position start
      * @param value - playback position start, 0 is the beginning of the sample, 1 is the end
-     * @param time - time to set begin
      */
     begin(value: number = 0, time: number): void { this.messageDevice('begin', value, time) }
     
     /**
      * Playback position end
      * @param value - playback position end, 0 is the beginning of the sample, 1 is the end
-     * @param time - time to set begin
      */
     end(value: number = 1, time: number): void { this.messageDevice('end', value, time) }
 
     /**
      * Loop, whether to loop when playback reaches the end of the sample
      * @param value - loop, 0 is off, 1 is on
-     * @param time - time to set loop
      */
     loop(value: number = 0, time: number): void { this.messageDevice('loop', value, time) }
     
@@ -249,7 +232,6 @@ class Granular extends BaseSynth {
      * Bpm, beats per minute. Zen passes this value for you.
      * Used to calculate grainsize and grainrate in beats
      * @param value - bpm, beats per minute
-     * @param time - time to set bpm
      * @hidden
      */
     bpm(value: number = 120, time: number): void { this.messageDevice('bpm', value, time) } 
