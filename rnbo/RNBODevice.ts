@@ -52,6 +52,7 @@ class RNBODevice {
     }  
 
     /** @hidden */
+    // TODO: remove this once you have converted all other synths
     initParams() {
         this.params.forEach(key => {
             // @ts-ignore
@@ -75,15 +76,6 @@ class RNBODevice {
         this.output.connect(node)
     }
 
-    // /** @hidden */
-    // get settable() { 
-    //     return this.params.reduce((obj, key) => ({ 
-    //         ...obj, 
-    //         // @ts-ignore
-    //         [key]: this[key] 
-    //     }), {})
-    // }
-
     /** @hidden */
     setParams(params: Dictionary, time: number) {
         Object.entries(params)
@@ -101,6 +93,7 @@ class RNBODevice {
      * @param {number} time - time in seconds to schedule the mutation
      * @param {number} lag - time in ms that the mutation will take to complete
      * @returns {void}
+     * @hidden
      */ 
     mutate(params: Dictionary = {}, time: number, lag: number = 100): void {
         if(!this.ready) return

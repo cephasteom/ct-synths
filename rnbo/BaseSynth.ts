@@ -65,6 +65,7 @@ class BaseSynth extends RNBODevice {
      * Trigger a musical event with the given parameters, at the given time.
      * @param {Dictionary} params - parameters to set
      * @param {number} time - time to trigger event in seconds
+     * @hidden
      */ 
     play(params: Dictionary = {}, time: number): void {
         if(!this.ready) return
