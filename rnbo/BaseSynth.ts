@@ -96,7 +96,7 @@ class BaseSynth extends RNBODevice {
      * @param {number} ms - time in ms taken to release events
      * @hidden
      */ 
-    cut(time: number, ms: number = 10): void {
+    cut(time: number, ms: number = 5): void {
         if(!this.ready) return
         this.messageDevice('cut', ms, time)
     }

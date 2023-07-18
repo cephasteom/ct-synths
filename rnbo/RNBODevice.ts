@@ -81,7 +81,8 @@ class RNBODevice {
         Object.entries(params)
             .filter(([key, _]: [string, any]) => this.params.includes(key)) 
             .forEach(([key, value]) => {
-                if(this.state[key] === value) return
+                // don't send messages for unchanged values, unless it's i, which is async and causes bugs
+                if(key !== 'i' && this.state[key] === value) return
                 this.state[key] = value
                 // @ts-ignore
                 this[key] && this[key](value, time)
