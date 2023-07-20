@@ -21,9 +21,13 @@ class Synth extends BaseSynth {
         this.initDevice()
         
         this.osc = this.osc.bind(this)
+        this._osc = this._osc.bind(this)
         this.drift = this.drift.bind(this)
+        this._drift = this._drift.bind(this)
         this.modi = this.modi.bind(this)
+        this._modi = this._modi.bind(this)
         this.harm = this.harm.bind(this)
+        this._harm = this._harm.bind(this)
             
         this.params = Object.getOwnPropertyNames(this)
     }
