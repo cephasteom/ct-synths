@@ -29,7 +29,7 @@ class Sampler extends BaseSynth {
     maxI = 0
 
     /** @hidden */
-    constructor(urls: string[]) {
+    constructor(urls?: string[]) {
         super()
         this.init(urls)
 
@@ -50,7 +50,7 @@ class Sampler extends BaseSynth {
     }
 
     /** @hidden */
-    async init(urls: string[]) {
+    async init(urls?: string[]) {
         await this.initDevice()
         urls && this.load(urls)
     } 
