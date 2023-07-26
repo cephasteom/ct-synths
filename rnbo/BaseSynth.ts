@@ -94,7 +94,9 @@ class BaseSynth extends RNBODevice {
     /**
      * Cut all events playing at the given time
      * @param {number} ms - time in ms taken to release events
-     * @hidden
+     * @example 
+     * // when used in Zen, supply a list of streams to cut
+     * s0.set({cut: [0,1]}) // cuts itself and s1
      */ 
     cut(time: number, ms: number = 5): void {
         if(!this.ready) return
