@@ -99,9 +99,10 @@ class RNBODevice {
      */ 
     mutate(params: Dictionary = {}, time: number, lag: number = 100): void {
         if(!this.ready) return
+        const { nudge } = params
         const ps = Object.entries(params).reduce((obj, [key, value]) => ({ ...obj, [`_${key}`]: value }), {})
         this.setParams(ps, time)
-        this.messageDevice('mutate', lag, time)
+        this.messageDevice('mutate', lag, time + (nudge || 0) / 1000)
     }
 }
 

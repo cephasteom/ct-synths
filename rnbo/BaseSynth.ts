@@ -21,7 +21,6 @@ class BaseSynth extends RNBODevice {
     /** @hidden */
     constructor() {
         super()
-        // this.params = baseSynthParams
         this.dur = this.dur.bind(this)
         this.n = this.n.bind(this)
         this._n = this._n.bind(this)
@@ -70,12 +69,12 @@ class BaseSynth extends RNBODevice {
         if(!this.ready) return
 
         const ps = {...this.defaults, ...params }
-        const { n, amp } = ps
+        const { n, amp, nudge } = ps
 
         n === this.state.n && this.cut(time)
         this.setParams(ps, time)
         
-        const noteOnEvent = new MIDIEvent(time * 1000, 0, [144, (n || 60), amp * 127]);
+        const noteOnEvent = new MIDIEvent((time * 1000) + (nudge || 0) , 0, [144, (n || 60), amp * 127]);
         this.device.scheduleEvent(noteOnEvent);
     }
 
@@ -120,6 +119,12 @@ class BaseSynth extends RNBODevice {
      * @param {number} value - midi note number
      */ 
     _n(value: number = 60, time: number): void { this.messageDevice('_n', value, time) }
+
+    /**
+     * Nudge the time of an event, in ms
+     * @param {number} value - time in ms
+     */ 
+    nudge(value: number = 0, time: number): void { /** dummy, happens in play. Just for docs. */ }
 
     /**
      * Set the pan of an event
