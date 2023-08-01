@@ -34,13 +34,16 @@ class Synth extends BaseSynth {
 
     /**
      * The oscillator type
-     * @param value - Sine wave is 0, sawtooth is 1
+     * Be careful when using FM with tri or square waves - RNBO bug
+     * @param value - Sine wave is 0, sawtooth is 1, triangle is 2, square is 3
+     * 
      */ 
     osc(value: number = 0, time: number): void { this.messageDevice('osc', value, time) }
 
     /**
      * Mutate the oscillator type
-     * @param value - Sine wave is 0, sawtooth is 1
+     * Be careful when using FM with tri or square waves - RNBO bug
+     * @param value - Sine wave is 0, sawtooth is 1, triangle is 2, square is 3
      */ 
     _osc(value: number = 0, time: number): void { this.messageDevice('_osc', value, time) }
 
