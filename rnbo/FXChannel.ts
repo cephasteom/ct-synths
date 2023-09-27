@@ -3,6 +3,9 @@ import RNBODevice from './RNBODevice'
 import { fxParams } from './data'
 import type { Dictionary } from '../types'
 
+const patcher = fetch(new URL('./json/fx.export.json', import.meta.url))
+    .then(rawPatcher => rawPatcher.json())
+
 /**
  * The chain of effect applied to the output of each stream. Each effect remains inactive until the amount is set to a value greater than 0.
  * @example
@@ -10,23 +13,16 @@ import type { Dictionary } from '../types'
  */ 
 class FXChain extends RNBODevice {
     /** @hidden */
-    json = new URL('./json/fx.export.json', import.meta.url)
-
-    /** @hidden */
-    params = fxParams
-
-    /** @hidden */
-    defaults = {
-        dist: 0, drive: 0.25,
-        ring: 0, ringf: 0.25, ringspread: 0, ringmode: 0,
-        hicut: 0, locut: 0,
-        chorus: 0, chdepth: 0.25, chlfo: 0.25, chspread: 0.25,
-        gain: 1, lthresh: 1
-    }
-    
-    /** @hidden */
     constructor() {
         super()
+        this.defaults = {
+            dist: 0, drive: 0.25,
+            ring: 0, ringf: 0.25, ringspread: 0, ringmode: 0,
+            hicut: 0, locut: 0,
+            chorus: 0, chdepth: 0.25, chlfo: 0.25, chspread: 0.25,
+            gain: 1, lthresh: 1
+        }
+        this.patcher = patcher
         this.initDevice()
 
         this.dist = this.dist.bind(this)

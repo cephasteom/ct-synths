@@ -8,6 +8,7 @@ import type { Dictionary } from '../types'
 import type { Destination } from 'tone';
 
 class RNBODevice {
+    defaults: Dictionary = {}
     /** @hidden */
     input: Gain
     /** @hidden */
