@@ -1,9 +1,8 @@
 import { MIDIEvent } from '@rnbo/js'
 import RNBODevice from './RNBODevice'
-import { fxParams } from './data'
 import type { Dictionary } from '../types'
 
-const patcher = fetch(new URL('./json/fx.export.json', import.meta.url))
+const patcher = fetch(new URL('./json/fx-channel.export.json', import.meta.url))
     .then(rawPatcher => rawPatcher.json())
 
 /**

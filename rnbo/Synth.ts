@@ -1,5 +1,4 @@
 import BaseSynth from "./BaseSynth";
-import type { Dictionary } from "../types";
 
 const patcher = fetch(new URL('./json/synth.export.json', import.meta.url))
     .then(rawPatcher => rawPatcher.json())
