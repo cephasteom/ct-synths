@@ -18,6 +18,8 @@ class FXDelay extends RNBODevice {
         this.patcher = patcher
         this.initDevice()
 
+        this.delay = this.delay.bind(this)
+        this._delay = this._delay.bind(this)
         this.dtime = this.dtime.bind(this)
         this._dtime = this._dtime.bind(this)
         this.dfb = this.dfb.bind(this)
@@ -42,6 +44,12 @@ class FXDelay extends RNBODevice {
         this.device.scheduleEvent(triggerEvent);
     }
 
+    /**
+     * Delay amount
+     * @param value - 0 to 1
+     */
+    delay(value: number = 0, time: number): void { this.messageDevice('delay', value, time) }
+    
     /**
      * Mutate the delay amount
      * @param value - 0 to 1
