@@ -2,19 +2,17 @@ import BaseSynth from "./BaseSynth";
 import { min } from "./utils";
 import type { Dictionary } from "../types";
 
+const patcher = fetch(new URL('./json/sampler.export.json', import.meta.url))
+    .then(rawPatcher => rawPatcher.json())
 /**
  * Sampler
  * @example
  * s0.p.set({inst: 'sampler'})
  */ 
 class Sampler extends BaseSynth {
-    /** @hidden */
-    json = new URL('./json/sampler.export.json', import.meta.url)
 
     /** @hidden */
-    defaults: Dictionary = { ...this.defaults, 
-        i: 0, snap: 0, rate: 1, a: 5, d: 10, s: 1, r: 100, bpm: 120, begin: 0, end: 1, loop: 0, oneshot: 0, loopsize: 1
-    }
+    
 
     /** @hidden */
     banks: Dictionary = {}
@@ -31,6 +29,11 @@ class Sampler extends BaseSynth {
     /** @hidden */
     constructor(urls?: string[]) {
         super()
+        this.defaults = { 
+            ...this.defaults, 
+            i: 0, snap: 0, rate: 1, a: 5, d: 10, s: 1, r: 100, bpm: 120, begin: 0, end: 1, loop: 0, oneshot: 0, loopsize: 1
+        }
+        this.patcher = patcher
         this.init(urls)
 
         this.bank = this.bank.bind(this)
