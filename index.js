@@ -6,12 +6,14 @@ import AcidSynth from "./rnbo/AcidSynth";
 import DroneSynth from "./rnbo/DroneSynth";
 import SubSynth from "./rnbo/SubSynth";
 import FXChain from "./rnbo/FXChain";
+import FXChannel from "./rnbo/FXChannel";
 
 export const CtSynth = Synth
 export const CtSampler = Sampler
 export const CtGranulator = Granulator
 export const CtAdditive = Additive
 export const CtFXChain = FXChain
+export const CtFXChannel = FXChannel
 export const CtAcidSynth = AcidSynth
 export const CtDroneSynth = DroneSynth
 export const CtSubSynth = SubSynth

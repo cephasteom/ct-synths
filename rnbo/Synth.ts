@@ -6,6 +6,10 @@ import type { Dictionary } from "../types";
  * @example
  * s0.p.set({inst: 'synth'})
  */ 
+
+const patcher = fetch(new URL('./json/synth-lite.export.json', import.meta.url))
+    .then(rawPatcher => rawPatcher.json())
+    
 class Synth extends BaseSynth {
 
     /** @hidden */
@@ -17,7 +21,8 @@ class Synth extends BaseSynth {
         this.json = args.lite 
             ? new URL('./json/synth-lite.export.json', import.meta.url)
             : new URL('./json/synth.export.json', import.meta.url)
-
+        this.patcher = patcher
+        console.log(this.patcher)
         this.initDevice()
         
         this.osc = this.osc.bind(this)

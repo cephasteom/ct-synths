@@ -23,8 +23,11 @@ class RNBODevice {
     context: AudioContext = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
     /** @hidden */
     params!: string[];
+
+    patcher: any;
     
     /** @hidden */
+    // Not used anymore? Remove?
     state: Dictionary = {
         last: 60,
     }
@@ -39,16 +42,15 @@ class RNBODevice {
 
     /** @hidden */
     async initDevice()  {
-        const rawPatcher = await fetch(this.json);
-        const patcher = await rawPatcher.json();
-        
-        this.device = await createDevice({ context: this.context, patcher });
-        // @ts-ignore
-        this.device.node.connect(this.output._gainNode._nativeAudioNode);
-        // @ts-ignore
-        this.input._gainNode._nativeAudioNode.connect(this.device.node);
-
-        this.ready = true
+        return this.patcher.then(patcher => createDevice({ context: this.context, patcher: patcher })
+            .then(device => {
+                // @ts-ignore
+                device.node.connect(this.output._gainNode._nativeAudioNode);
+                // @ts-ignore
+                this.input._gainNode._nativeAudioNode.connect(device.node);
+                this.device = device;
+                this.ready = true;
+            }));
     }  
 
     /** @hidden */
