@@ -1,5 +1,4 @@
 import BaseSynth from "./BaseSynth";
-import { additiveParams } from "./data";
 
 const patcher = fetch(new URL('./json/additive.export.json', import.meta.url))
     .then(rawPatcher => rawPatcher.json())
