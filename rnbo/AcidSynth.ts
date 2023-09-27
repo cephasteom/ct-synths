@@ -1,6 +1,8 @@
 import BaseSynth from "./BaseSynth";
 import type { Dictionary } from "../types";
 
+const patcher = fetch(new URL('./json/acid.export.json', import.meta.url))
+    .then(rawPatcher => rawPatcher.json())
 /**
  * A monophonic, acid bass synth.
  * @example
@@ -8,18 +10,14 @@ import type { Dictionary } from "../types";
  */ 
 class AcidSynth extends BaseSynth {
     /** @hidden */
-    json = new URL('./json/acid.export.json', import.meta.url)
-    
-    /** @hidden */
-    defaults: Dictionary = { 
-        ...this.defaults, 
-        slide: 10, fil: 0.5, osc: 0.6, sub: 0.5,
-        dur: 100, a: 10, d: 100, s: 0.5, r: 50, fila: 10, fild: 100, fils: 0.1, filr: 100, res: 0.8, cutoff: 7500,
-    }
-
-    /** @hidden */
     constructor() {
         super()
+        this.defaults = {
+            ...this.defaults, 
+            slide: 10, fil: 0.5, osc: 0.6, sub: 0.5,
+            dur: 100, a: 10, d: 100, s: 0.5, r: 50, fila: 10, fild: 100, fils: 0.1, filr: 100, res: 0.8, cutoff: 7500,
+        }
+        this.patcher = patcher
         this.initDevice()
 
         this.slide = this.slide.bind(this)
