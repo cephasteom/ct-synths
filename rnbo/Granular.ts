@@ -2,36 +2,14 @@ import BaseSynth from "./BaseSynth";
 import { min } from "./utils";
 import type { Dictionary } from "../types";
 
+const patcher = fetch(new URL('./json/granular.export.json', import.meta.url))
+    .then(rawPatcher => rawPatcher.json())
 /**
  * Granular Synth
  * @example
  * s0.p.set({inst: 'granular'})
  */ 
 class Granular extends BaseSynth {
-    /** @hidden */
-    json = new URL('./json/granular.export.json', import.meta.url)
-
-    /** @hidden */
-    defaults: Dictionary = { 
-        ...this.defaults, 
-        i: 0, 
-        snap: 0, 
-        rate: 1, 
-        a: 0, 
-        d: 10, 
-        s: 1, 
-        r: 100, 
-        bpm: 60, 
-        grainrate: 16, 
-        grainsize: 0.125, 
-        grainslope: 0.01, 
-        grainpan: 0.2, 
-        direction: 1,
-        begin: 0,
-        end: 1,
-    
-    }
-
     /** @hidden */
     banks: Dictionary = {}
 
@@ -47,6 +25,25 @@ class Granular extends BaseSynth {
     /** @hidden */
     constructor(urls?: string[]) {
         super()
+        this.defaults = { 
+            ...this.defaults, 
+            i: 0, 
+            snap: 0, 
+            rate: 1, 
+            a: 0, 
+            d: 10, 
+            s: 1, 
+            r: 100, 
+            bpm: 60, 
+            grainrate: 16, 
+            grainsize: 0.125, 
+            grainslope: 0.01, 
+            grainpan: 0.2, 
+            direction: 1,
+            begin: 0,
+            end: 1,
+        }
+        this.patcher = patcher
         this.init(urls)
 
         this.bank = this.bank.bind(this)
