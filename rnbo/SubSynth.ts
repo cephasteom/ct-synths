@@ -2,6 +2,8 @@ import { MIDIEvent } from '@rnbo/js'
 import BaseSynth from "./BaseSynth";
 import type { Dictionary } from "../types";
 
+const patcher = fetch(new URL('./json/sub.export.json', import.meta.url))
+    .then(rawPatcher => rawPatcher.json())
 /**
  * A simple synth for creating sine wave sub bass sounds, with some FM modulation.
  * @example
@@ -9,20 +11,15 @@ import type { Dictionary } from "../types";
  */
 class SubSynth extends BaseSynth {
     /** @hidden */
-    json = new URL('./json/sub.export.json', import.meta.url)
-    
-    /** @hidden */
-    defaults: Dictionary = { 
-        ...this.defaults, 
-        slide: 10, fat: 0.5, 
-        dur: 1000, a: 100, d: 100, s: 0.75, r: 1000, fila: 0, fild: 100, fils: 1, filr: 100, res: 0,
-        moda: 10, modd: 0,
-        lfodepth: 0, lforate: 1,
-    }
-
-    /** @hidden */
     constructor() {
         super()
+        this.defaults = { 
+            ...this.defaults,  
+            dur: 1000, a: 100, d: 100, s: 0.75, r: 1000, fila: 0, fild: 100, fils: 1, filr: 100, res: 0,
+            moda: 10, modd: 0,
+            lfodepth: 0, lforate: 1,
+        }
+        this.patcher = patcher
         this.initDevice()
         
         this.fat = this.fat.bind(this)
