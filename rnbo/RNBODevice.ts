@@ -64,6 +64,9 @@ class RNBODevice {
     }
 
     /** @hidden */
+    disconnect() { this.output.disconnect() }
+
+    /** @hidden */
     setParams(params: Dictionary, time: number) {
         Object.entries(params)
             .filter(([key, _]: [string, any]) => this.params.includes(key)) 
