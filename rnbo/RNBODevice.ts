@@ -49,19 +49,6 @@ class RNBODevice {
                 this.device = device;
                 this.ready = true;
             }));
-    }  
-
-    /** @hidden */
-    // TODO: remove this once you have converted all other synths
-    initParams() {
-        this.params.forEach(key => {
-            // @ts-ignore
-            if(this[key]) return
-            // @ts-ignore
-            this[key] = (value, time) => this.messageDevice(key, value, time)
-        })
-        // @ts-ignore
-        Object.keys(this.settable).forEach(key => this[key] = this[key].bind(this))
     }
 
     /** @hidden */
