@@ -1,28 +1,25 @@
 import BaseSynth from "./BaseSynth";
 import type { Dictionary } from "../types";
 
+const patcher = fetch(new URL('./json/synth.export.json', import.meta.url))
+    .then(rawPatcher => rawPatcher.json())
+const patcherLite = fetch(new URL('./json/synth-lite.export.json', import.meta.url))
+    .then(rawPatcher => rawPatcher.json())
+
 /**
  * An all purpose synth with filters and FM
  * @example
  * s0.p.set({inst: 'synth'})
  */ 
-
-const patcher = fetch(new URL('./json/synth-lite.export.json', import.meta.url))
-    .then(rawPatcher => rawPatcher.json())
-    
 class Synth extends BaseSynth {
-
-    /** @hidden */
-    defaults: Dictionary = { ...this.defaults, osc: 0, drift: 0, modi: 0, harm: 1 }
-
     /** @hidden */
     constructor(args: any = {}) {
         super()
-        this.json = args.lite 
-            ? new URL('./json/synth-lite.export.json', import.meta.url)
-            : new URL('./json/synth.export.json', import.meta.url)
-        this.patcher = patcher
-        console.log(this.patcher)
+        this.defaults = { ...this.defaults, osc: 0, drift: 0, modi: 0, harm: 1 }
+        this.patcher = args.lite 
+            ? patcherLite
+            : patcher
+
         this.initDevice()
         
         this.osc = this.osc.bind(this)

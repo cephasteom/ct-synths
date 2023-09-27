@@ -3,7 +3,7 @@
 import { context as toneContext, Gain } from 'tone';
 import { dummy } from './utils';
 import { createDevice, MessageEvent } from '@rnbo/js'
-import type { Device } from '@rnbo/js'
+import type { Device, IPatcher } from '@rnbo/js'
 import type { Dictionary } from '../types'
 import type { Destination } from 'tone';
 
@@ -17,14 +17,13 @@ class RNBODevice {
     /** @hidden */
     ready = false
     /** @hidden */
-    json!: URL;
-    /** @hidden */
     // @ts-ignore
     context: AudioContext = toneContext.rawContext._nativeAudioContext || toneContext.rawContext._context;
     /** @hidden */
     params!: string[];
 
-    patcher: any;
+    /** @hidden */
+    patcher: Promise<IPatcher> | null = null
     
     /** @hidden */
     // Not used anymore? Remove?
@@ -42,7 +41,7 @@ class RNBODevice {
 
     /** @hidden */
     async initDevice()  {
-        return this.patcher.then(patcher => createDevice({ context: this.context, patcher: patcher })
+        return this.patcher && this.patcher.then((patcher: IPatcher) => createDevice({ context: this.context, patcher: patcher })
             .then(device => {
                 // @ts-ignore
                 device.node.connect(this.output._gainNode._nativeAudioNode);
