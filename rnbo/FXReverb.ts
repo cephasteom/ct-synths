@@ -14,7 +14,7 @@ class FXReverb extends RNBODevice {
     /** @hidden */
     constructor() {
         super()
-        this.defaults = { reverb: 0, rsize: 0.25, rdamp: 0.25, rdiff: 0.25, rjitter: 0, rdecay: 0.25 }
+        this.defaults = { reverb: 0, rsize: 0.5, rdamp: 0.25, rdiff: 0.25, rjitter: 0, rdecay: 0.25 }
         this.patcher = patcher
         this.initDevice()
 

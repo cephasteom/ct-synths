@@ -14,7 +14,7 @@ class FXDelay extends RNBODevice {
     /** @hidden */
     constructor() {
         super()
-        this.defaults = { delay: 0, dtime: 500, dfb: 0.5, dspread: 0, dcolour: 0.25, dfilter: 0 }
+        this.defaults = { delay: 0, dtime: 500, dfb: 0.5, dspread: 0, dcolour: 0.5, dfilter: 0 }
         this.patcher = patcher
         this.initDevice()
 
