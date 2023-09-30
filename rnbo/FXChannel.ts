@@ -10,7 +10,7 @@ const patcher = fetch(new URL('./json/fx-channel.export.json', import.meta.url))
  * @example
  * s0.p.reverb.set(0.5)
  */ 
-class FXChain extends RNBODevice {
+class FXChannel extends RNBODevice {
     /** @hidden */
     constructor() {
         super()
@@ -237,4 +237,4 @@ class FXChain extends RNBODevice {
     _lthresh(value: number = 1, time: number): void { this.messageDevice('_lthresh', value, time) }
 }
 
-export default FXChain
+export default FXChannel

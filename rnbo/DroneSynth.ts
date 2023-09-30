@@ -39,7 +39,7 @@ class DroneSynth extends BaseSynth {
         this.params = Object.getOwnPropertyNames(this)
     }
 
-    play(params = {}, time) {
+    play(params = {}, time: number) {
         
         if(!this.ready) return
 
