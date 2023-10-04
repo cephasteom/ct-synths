@@ -6,9 +6,9 @@ const patcher = fetch(new URL('./json/fx-delay.export.json', import.meta.url))
     .then(rawPatcher => rawPatcher.json())
 
 /**
- * The chain of effect applied to the output of each stream. Each effect remains inactive until the amount is set to a value greater than 0.
+ * The delay chained to the end of each stream. Is initialised only when delay parameter is greater than 0.
  * @example
- * s0.p.reverb.set(0.5)
+ * s0.p.delay.set(0.5)
  */ 
 class FXDelay extends RNBODevice {
     /** @hidden */

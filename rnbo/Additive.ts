@@ -3,6 +3,10 @@ import BaseSynth from "./BaseSynth";
 const patcher = fetch(new URL('./json/additive.export.json', import.meta.url))
     .then(rawPatcher => rawPatcher.json())
 
+/**
+ * Additive Synth
+ * @example s0.set({inst: 'additive'})
+ */
 class Synth extends BaseSynth {
     /** @hidden */
     constructor() {

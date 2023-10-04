@@ -5,6 +5,10 @@ import BaseSynth from "./BaseSynth";
 const patcher = fetch(new URL('./json/drone.export.json', import.meta.url))
     .then(rawPatcher => rawPatcher.json())
 
+/**
+ * Drone Synth
+ * @example s0.set({inst: 'drone'})
+ */
 class DroneSynth extends BaseSynth {
     constructor() {
         super()

@@ -7,8 +7,8 @@ import DroneSynth from "./rnbo/DroneSynth";
 import SubSynth from "./rnbo/SubSynth";
 import FXChain from "./rnbo/FXChain";
 import FXChannel from "./rnbo/FXChannel";
-import FXReverb from "./rnbo/FXReverb";
-import FXDelay from "./rnbo/FXDelay";
+import FXReverb from "./rnbo/Reverb";
+import FXDelay from "./rnbo/Delay";
 
 export const CtSynth = Synth
 export const CtSampler = Sampler
