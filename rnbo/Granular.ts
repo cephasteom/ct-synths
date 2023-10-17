@@ -1,6 +1,7 @@
 import BaseSynth from "./BaseSynth";
 import { min } from "./utils";
 import type { Dictionary } from "../types";
+import { samples } from "./data/samples";
 
 const patcher = fetch(new URL('./json/granular.export.json', import.meta.url))
     .then(rawPatcher => rawPatcher.json())
@@ -11,19 +12,19 @@ const patcher = fetch(new URL('./json/granular.export.json', import.meta.url))
  */ 
 class Granular extends BaseSynth {
     /** @hidden */
+    nextBuffer = 0
+
+    /** @hidden */
     banks: Dictionary = {}
 
     /** @hidden */
     currentBank = ''
 
     /** @hidden */
-    loadedBuffers = []
+    buffers: Dictionary = {}
 
     /** @hidden */
-    maxI = 0
-
-    /** @hidden */
-    constructor(urls?: string[]) {
+    constructor() {
         super()
         this.defaults = { 
             ...this.defaults, 
@@ -44,7 +45,7 @@ class Granular extends BaseSynth {
             end: 1,
         }
         this.patcher = patcher
-        this.init(urls)
+        this.initDevice()
 
         this.bank = this.bank.bind(this)
         this.i = this.i.bind(this)
@@ -68,65 +69,49 @@ class Granular extends BaseSynth {
 
         this.params = Object.getOwnPropertyNames(this)
     }
-
-    /** @hidden */
-    async init(urls?: string[]) {
-        await this.initDevice()
-        urls && this.load(urls)
-    } 
     
-    /** @hidden */
-    async load(urls: string[]) {
-        this.ready = false
-        const dependencies: {id: string, file: string}[] = urls.map((file, i) => ({id: `b${i}`, file}))
-        this.maxI = dependencies.length <= 32 ? dependencies.length : 32
-
-        // @ts-ignore
-        const results = await this.device.loadDataBufferDependencies(dependencies.splice(0, 32));
-        
-        results.forEach(result => {
-            result.type === "success"
-                ? console.log(`Successfully loaded buffer with id ${result.id}`)
-                : console.log(`Failed to load buffer with id ${result.id}, ${result.error}`);
-        });
-        
-        this.i(this.state.i || 0, 0)
-        this.ready = true
-    }
-
     /**
-     * Load a bank of samples
+     * Specify which bank of samples you want to use
      * @param name - name of the bank
      */ 
     async bank(name: string) {
-        if(name === this.currentBank || !this.banks[name]) return
         this.currentBank = name 
-        // clear buffers to free up resources
-        Array.from({length: 32}, (_, i) => this.device.releaseDataBuffer(`b${i}`))
-        this.loadedBuffers = []
-        this.maxI = min(this.banks[name].length, 32)
     }
 
     /**
-     * Index of sample in bank
+     * Provide an index to play a sample from the current bank
      * @param value - index of sample in bank
      */ 
     async i(value: number, time: number) {
         if(!this.currentBank) return
-        const index = value % this.maxI
+        const index = value % this.banks[this.currentBank].length
+        const url = this.banks[this.currentBank][index]
+        const ref = `${this.currentBank}-${index}`
+
+        // check if the sample is already loaded into a buffer
+        const i = Object.values(this.buffers).indexOf(url)
         
-        // @ts-ignore
-        if(!this.loadedBuffers.includes(index)) {
-            const fileResponse = await fetch(this.banks[this.currentBank][index]);
-	        fileResponse.arrayBuffer()
-                .then(arrayBuf => this.context.decodeAudioData(arrayBuf))
-                .then(audioBuf => {
-                    this.device.setDataBuffer(`b${index}`, audioBuf)
-                    // @ts-ignore
-                    this.loadedBuffers.push(index)
-                })
-        } 
-        this.messageDevice('i', index, time)
+        // if it's not loaded, load it
+        if(i < 0) {
+            // check whether we've already fetched the sample
+            const sample = samples[ref] || 
+                await fetch(url)
+                    .then(res => res.arrayBuffer())
+                    .then(arrayBuf => this.context.decodeAudioData(arrayBuf))
+                    .catch(err => console.log(err))
+
+            const b = `b${this.nextBuffer}`
+            // set buffer in rnbo device
+            this.device.setDataBuffer(b, sample)
+            // note that the buffer is loaded
+            this.buffers[b] = url
+            // note that the sample has been fetched
+            samples[ref] = sample
+            // increment next buffer index
+            this.nextBuffer = (this.nextBuffer + 1) % 32
+        }
+
+        this.messageDevice('i', i, time)
     }
 
     /**
