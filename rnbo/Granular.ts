@@ -1,5 +1,4 @@
 import BaseSynth from "./BaseSynth";
-import { min } from "./utils";
 import type { Dictionary } from "../types";
 import { samples } from "./data/samples";
 
