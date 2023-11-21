@@ -1,4 +1,5 @@
 import Synth from "./rnbo/Synth";
+import Synth2 from "./rnbo/Synth2";
 import Sampler from "./rnbo/Sampler";
 import Granulator from "./rnbo/Granular";
 import Additive from "./rnbo/Additive";
@@ -11,6 +12,7 @@ import FXReverb from "./rnbo/Reverb";
 import FXDelay from "./rnbo/Delay";
 
 export const CtSynth = Synth
+export const CtSynth2 = Synth2
 export const CtSampler = Sampler
 export const CtGranulator = Granulator
 export const CtAdditive = Additive
