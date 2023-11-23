@@ -10,6 +10,7 @@ import FXChain from "./rnbo/FXChain";
 import FXChannel from "./rnbo/FXChannel";
 import FXReverb from "./rnbo/Reverb";
 import FXDelay from "./rnbo/Delay";
+import ReverbGen from "./rnbo/ReverbGen";
 
 export const CtSynth = Synth
 export const CtSynth2 = Synth2
@@ -23,3 +24,4 @@ export const CtDroneSynth = DroneSynth
 export const CtSubSynth = SubSynth
 export const CtFXReverb = FXReverb
 export const CtFXDelay = FXDelay
+export const CtReverbGen = ReverbGen
