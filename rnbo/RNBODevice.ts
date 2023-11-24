@@ -59,7 +59,6 @@ class RNBODevice {
 
     /** @hidden */
     connect(node: typeof Destination | Gain) { 
-        this.output.disconnect();
         this.output.connect(node)
     }
 
