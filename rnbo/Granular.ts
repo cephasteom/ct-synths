@@ -1,6 +1,4 @@
-import BaseSynth from "./BaseSynth";
-import type { Dictionary } from "../types";
-import { samples } from "./data/samples";
+import BaseSamplingDevice from "./BaseSamplingDevice";
 
 const patcher = fetch(new URL('./json/granular.export.json', import.meta.url))
     .then(rawPatcher => rawPatcher.json())
@@ -9,18 +7,7 @@ const patcher = fetch(new URL('./json/granular.export.json', import.meta.url))
  * @example
  * s0.p.set({inst: 'granular'})
  */ 
-class Granular extends BaseSynth {
-    /** @hidden */
-    nextBuffer = 0
-
-    /** @hidden */
-    banks: Dictionary = {}
-
-    /** @hidden */
-    currentBank = ''
-
-    /** @hidden */
-    buffers: Dictionary = {}
+class Granular extends BaseSamplingDevice {
 
     /** @hidden */
     constructor() {
@@ -46,8 +33,6 @@ class Granular extends BaseSynth {
         this.patcher = patcher
         this.initDevice()
 
-        this.bank = this.bank.bind(this)
-        this.i = this.i.bind(this)
         this.snap = this.snap.bind(this)
         this.rate = this.rate.bind(this)
         this._rate = this._rate.bind(this)
@@ -67,50 +52,6 @@ class Granular extends BaseSynth {
         this.bpm = this.bpm.bind(this)
 
         this.params = Object.getOwnPropertyNames(this)
-    }
-    
-    /**
-     * Specify which bank of samples you want to use
-     * @param name - name of the bank
-     */ 
-    async bank(name: string) {
-        this.currentBank = name 
-    }
-
-    /**
-     * Provide an index to play a sample from the current bank
-     * @param value - index of sample in bank
-     */ 
-    async i(value: number, time: number) {
-        if(!this.currentBank) return
-        const index = value % this.banks[this.currentBank].length
-        const url = this.banks[this.currentBank][index]
-        const ref = `${this.currentBank}-${index}`
-
-        // check if the sample is already loaded into a buffer
-        const i = Object.values(this.buffers).indexOf(url)
-        
-        // if it's not loaded, load it
-        if(i < 0) {
-            // check whether we've already fetched the sample
-            const sample = samples[ref] || 
-                await fetch(url)
-                    .then(res => res.arrayBuffer())
-                    .then(arrayBuf => this.context.decodeAudioData(arrayBuf))
-                    .catch(err => console.log(err))
-
-            const b = `b${this.nextBuffer}`
-            // set buffer in rnbo device
-            this.device.setDataBuffer(b, sample)
-            // note that the buffer is loaded
-            this.buffers[b] = url
-            // note that the sample has been fetched
-            samples[ref] = sample
-            // increment next buffer index
-            this.nextBuffer = (this.nextBuffer + 1) % 32
-        }
-
-        this.messageDevice('i', i, time)
     }
 
     /**
