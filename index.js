@@ -1,5 +1,6 @@
 import Synth from "./rnbo/Synth";
 import Synth2 from "./rnbo/Synth2";
+import SuperFM from "./rnbo/SuperFM";
 import Sampler from "./rnbo/Sampler";
 import Granulator from "./rnbo/Granular";
 import Additive from "./rnbo/Additive";
@@ -14,6 +15,7 @@ import ReverbGen from "./rnbo/ReverbGen";
 
 export const CtSynth = Synth
 export const CtSynth2 = Synth2
+export const CtSuperFM = SuperFM
 export const CtSampler = Sampler
 export const CtGranulator = Granulator
 export const CtAdditive = Additive
