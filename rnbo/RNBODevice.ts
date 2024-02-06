@@ -40,12 +40,15 @@ class RNBODevice {
 
     /** @hidden */
     async initDevice()  {
-        return this.patcher && this.patcher.then((patcher: IPatcher) => createDevice({ context: this.context, patcher: patcher })
+        this.context.suspend();
+        return this.patcher?.then((patcher: IPatcher) => createDevice({ context: this.context, patcher: patcher })
             .then(device => {
                 // @ts-ignore
                 device.node.connect(this.output._gainNode._nativeAudioNode);
                 // @ts-ignore
                 this.input._gainNode._nativeAudioNode.connect(device.node);
+                
+                this.context.resume();
                 this.device = device;
                 this.ready = true;
             }));
