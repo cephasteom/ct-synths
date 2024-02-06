@@ -40,6 +40,7 @@ class RNBODevice {
 
     /** @hidden */
     async initDevice()  {
+        // TODO: this is a hack
         this.context.suspend();
         return this.patcher?.then((patcher: IPatcher) => createDevice({ context: this.context, patcher: patcher })
             .then(device => {
