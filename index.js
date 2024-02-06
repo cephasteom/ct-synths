@@ -7,6 +7,7 @@ import Additive from "./rnbo/Additive";
 import AcidSynth from "./rnbo/AcidSynth";
 import DroneSynth from "./rnbo/DroneSynth";
 import SubSynth from "./rnbo/SubSynth";
+import Wavetable from "./rnbo/Wavetable";
 import FXChain from "./rnbo/FXChain";
 import FXChannel from "./rnbo/FXChannel";
 import FXReverb from "./rnbo/Reverb";
@@ -24,6 +25,7 @@ export const CtFXChannel = FXChannel
 export const CtAcidSynth = AcidSynth
 export const CtDroneSynth = DroneSynth
 export const CtSubSynth = SubSynth
+export const CtWavetable = Wavetable
 export const CtFXReverb = FXReverb
 export const CtFXDelay = FXDelay
 export const CtReverbGen = ReverbGen

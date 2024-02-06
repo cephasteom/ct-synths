@@ -42,7 +42,6 @@ class BaseSamplingDevice extends BaseSynth {
 
         // check if the sample is already loaded into a buffer
         const i = Object.values(this.buffers).indexOf(url)
-        
         // if it's not loaded, load it
         if(i < 0) {
             // check whether we've already fetched the sample
