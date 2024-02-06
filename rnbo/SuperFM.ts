@@ -25,6 +25,10 @@ class Synth extends BaseSynth {
         this.op1d = this.op1d.bind(this)
         this.op1s = this.op1s.bind(this)
         this.op1r = this.op1r.bind(this)
+        this.a = this.op1a
+        this.d = this.op1d
+        this.s = this.op1s
+        this.r = this.op1r
         this.op1ratio = this.op1ratio.bind(this)
         this._op1ratio = this._op1ratio.bind(this)
         this.op1gain = this.op1gain.bind(this)
