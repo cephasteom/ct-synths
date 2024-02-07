@@ -11,7 +11,7 @@ import type { Dictionary } from '../types'
 class BaseSynth extends RNBODevice {
     /** @hidden */
     defaults: Dictionary = {
-        dur: 1, n: 60, pan: 0.5, vol: 1, amp: 1, hold: 0,
+        dur: 1000, n: 60, pan: 0.5, vol: 1, amp: 1, hold: 0,
         a: 10, d: 100, s: 0.8, r: 1000, 
         moda: 10, modd: 100, mods: 0.8, modr: 1000,
         fila: 10, fild: 100, fils: 0.8, filr: 1000,
