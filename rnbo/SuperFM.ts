@@ -13,7 +13,7 @@ class Synth extends BaseSynth {
     constructor() {
         super()
         this.defaults = { ...this.defaults, 
-            op1a: 10, op1d: 100, op1s: 0.8, op1r: 1000, op1ratio: 1, op1gain: 1, op1fb: 0,
+            a: 10, d: 100, s: 0.8, r: 125, op1ratio: 1, op1gain: 1, op1fb: 0,
             op2a: 10, op2d: 100, op2s: 0.8, op2r: 1000, op2ratio: 1, op2gain: 1, op2fb: 0,
             op3a: 10, op3d: 100, op3s: 0.8, op3r: 1000, op3ratio: 1, op3gain: 1, op3fb: 0,
         }
