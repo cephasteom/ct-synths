@@ -21,14 +21,6 @@ class Synth extends BaseSynth {
 
         this.initDevice()
         
-        this.op1a = this.op1a.bind(this)
-        this.op1d = this.op1d.bind(this)
-        this.op1s = this.op1s.bind(this)
-        this.op1r = this.op1r.bind(this)
-        this.a = this.op1a
-        this.d = this.op1d
-        this.s = this.op1s
-        this.r = this.op1r
         this.op1ratio = this.op1ratio.bind(this)
         this._op1ratio = this._op1ratio.bind(this)
         this.op1gain = this.op1gain.bind(this)
@@ -60,11 +52,6 @@ class Synth extends BaseSynth {
             
         this.params = Object.getOwnPropertyNames(this)
     }
-
-    op1a(value: number = 0, time: number): void { this.messageDevice('op1a', value, time) }
-    op1d(value: number = 0, time: number): void { this.messageDevice('op1d', value, time) }
-    op1s(value: number = 0, time: number): void { this.messageDevice('op1s', value, time) }
-    op1r(value: number = 0, time: number): void { this.messageDevice('op1r', value, time) }
 
     op1ratio(value: number = 0, time: number): void { this.messageDevice('op1ratio', value, time) }
     _op1ratio(value: number = 0, time: number): void { this.messageDevice('_op1ratio', value, time) }
