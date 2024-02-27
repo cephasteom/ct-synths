@@ -38,13 +38,14 @@ class BaseSamplingDevice extends BaseSynth {
      */
     async loadSample(bank: string, index: number) {
         const url = this.banks[bank][index]
-        const ref = `${bank}-${index}`
 
         // check if the sample is already loaded into a buffer
         const i = Object.values(this.buffers).indexOf(url)
         // if it's not loaded, load it
         if(i < 0) {
             // check whether we've already fetched the sample
+            const ref = `${bank}-${index}`
+
             const sample = samples[ref] || 
                 await fetch(url)
                     .then(res => res.arrayBuffer())
