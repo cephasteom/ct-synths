@@ -31,14 +31,14 @@ class BaseSamplingDevice extends BaseSynth {
     }
 
     /**
-     * Provide an index to play a sample from the current bank
-     * @param value - index of sample in bank
-     */ 
-    async i(value: number, time: number) {
-        if(!this.currentBank) return
-        const index = value % this.banks[this.currentBank].length
-        const url = this.banks[this.currentBank][index]
-        const ref = `${this.currentBank}-${index}`
+     * Load a sample into a buffer
+     * @param bank - name of the bank
+     * @param index - index of the sample in the bank
+     * @returns index of the buffer interal to the synth
+     */
+    async loadSample(bank: string, index: number) {
+        const url = this.banks[bank][index]
+        const ref = `${bank}-${index}`
 
         // check if the sample is already loaded into a buffer
         const i = Object.values(this.buffers).indexOf(url)
@@ -62,9 +62,19 @@ class BaseSamplingDevice extends BaseSynth {
             this.nextBuffer = (this.nextBuffer + 1) % 32
         }
 
-        this.messageDevice('i', i, time)
+        return i
     }
-    
+
+    /**
+     * Provide an index to play a sample from the current bank
+     * @param value - index of sample in bank
+     */ 
+    async i(value: number, time: number) {
+        if(!this.currentBank) return
+        const index = value % this.banks[this.currentBank].length
+        const bufferI = await this.loadSample(this.currentBank, index)
+        this.messageDevice('i', bufferI, time)
+    }
     
 }
 
