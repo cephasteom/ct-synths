@@ -37,6 +37,7 @@ class BaseSamplingDevice extends BaseSynth {
      * @returns index of the buffer interal to the synth
      */
     async loadSample(bank: string, index: number) {
+        if(!this.ready) return
         const url = this.banks[bank][index]
 
         // check if the sample is already loaded into a buffer
@@ -47,10 +48,10 @@ class BaseSamplingDevice extends BaseSynth {
             const ref = `${bank}-${index}`
 
             const sample = samples[ref] || 
-                await fetch(url)
-                    .then(res => res.arrayBuffer())
-                    .then(arrayBuf => this.context.decodeAudioData(arrayBuf))
-                    .catch(err => console.log(err))
+            await fetch(url)
+                .then(res => res.arrayBuffer())
+                .then(arrayBuf => this.context.decodeAudioData(arrayBuf))
+                .catch(err => console.log(err))
 
             const b = `b${this.nextBuffer}`
             // set buffer in rnbo device
