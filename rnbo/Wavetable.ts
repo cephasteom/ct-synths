@@ -15,7 +15,8 @@ class Wavetable extends BaseSamplingDevice {
         super()
         this.defaults = { 
             ...this.defaults, 
-            dur: 1000, tablesize: 256, rows: 16, xlfo: 0.02, ylfo: 0.3
+            dur: 1000, tablesize: 256, rows: 16, xlfo: 0.01, ylfo: 0.05,
+            i: 0, cutoff: 500, res: 0.5
         }
         this.patcher = patcher
         this.initDevice()
