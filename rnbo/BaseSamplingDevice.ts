@@ -26,7 +26,7 @@ class BaseSamplingDevice extends BaseSynth {
      * Specify which bank of samples you want to use
      * @param name - name of the bank
      */ 
-    async bank(name: string) {
+    bank(name: string) {
         this.currentBank = name 
     }
 

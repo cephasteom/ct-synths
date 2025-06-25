@@ -70,7 +70,11 @@ class RNBODevice {
     /** @hidden */
     setParams(params: Dictionary, time: number) {
         Object.entries(params)
+            // sort by key to ensure consistent order - also ensures bank is called before i
+            .sort(([keyA, _]: [string, any], [keyB, __]: [string, any]) => keyA.localeCompare(keyB))
+            // filter out parameters that are not in the params list
             .filter(([key, _]: [string, any]) => this.params.includes(key)) 
+            // set the state and call the method if it exists
             .forEach(([key, value]) => {
                 // don't send messages for unchanged values, unless it's i, which is async and causes bugs
                 if(key !== 'i' && this.state[key] === value) return
