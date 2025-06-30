@@ -5,7 +5,7 @@ const patcher = fetch(new URL('./json/acid.export.json', import.meta.url))
 /**
  * A monophonic, acid bass synth.
  * @example
- * s0.p.set({inst: 'acid'})
+ * s0.set({inst: 'acid'})
  */ 
 class AcidSynth extends BaseSynth {
     /** @hidden */

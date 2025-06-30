@@ -6,7 +6,7 @@ const patcher = fetch(new URL('./json/superfm.export.json', import.meta.url))
 /**
  * An all purpose synth with filters and FM
  * @example
- * s0.p.set({inst: 'synth'})
+ * s0.set({inst: 'synth'})
  */ 
 class Synth extends BaseSynth {
     /** @hidden */

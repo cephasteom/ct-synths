@@ -8,7 +8,7 @@ const patcher = fetch(new URL('./json/reverb-gen.export.json', import.meta.url))
 /**
  * The Reverb chained to the end of each stream. Is initialised only when reverb parameter is greater than 0.
  * @example
- * s0.p.reverb.set(0.5)
+ * s0.reverb.set(0.5)
  */ 
 class ReverbGen extends RNBODevice {
     /** @hidden */

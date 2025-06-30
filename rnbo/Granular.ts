@@ -5,7 +5,7 @@ const patcher = fetch(new URL('./json/granular.export.json', import.meta.url))
 /**
  * Granular Synth
  * @example
- * s0.p.set({inst: 'granular'})
+ * s0.set({inst: 'granular'})
  */ 
 class Granular extends BaseSamplingDevice {
 

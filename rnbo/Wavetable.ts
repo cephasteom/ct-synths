@@ -6,7 +6,7 @@ const patcher = fetch(new URL('./json/wavetable.export.json', import.meta.url))
 /**
  * Wavetable
  * @example
- * s0.p.set({inst: 'wavetable'})
+ * s0.set({inst: 'wavetable'})
  */ 
 class Wavetable extends BaseSamplingDevice {
 

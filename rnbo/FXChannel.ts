@@ -8,7 +8,7 @@ const patcher = fetch(new URL('./json/fx-channel.export.json', import.meta.url))
 /**
  * The chain of effect applied to the output of each stream. Each effect remains inactive until the amount is set to a value greater than 0.
  * @example
- * s0.p.reverb.set(0.5)
+ * s0.reverb.set(0.5)
  */ 
 class FXChannel extends RNBODevice {
     /** @hidden */

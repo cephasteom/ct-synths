@@ -6,7 +6,7 @@ const patcher = fetch(new URL('./json/sampler.export.json', import.meta.url))
 /**
  * Sampler
  * @example
- * s0.p.set({inst: 'sampler'})
+ * s0.set({inst: 'sampler'})
  */ 
 class Sampler extends BaseSamplingDevice {
 

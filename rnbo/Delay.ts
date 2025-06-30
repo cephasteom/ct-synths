@@ -8,7 +8,7 @@ const patcher = fetch(new URL('./json/fx-delay.export.json', import.meta.url))
 /**
  * The delay chained to the end of each stream. Is initialised only when delay parameter is greater than 0.
  * @example
- * s0.p.delay.set(0.5)
+ * s0.delay.set(0.5)
  */ 
 class FXDelay extends RNBODevice {
     /** @hidden */

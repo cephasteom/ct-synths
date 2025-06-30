@@ -8,7 +8,7 @@ const patcherLite = fetch(new URL('./json/synth-lite.export.json', import.meta.u
 /**
  * An all purpose synth with filters and FM
  * @example
- * s0.p.set({inst: 'synth'})
+ * s0.set({inst: 'synth'})
  */ 
 class Synth extends BaseSynth {
     /** @hidden */
