@@ -203,7 +203,7 @@ class FXChannel extends RNBODevice {
      * HPF filter - alias for locut
      * @param value - 0 to 1
      */
-    hpf(value: number = 0, time: number): void { console.log(value); this.messageDevice('locut', value, time) }
+    hpf(value: number = 0, time: number): void { this.messageDevice('locut', value, time) }
 
     /**
      * mutate the HPF filter - alias for _locut

@@ -17,7 +17,7 @@ class FXChain extends RNBODevice {
         this.defaults = {
             dist: 0, drive: 0.25,
             ring: 0, ringf: 0.25, ringspread: 0, ringmode: 0,
-            hicut: 0, locut: 0,
+            lpf: 0, hpf: 0,
             chorus: 0, chdepth: 0.25, chlfo: 0.25, chspread: 0.25,
             delay: 0, dtime: 500, dfb: 0.5, dspread: 0, dcolour: 0.25, dfilter: 0, 
             reverb: 0, rsize: 0.25, rdamp: 0.25, rdiff: 0.25, rjitter: 0, rdecay: 0.25,
@@ -38,10 +38,10 @@ class FXChain extends RNBODevice {
         this._ringspread = this._ringspread.bind(this)
         this.ringmode = this.ringmode.bind(this)
         this._ringmode = this._ringmode.bind(this)
-        this.hicut = this.hicut.bind(this)
-        this._hicut = this._hicut.bind(this)
-        this.locut = this.locut.bind(this)
-        this._locut = this._locut.bind(this)
+        this.lpf = this.lpf.bind(this)
+        this._lpf = this._lpf.bind(this)
+        this.hpf = this.hpf.bind(this)
+        this._hpf = this._hpf.bind(this)
         this.chorus = this.chorus.bind(this)
         this._chorus = this._chorus.bind(this)
         this.chdepth = this.chdepth.bind(this)
@@ -214,29 +214,29 @@ class FXChain extends RNBODevice {
     _chspread(value: number = 0.25, time: number): void { this.messageDevice('_chspread', value, time) }
 
     /**
-     * Hicut filter
+     * LPF filter
      * @param value - 0 to 1
      */
     
-    hicut(value: number = 0, time: number): void { this.messageDevice('hicut', value, time) }
+    lpf(value: number = 0, time: number): void { this.messageDevice('hicut', value, time) }
 
     /**
-     * Mutate the hicut filter
+     * Mutate the LPF filter
      * @param value - 0 to 1
      */ 
-    _hicut(value: number = 0, time: number): void { this.messageDevice('_hicut', value, time) }
+    _lpf(value: number = 0, time: number): void { this.messageDevice('_hicut', value, time) }
 
     /**
-     * Locut filter
+     * HPF filter
      * @param value - 0 to 1
      */ 
-    locut(value: number = 0, time: number): void { this.messageDevice('locut', value, time) }
+    hpf(value: number = 0, time: number): void { this.messageDevice('locut', value, time) }
 
     /**
-     * Mutate the locut filter
+     * Mutate the HPF filter
      * @param value - 0 to 1
      */ 
-    _locut(value: number = 0, time: number): void { this.messageDevice('_locut', value, time) }
+    _hpf(value: number = 0, time: number): void { this.messageDevice('_locut', value, time) }
 
     /**
      * Delay amount
