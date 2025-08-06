@@ -17,7 +17,7 @@ class FXChannel extends RNBODevice {
         this.defaults = {
             dist: 0, drive: 0.25,
             ring: 0, ringf: 0.25, ringspread: 0, ringmode: 0,
-            hicut: 0, locut: 0,
+            lpf: 0, hpf: 0,
             chorus: 0, chdepth: 0.25, chlfo: 0.25, chspread: 0.25,
             gain: 1, lthresh: 1
         }
@@ -36,10 +36,10 @@ class FXChannel extends RNBODevice {
         this._ringspread = this._ringspread.bind(this)
         this.ringmode = this.ringmode.bind(this)
         this._ringmode = this._ringmode.bind(this)
-        this.hicut = this.hicut.bind(this)
-        this._hicut = this._hicut.bind(this)
-        this.locut = this.locut.bind(this)
-        this._locut = this._locut.bind(this)
+        this.lpf = this.lpf.bind(this)
+        this._lpf = this._lpf.bind(this)
+        this.hpf = this.hpf.bind(this)
+        this._hpf = this._hpf.bind(this)
         this.chorus = this.chorus.bind(this)
         this._chorus = this._chorus.bind(this)
         this.chdepth = this.chdepth.bind(this)
@@ -186,31 +186,30 @@ class FXChannel extends RNBODevice {
      * @param value - 0 to 1
      */ 
     _chspread(value: number = 0.25, time: number): void { this.messageDevice('_chspread', value, time) }
-
+    
     /**
-     * Hicut filter
+     * LPF filter - alias for hicut
      * @param value - 0 to 1
      */
-    
-    hicut(value: number = 0, time: number): void { this.messageDevice('hicut', value, time) }
+    lpf(value: number = 0, time: number): void { this.messageDevice('hicut', value, time) }
 
     /**
-     * Mutate the hicut filter
+     * mutate the LPF filter - alias for _hicut
      * @param value - 0 to 1
-     */ 
-    _hicut(value: number = 0, time: number): void { this.messageDevice('_hicut', value, time) }
+     */
+    _lpf(value: number = 0, time: number): void { this.messageDevice('_lpf', value, time) }
 
     /**
-     * Locut filter
+     * HPF filter - alias for locut
      * @param value - 0 to 1
-     */ 
-    locut(value: number = 0, time: number): void { this.messageDevice('locut', value, time) }
+     */
+    hpf(value: number = 0, time: number): void { console.log(value); this.messageDevice('locut', value, time) }
 
     /**
-     * Mutate the locut filter
+     * mutate the HPF filter - alias for _locut
      * @param value - 0 to 1
-     */ 
-    _locut(value: number = 0, time: number): void { this.messageDevice('_locut', value, time) }
+     */
+    _hpf(value: number = 0, time: number): void { this.messageDevice('_hpf', value, time) }
 
     /**
      * Gain of channel
