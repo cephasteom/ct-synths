@@ -14,7 +14,7 @@ class Synth extends BaseSynth {
     /** @hidden */
     constructor(args: any = {}) {
         super()
-        this.defaults = { ...this.defaults, osc: 0, drift: 0, modi: 0, harm: 1 }
+        this.defaults = { ...this.defaults, osc: 0, drift: 0, modi: 0, harm: 1, lforate: 0, lfodepth: 0 }
         this.patcher = args.lite 
             ? patcherLite
             : patcher
@@ -29,6 +29,10 @@ class Synth extends BaseSynth {
         this._modi = this._modi.bind(this)
         this.harm = this.harm.bind(this)
         this._harm = this._harm.bind(this)
+        this.lforate = this.lforate.bind(this)
+        this._lforate = this._lforate.bind(this)
+        this.lfodepth = this.lfodepth.bind(this)
+        this._lfodepth = this._lfodepth.bind(this)
             
         this.params = Object.getOwnPropertyNames(this)
     }
@@ -83,6 +87,29 @@ class Synth extends BaseSynth {
      * @param value - number > 0
      */
     _harm(value: number = 1, time: number): void { this.messageDevice('_harm', value, time) }
+
+    /** * LFO rate
+     * @param value - LFO rate in Hz
+     */
+    lforate(value: number = 1, time: number): void { this.messageDevice('lforate', value, time) }
+
+    /**
+     * Mutate the LFO rate
+     * @param value - LFO rate in Hz
+     */
+    _lforate(value: number = 1, time: number): void { this.messageDevice('_lforate', value, time) }
+    
+    /**
+     * LFO depth
+     * @param value - LFO depth, 0 to 1
+     */
+    lfodepth(value: number = 0, time: number): void { this.messageDevice('lfodepth', value, time) }
+
+    /**
+     * Mutate the LFO depth
+     * @param value - LFO depth, 0 to 1
+     */
+    _lfodepth(value: number = 0, time: number): void { this.messageDevice('_lfodepth', value, time) }
 }
 
 export default Synth
