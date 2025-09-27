@@ -1,4 +1,5 @@
-import { MIDIEvent } from '@rnbo/js'
+import pkg from '@rnbo/js';
+const { MIDIEvent } = pkg;
 import BaseSynth from "./BaseSynth";
 import type { Dictionary } from "../types";
 

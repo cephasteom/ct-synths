@@ -1,8 +1,9 @@
 import { context as toneContext, Gain } from 'tone';
 import { dummy } from './utils';
-import { createDevice, MessageEvent } from '@rnbo/js'
 import type { Device, IPatcher } from '@rnbo/js'
 import type { Dictionary } from '../types'
+import pkg from '@rnbo/js';
+const { createDevice, MessageEvent } = pkg;
 import type { Destination } from 'tone';
 
 class RNBODevice {

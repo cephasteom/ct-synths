@@ -1,4 +1,5 @@
-import { MIDIEvent } from '@rnbo/js'
+import pkg from '@rnbo/js';
+const { MIDIEvent } = pkg;
 import RNBODevice from './RNBODevice'
 import type { Dictionary } from '../types'
 
