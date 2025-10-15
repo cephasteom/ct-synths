@@ -1,4 +1,4 @@
-import { Gain, gainToDb, mtof, Panner, PolySynth, Synth } from "tone";
+import { FMSynth, Gain, gainToDb, Mono, MonoSynth, mtof, Panner, PluckSynth, PolySynth, Synth } from "tone";
 
 class ToneInstrument {
     /** @hidden */
@@ -15,7 +15,7 @@ class ToneInstrument {
         a: 10, d: 100, s: 0.5, r: 500,
     }
 
-    constructor(synth: typeof Synth<any>) {
+    constructor(synth: typeof Synth | typeof MonoSynth | typeof PluckSynth | typeof FMSynth) {
         this.synth = new PolySynth(synth as any, {
             envelope: {
                 attack: this.defaults.a / 1000,
@@ -26,9 +26,6 @@ class ToneInstrument {
         });
         this.panner = new Panner(0);
         this.synth.connect(this.panner);
-
-        this.warmUp();
-        this.ready = true
     }
 
     /** @hidden */
@@ -44,7 +41,7 @@ class ToneInstrument {
      * Plays a very short, quiet note on all voices to initialize them
      * @hidden
      */
-    private warmUp() {
+    init() {
         const now = this.synth.context.currentTime;
         // warm up 8 voices
         const testNotes = ["C4", "E4", "G4", "B4", "D5", "F5", "A5", "C6"];
@@ -56,6 +53,8 @@ class ToneInstrument {
             // @ts-ignore
             this.synth._voices.forEach(v => v[key] !== undefined && (v[key] = value))
         })
+
+        this.ready = true
     }
 
     play(params: Record<string, any> = {}, time: number): void {
@@ -82,6 +81,18 @@ class ToneInstrument {
             })
     }
 
+    setParam(key: string, value: any, time: number): void {
+        // @ts-ignore
+        this.synth._voices.forEach(v => v[key].rampTo(value, 0.01, time));
+    }
+
+    mutateParam(key: string, value: any, time: number, lag: number = 100): void {
+        // @ts-ignore
+        this.synth._activeVoices
+            .filter((v: any) => !v.released) // only modify voices that are currently active
+            .forEach((v: any) => v.voice[key].rampTo(value, lag / 1000, time));
+    }
+
     vol(value: number = 1, time: number): void { this.synth.volume.rampTo(gainToDb(value), 0.01, time) }
     _vol(value: number = 1, time: number, lag: number = 100): void { this.synth.volume.rampTo(gainToDb(value), lag / 1000, time) }
 
@@ -90,17 +101,11 @@ class ToneInstrument {
 
     _n(value: number = 60, time: number, lag: number = 100): void { 
         // @ts-ignore
-        this.synth._voices.forEach(v => v.frequency.rampTo(mtof(value), lag / 1000, time));
+        this.mutateParam('frequency', mtof(value), time, lag)
     }
 
-    detune(value: number = 0, time: number): void { 
-        // @ts-ignore
-        this.synth._voices.forEach(v => v.detune.rampTo(value, 0.01, time));
-    }
-    _detune(value: number = 0, time: number, lag: number = 100): void { 
-        // @ts-ignore
-        this.synth._voices.forEach(v => v.detune.rampTo(value, lag / 1000, time));
-    }
+    detune(value: number = 0, time: number): void { this.setParam('detune', value, time) }
+    _detune(value: number = 0, time: number, lag: number = 100): void { this.mutateParam('detune', value, time, lag) }
 
     // @ts-ignore
     a(value: number = 1000): void { this.synth._voices.forEach(v => v.envelope.attack = value / 1000);}
