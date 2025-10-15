@@ -62,7 +62,8 @@ class ToneInstrument {
         if(!this.ready) return
 
         params = {...this.defaults, ...params }
-        // call methods on synth for each param, if it exists
+        
+        // call method on synth for each param, if it exists
         Object.entries({...this.defaults, ...params })
             .forEach(([key, value]) => {
                 // @ts-ignore
@@ -90,6 +91,15 @@ class ToneInstrument {
     _n(value: number = 60, time: number, lag: number = 100): void { 
         // @ts-ignore
         this.synth._voices.forEach(v => v.frequency.rampTo(mtof(value), lag / 1000, time));
+    }
+
+    detune(value: number = 0, time: number): void { 
+        // @ts-ignore
+        this.synth._voices.forEach(v => v.detune.rampTo(value, 0.01, time));
+    }
+    _detune(value: number = 0, time: number, lag: number = 100): void { 
+        // @ts-ignore
+        this.synth._voices.forEach(v => v.detune.rampTo(value, lag / 1000, time));
     }
 
     // @ts-ignore
