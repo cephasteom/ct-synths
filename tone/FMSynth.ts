@@ -1,4 +1,3 @@
-import { mod } from "mathjs";
 import ToneInstrument from "./ToneInstrument";
 import { FMSynth as ToneFMSynth } from "tone";
 
@@ -8,7 +7,7 @@ class FMSynth extends ToneInstrument {
         this.defaults = {
             ...this.defaults,
             harm: 1,
-            modi: 1,
+            modi: 10,
             modosc: 0,
             moda: 10, modd: 100, mods: 0.5, modr: 500,
         }
@@ -32,14 +31,14 @@ class FMSynth extends ToneInstrument {
      * @param value Modulation index value
      * @param time Time in seconds to reach the value
      */
-    modi(value: number = 100, time: number): void { this.setParam('modulationIndex', value, time) }
+    modi(value: number = 10, time: number): void { this.setParam('modulationIndex', value * 10, time) }
 
     /** Mutate the modulation index
      * @param value Modulation index value
      * @param time Time in seconds to reach the value
      * @param lag The lag time for the change
      */
-    _modi(value: number = 100, time: number, lag: number = 100): void { this.mutateParam('modulationIndex', value, time, lag) } 
+    _modi(value: number = 10, time: number, lag: number = 100): void { this.mutateParam('modulationIndex', value * 10, time, lag) } 
 
     /** Set the attack time of the modulation envelope
      * @param value Attack time in milliseconds
