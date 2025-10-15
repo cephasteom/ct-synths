@@ -65,6 +65,7 @@ class ToneInstrument {
         if(!this.ready) return
 
         params = {...this.defaults, ...params }
+        delete params.cut
         
         // call method on synth for each param, if it exists
         Object.entries({...this.defaults, ...params })
