@@ -1,4 +1,4 @@
-import { Gain, gainToDb, Panner, PolySynth, Synth } from "tone";
+import { Gain, gainToDb, mtof, Panner, PolySynth, Synth } from "tone";
 
 class ToneInstrument {
     /** @hidden */
@@ -11,7 +11,7 @@ class ToneInstrument {
     private ready = false
 
     defaults: Record<string, any> = {
-        n: 60, amp: 0.5, dur: 500, nudge: 0, pan: 0.5, vol: 1,
+        n: 60, amp: 0.5, dur: 500, nudge: 0, pan: 0.5, vol: 0.5,
         a: 10, d: 100, s: 0.5, r: 500,
     }
 
@@ -69,12 +69,12 @@ class ToneInstrument {
                 if(this[key]) this[key](value, time)
             })
 
-        this.synth.triggerAttackRelease(params.n, params.dur / 1000, time + (params.nudge / 1000), params.amp);
+        this.synth.triggerAttackRelease(mtof(params.n), params.dur / 1000, time + (params.nudge / 1000), params.amp);
     }
 
     mutate(params: Record<string, any> = {}, time: number, lag: number = 100): void {
         if(!this.ready) return
-        Object.entries({...this.defaults, ...params })
+        Object.entries(params)
             .forEach(([key, value]) => {
                 // @ts-ignore
                 if(this[`_${key}`]) this[`_${key}`](value, time, lag)
@@ -86,6 +86,11 @@ class ToneInstrument {
 
     pan(value: number = 0.5, time: number): void { this.panner.pan.rampTo(value * 2 - 1, 0.01, time) }
     _pan(value: number = 0.5, time: number, lag: number = 100): void { this.panner.pan.rampTo(value * 2 - 1, lag / 1000, time) }
+
+    _n(value: number = 60, time: number, lag: number = 100): void { 
+        // @ts-ignore
+        this.synth._voices.forEach(v => v.frequency.rampTo(mtof(value), lag / 1000, time));
+    }
 
     // @ts-ignore
     a(value: number = 1000): void { this.synth._voices.forEach(v => v.envelope.attack = value / 1000);}
