@@ -15,7 +15,6 @@ import FXDelay from "./rnbo/Delay";
 import ReverbGen from "./rnbo/ReverbGen";
 import ToneSynth from "./tone/Synth";
 import MonoSynth from "./tone/MonoSynth";
-import PluckSynth from "./tone/PluckSynth";
 import FMSynth from "./tone/FMSynth";
 import AMSynth from "./tone/AMSynth";
 
@@ -37,6 +36,5 @@ export const CtReverbGen = ReverbGen
 
 export const CtToneSynth = ToneSynth
 export const CtToneMonoSynth = MonoSynth
-export const CtTonePluckSynth = PluckSynth
 export const CtToneFMSynth = FMSynth
 export const CtToneAMSynth = AMSynth

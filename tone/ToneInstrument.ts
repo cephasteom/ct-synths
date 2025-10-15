@@ -1,6 +1,6 @@
-import { AMSynth, FMSynth, Gain, gainToDb, MonoSynth, mtof, Panner, PluckSynth, PolySynth, Synth } from "tone";
+import { AMSynth, FMSynth, Gain, gainToDb, MonoSynth, mtof, NoiseSynth, Panner, PluckSynth, PolySynth, Synth } from "tone";
 
-type ChildSynth = typeof Synth | typeof MonoSynth | typeof PluckSynth | typeof FMSynth | typeof AMSynth
+type ChildSynth = typeof Synth | typeof MonoSynth | typeof PluckSynth | typeof FMSynth | typeof AMSynth | typeof NoiseSynth;
 
 class ToneInstrument {
     /** @hidden */
