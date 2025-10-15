@@ -1,4 +1,6 @@
-import { FMSynth, Gain, gainToDb, MonoSynth, mtof, Panner, PluckSynth, PolySynth, Synth } from "tone";
+import { AMSynth, FMSynth, Gain, gainToDb, MonoSynth, mtof, Panner, PluckSynth, PolySynth, Synth } from "tone";
+
+type ChildSynth = typeof Synth | typeof MonoSynth | typeof PluckSynth | typeof FMSynth | typeof AMSynth
 
 class ToneInstrument {
     /** @hidden */
@@ -13,10 +15,10 @@ class ToneInstrument {
     defaults: Record<string, any> = {
         n: 60, amp: 0.5, dur: 500, nudge: 0, pan: 0.5, vol: 0.5,
         a: 10, d: 100, s: 0.5, r: 500,
-        osc: 'sine',
+        osc: 0,
     }
 
-    constructor(synth: typeof Synth | typeof MonoSynth | typeof PluckSynth | typeof FMSynth) {
+    constructor(synth: ChildSynth) {
         this.synth = new PolySynth(synth as any, {
             envelope: {
                 attack: this.defaults.a / 1000,
@@ -99,8 +101,12 @@ class ToneInstrument {
             .forEach((v: any) => v.voice[key].rampTo(value, lag / 1000, time));
     }
 
-    vol(value: number = 1, time: number): void { this.synth.volume.rampTo(gainToDb(value), 0.01, time) }
-    _vol(value: number = 1, time: number, lag: number = 100): void { this.synth.volume.rampTo(gainToDb(value), lag / 1000, time) }
+    vol(value: number = 1, time: number): void { 
+        this.setParam('volume', gainToDb(value), time)
+    }
+    _vol(value: number = 1, time: number, lag: number = 100): void { 
+        this.mutateParam('volume', gainToDb(value), time, lag)
+    }
 
     pan(value: number = 0.5, time: number): void { this.panner.pan.rampTo(value * 2 - 1, 0.01, time) }
     _pan(value: number = 0.5, time: number, lag: number = 100): void { this.panner.pan.rampTo(value * 2 - 1, lag / 1000, time) }
@@ -125,15 +131,10 @@ class ToneInstrument {
     // @ts-ignore
     r(value: number = 500): void { this.synth._voices.forEach(v => v.envelope.release = value / 1000); }
 
-    osc(value: string = 'sine', time: number): void {
-        const types = {
-            'saw': 'sawtooth',
-            'tri': 'triangle',
-            'square': 'square',
-            'sine': 'sine',
-        }
+    osc(value: number = 0, time: number): void {
+        const types = ['sine', 'sawtooth', 'triangle', 'square'];
         // @ts-ignore
-        this.synth._availableVoices.forEach(v => v.oscillator.type = types[value] || 'sine');
+        this.synth._availableVoices.forEach(v => v.oscillator.type = types[value % types.length] || 'sine');
     }
 }
 

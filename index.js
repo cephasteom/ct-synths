@@ -17,6 +17,7 @@ import ToneSynth from "./tone/Synth";
 import MonoSynth from "./tone/MonoSynth";
 import PluckSynth from "./tone/PluckSynth";
 import FMSynth from "./tone/FMSynth";
+import AMSynth from "./tone/AMSynth";
 
 export const CtSynth = Synth
 export const CtSynth2 = Synth2
@@ -38,3 +39,4 @@ export const CtToneSynth = ToneSynth
 export const CtToneMonoSynth = MonoSynth
 export const CtTonePluckSynth = PluckSynth
 export const CtToneFMSynth = FMSynth
+export const CtToneAMSynth = AMSynth

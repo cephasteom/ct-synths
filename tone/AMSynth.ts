@@ -1,25 +1,21 @@
 import { mod } from "mathjs";
 import ToneInstrument from "./ToneInstrument";
-import { FMSynth as ToneFMSynth } from "tone";
+import { AMSynth as ToneAMSynth } from "tone";
 
-class FMSynth extends ToneInstrument {
+class AMSynth extends ToneInstrument {
     constructor() {
-        super(ToneFMSynth)
+        super(ToneAMSynth)
         this.defaults = {
             ...this.defaults,
-            harm: 1,
-            modi: 1,
-            modosc: 0,
+            harm: 5,
             moda: 10, modd: 100, mods: 0.5, modr: 500,
+            modosc: 0,
         }
         this.init()
     }
 
     harm(value: number = 1, time: number): void { this.setParam('harmonicity', value, time) }
     _harm(value: number = 1, time: number, lag: number = 100): void { this.mutateParam('harmonicity', value, time, lag) }
-
-    modi(value: number = 100, time: number): void { this.setParam('modulationIndex', value, time) }
-    _modi(value: number = 100, time: number, lag: number = 100): void { this.mutateParam('modulationIndex', value, time, lag) } 
 
     // @ts-ignore
     moda(value: number = 1000): void { this.synth._voices.forEach(v => v.modulationEnvelope.attack = value / 1000);}
@@ -40,4 +36,4 @@ class FMSynth extends ToneInstrument {
     }
 }
 
-export default FMSynth;
+export default AMSynth;
