@@ -13,6 +13,7 @@ import FXChannel from "./rnbo/FXChannel";
 import FXReverb from "./rnbo/Reverb";
 import FXDelay from "./rnbo/Delay";
 import ReverbGen from "./rnbo/ReverbGen";
+import ToneSynth from "./tone/Synth";
 
 export const CtSynth = Synth
 export const CtSynth2 = Synth2
@@ -29,3 +30,5 @@ export const CtWavetable = Wavetable
 export const CtFXReverb = FXReverb
 export const CtFXDelay = FXDelay
 export const CtReverbGen = ReverbGen
+
+export const CtToneSynth = ToneSynth
