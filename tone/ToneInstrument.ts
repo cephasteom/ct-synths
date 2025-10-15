@@ -1,4 +1,4 @@
-import { FMSynth, Gain, gainToDb, Mono, MonoSynth, mtof, Panner, PluckSynth, PolySynth, Synth } from "tone";
+import { FMSynth, Gain, gainToDb, MonoSynth, mtof, Panner, PluckSynth, PolySynth, Synth } from "tone";
 
 class ToneInstrument {
     /** @hidden */
@@ -13,6 +13,7 @@ class ToneInstrument {
     defaults: Record<string, any> = {
         n: 60, amp: 0.5, dur: 500, nudge: 0, pan: 0.5, vol: 0.5,
         a: 10, d: 100, s: 0.5, r: 500,
+        osc: 'sine',
     }
 
     constructor(synth: typeof Synth | typeof MonoSynth | typeof PluckSynth | typeof FMSynth) {
@@ -81,9 +82,14 @@ class ToneInstrument {
             })
     }
 
+    cut(time: number): void {
+        if(!this.ready) return
+        this.synth.releaseAll(time);
+    }
+
     setParam(key: string, value: any, time: number): void {
         // @ts-ignore
-        this.synth._voices.forEach(v => v[key].rampTo(value, 0.01, time));
+        this.synth._availableVoices.forEach(v => v[key].rampTo(value, 0.01, time));
     }
 
     mutateParam(key: string, value: any, time: number, lag: number = 100): void {
@@ -118,6 +124,17 @@ class ToneInstrument {
 
     // @ts-ignore
     r(value: number = 500): void { this.synth._voices.forEach(v => v.envelope.release = value / 1000); }
+
+    osc(value: string = 'sine', time: number): void {
+        const types = {
+            'saw': 'sawtooth',
+            'tri': 'triangle',
+            'square': 'square',
+            'sine': 'sine',
+        }
+        // @ts-ignore
+        this.synth._availableVoices.forEach(v => v.oscillator.type = types[value] || 'sine');
+    }
 }
 
 export default ToneInstrument;
