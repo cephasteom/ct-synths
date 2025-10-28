@@ -24,12 +24,6 @@ class RNBODevice {
 
     /** @hidden */
     patcher: Promise<IPatcher> | null = null
-    
-    /** @hidden */
-    // Not used anymore? Remove?
-    state: Dictionary = {
-        last: 60,
-    }
 
     /** @hidden */
     constructor() {
@@ -77,9 +71,6 @@ class RNBODevice {
             .filter(([key, _]: [string, any]) => this.params.includes(key)) 
             // set the state and call the method if it exists
             .forEach(([key, value]) => {
-                // don't send messages for unchanged values, unless it's i, which is async and causes bugs
-                if(key !== 'i' && this.state[key] === value) return
-                this.state[key] = value
                 // @ts-ignore
                 this[key] && this[key](value, time)
             })
