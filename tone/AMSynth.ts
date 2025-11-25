@@ -1,4 +1,3 @@
-import { mod } from "mathjs";
 import ToneInstrument from "./ToneInstrument";
 import { AMSynth as ToneAMSynth } from "tone";
 
