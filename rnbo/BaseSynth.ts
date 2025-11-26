@@ -125,7 +125,7 @@ class BaseSynth extends RNBODevice {
      * Nudge the time of an event, in ms
      * @param {number} value - time in ms
      */ 
-    nudge(value: number = 0, time: number): void { /** dummy, happens in play. Just for docs. */ }
+    nudge(): void { /** dummy, happens in play. Just for docs. */ }
 
     /**
      * Set the pan of an event

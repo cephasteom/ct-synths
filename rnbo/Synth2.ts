@@ -10,7 +10,7 @@ const patcher = fetch(new URL('./json/synth-gen.export.json', import.meta.url))
  */ 
 class Synth extends BaseSynth {
     /** @hidden */
-    constructor(args: any = {}) {
+    constructor() {
         super()
         this.defaults = { ...this.defaults, osc: 0, drift: 0, modi: 0, harm: 1 }
         this.patcher = patcher

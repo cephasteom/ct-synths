@@ -200,7 +200,7 @@ class ToneInstrument {
     /** Set the oscillator type of the synth
      * @param value Oscillator type index (0: sine, 1: sawtooth, 2: triangle, 3: square)
      */
-    osc(value: number = 0, time: number): void {
+    osc(value: number = 0): void {
         const types = ['sine', 'sawtooth', 'triangle', 'square'];
         // @ts-ignore
         this.synth._availableVoices.forEach(v => v.oscillator.type = types[value % types.length] || 'sine');
