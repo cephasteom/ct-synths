@@ -31,7 +31,7 @@ class AcidSynth extends BaseSynth {
     }
 
     /**
-     * The oscillator type
+     * The oscillator type. Sine wave is 0, sawtooth is 1.
      * @param value - Sine wave is 0, sawtooth is 1
      */ 
     osc(value: number = 0.6, time: number): void { this.messageDevice('osc', value, time) }
@@ -43,13 +43,13 @@ class AcidSynth extends BaseSynth {
     _osc(value: number = 0.6, time: number): void { this.messageDevice('_osc', value, time) }
 
     /**
-     * Portamento time
+     * Portamento time, in ms.
      * @param value - portamento time in ms
      */
     slide(value: number = 10, time: number): void { this.messageDevice('slide', value, time) } 
 
     /**
-     * Filter gain amount
+     * Filter gain amount, 0 is no filter, 1 is max filter.
      * @param value - 0 is no filter, 1 is max filter
      */
     fil(value: number = 0.5, time: number): void { this.messageDevice('fil', value, time) }
@@ -61,7 +61,7 @@ class AcidSynth extends BaseSynth {
     _fil(value: number = 0.5, time: number): void { this.messageDevice('_fil', value, time) }
     
     /**
-     * Sub oscillator gain amount
+     * Sub oscillator gain amount. 0 is no sub, 1 is max sub.
      * @param value - 0 is no sub, 1 is max sub
      */
     sub(value: number = 0.5, time: number): void { this.messageDevice('sub', value, time) }

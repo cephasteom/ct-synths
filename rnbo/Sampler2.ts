@@ -36,14 +36,14 @@ class Sampler extends BaseSamplingDevice {
     }
 
     /**
-     * Snap sample length to divisions of a beat
-     * @param value - number of divisions to snap to, 0 means don't snap
+     * Snap sample length to time, in ms. 0 means don't snap.
+     * @param value
      */
     snap(value: number = 0, time: number): void { this.messageDevice('snap', value, time) } 
 
     /**
-     * Playback rate
-     * @param value - playback rate, > 0 is forward, < 0 is reverse. 1 is normal speed, 2 is double speed, etc.
+     * Playback rate. > 0 is forward, < 0 is reverse. 1 is normal speed, 2 is double speed, etc.
+     * @param value
      */
     rate(value: number = 1, time: number): void { this.messageDevice('rate', value, time) }
     
@@ -54,26 +54,26 @@ class Sampler extends BaseSamplingDevice {
     _rate(value: number = 1, time: number): void { this.messageDevice('_rate', value, time) } 
     
     /**
-     * Playback position start
-     * @param value - playback position start, 0 is the beginning of the sample, 1 is the end
+     * Playback position start. 0 is the beginning of the sample, 1 is the end.
+     * @param value
      */
     begin(value: number = 0, time: number): void { this.messageDevice('begin', value, time) }
     
     /**
-     * Playback position end
-     * @param value - playback position end, 0 is the beginning of the sample, 1 is the end
+     * Playback position end. 1 is the end of the sample.
+     * @param value
      */
     end(value: number = 1, time: number): void { this.messageDevice('end', value, time) }
 
     /**
-     * Loop, whether to loop when playback reaches the end of the sample or loopsize (see loopsize)
-     * @param value - loop, 0 is off, 1 is on
+     * Loop. 0 is off, 1 is on.
+     * @param value
      */
     loop(value: number = 0, time: number): void { this.messageDevice('loop', value, time) }
 
     /**
-     * Loop size, the size of the loop
-     * @param value - loop size, 0 - 1
+     * The size of the loop, from 0 to 1.
+     * @param value
      */ 
     loopsize(value: number = 1, time: number): void { this.messageDevice('loopsize', value, time) }
 
@@ -84,8 +84,8 @@ class Sampler extends BaseSamplingDevice {
     _loopsize(value: number = 1, time: number): void { this.messageDevice('_loopsize', value, time) }
     
     /**
-     * Oneshot, always play the entire sample or not
-     * @param value - oneshot, 0 is off, 1 is on
+     * 0 is off, 1 is on.
+     * @param value
      */
     oneshot(value: number = 0, time: number): void { this.messageDevice('oneshot', value, time) } 
 }

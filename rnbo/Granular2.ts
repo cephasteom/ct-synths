@@ -55,14 +55,14 @@ class Granular extends BaseSamplingDevice {
     }
 
     /**
-     * Snap sample length to divisions of a beat
-     * @param value - number of divisions to snap to, 0 means don't snap
+     * Snap sample length to time, in ms. 0 means don't snap.
+     * @param value
      */
     snap(value: number = 0, time: number): void { this.messageDevice('snap', value, time) } 
 
     /**
-     * Playback rate
-     * @param value - playback rate, > 0 is forward, < 0 is reverse. 1 is normal speed, 2 is double speed, etc.
+     * Playback rate. > 0 is forward, < 0 is reverse. 1 is normal speed, 2 is double speed, etc.
+     * @param value
      */
     rate(value: number = 1, time: number): void { this.messageDevice('rate', value, time) }
     
@@ -73,8 +73,8 @@ class Granular extends BaseSamplingDevice {
     _rate(value: number = 1, time: number): void { this.messageDevice('_rate', value, time) } 
 
     /**
-     * Grain rate
-     * @param value - grain rate, number of grains per cycle or canvas
+     * Grains per second.
+     * @param value
      */
     grainrate(value: number = 16, time: number): void { this.messageDevice('grainrate', value, time) }
     
@@ -85,8 +85,8 @@ class Granular extends BaseSamplingDevice {
     _grainrate(value: number = 16, time: number): void { this.messageDevice('_grainrate', value, time) } 
 
     /**
-     * Grain size
-     * @param value - grain size, length of grain in beats
+     * Grain size, in ms.
+     * @param value
      */
     grainsize(value: number = 0.125, time: number): void { this.messageDevice('grainsize', value, time) }
 
@@ -97,8 +97,8 @@ class Granular extends BaseSamplingDevice {
     _grainsize(value: number = 0.125, time: number): void { this.messageDevice('_grainsize', value, time) }
 
     /**
-     * Grain slope
-     * @param value - grain slope, attack of grain, 0 - 1
+     * attack of grain, 0 - 1.
+     * @param value
      */
     grainslope(value: number = 0.01, time: number): void { this.messageDevice('grainslope', value, time) }
     
@@ -109,8 +109,8 @@ class Granular extends BaseSamplingDevice {
     _grainslope(value: number = 0.01, time: number): void { this.messageDevice('_grainslope', value, time) }
     
     /**
-     * Grain pan
-     * @param value - grain pan, amount of randomess in grain panning, 0 - 1
+     * Grain pan. Amount of randomess in grain panning, 0 - 1.
+     * @param value
      */
     grainpan(value: number = 0.2, time: number): void { this.messageDevice('grainpan', value, time) }
     
@@ -121,7 +121,7 @@ class Granular extends BaseSamplingDevice {
     _grainpan(value: number = 0.2, time: number): void { this.messageDevice('_grainpan', value, time) }
 
     /**
-     * Playback direction
+     * Playback direction.
      * @param value - playback direction, 1 = forward, -1 = backward
      */
     direction(value: number = 1, time: number): void { this.messageDevice('direction', value, time) }
@@ -133,19 +133,19 @@ class Granular extends BaseSamplingDevice {
     _direction(value: number = 1, time: number): void { this.messageDevice('_direction', value, time) }
     
     /**
-     * Playback position start
+     * Playback position start. 0 is the beginning of the sample, 1 is the end.
      * @param value - playback position start, 0 is the beginning of the sample, 1 is the end
      */
     begin(value: number = 0, time: number): void { this.messageDevice('begin', value, time) }
     
     /**
-     * Playback position end
+     * Playback position end. 0 is the beginning of the sample, 1 is the end.
      * @param value - playback position end, 0 is the beginning of the sample, 1 is the end
      */
     end(value: number = 1, time: number): void { this.messageDevice('end', value, time) }
 
     /**
-     * Loop, whether to loop when playback reaches the end of the sample
+     * Loop, 0 is off, 1 is on.
      * @param value - loop, 0 is off, 1 is on
      */
     loop(value: number = 0, time: number): void { this.messageDevice('loop', value, time) }

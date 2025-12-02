@@ -38,7 +38,7 @@ class Synth extends BaseSynth {
     }
 
     /**
-     * The oscillator type
+     * The oscillator type. Sine wave is 0, sawtooth is 1, triangle is 2, square is 3.
      * Be careful when using FM with tri or square waves - RNBO bug
      * @param value - Sine wave is 0, sawtooth is 1, triangle is 2, square is 3
      * 
@@ -53,7 +53,7 @@ class Synth extends BaseSynth {
     _osc(value: number = 0, time: number): void { this.messageDevice('_osc', value, time) }
 
     /**
-     * The oscillator drift
+     * The oscillator drift, from 0 to 1.
      * @param value - 0 is no drift, 1 is max drift
      */
     drift(value: number = 0, time: number): void { this.messageDevice('drift', value, time) } 
@@ -65,7 +65,7 @@ class Synth extends BaseSynth {
     _drift(value: number = 0, time: number): void { this.messageDevice('_drift', value, time) }
 
     /**
-     * The modulation index
+     * The modulation index, from 0+.
      * @param value - 0+
      */
     modi(value: number = 0, time: number): void { this.messageDevice('modi', value, time) } 
@@ -77,7 +77,7 @@ class Synth extends BaseSynth {
     _modi(value: number = 0, time: number): void { this.messageDevice('_modi', value, time) }
 
     /**
-     * The harmonicity ratio
+     * The harmonicity ratio, from 0+.
      * @param value - number > 0
      */
     harm(value: number = 1, time: number): void { this.messageDevice('harm', value, time) } 
@@ -88,7 +88,8 @@ class Synth extends BaseSynth {
      */
     _harm(value: number = 1, time: number): void { this.messageDevice('_harm', value, time) }
 
-    /** * LFO rate
+    /** 
+     * LFO rate, in Hz.
      * @param value - LFO rate in Hz
      */
     lforate(value: number = 1, time: number): void { this.messageDevice('lforate', value, time) }
@@ -100,7 +101,7 @@ class Synth extends BaseSynth {
     _lforate(value: number = 1, time: number): void { this.messageDevice('_lforate', value, time) }
     
     /**
-     * LFO depth
+     * LFO depth, from 0 to 1.
      * @param value - LFO depth, 0 to 1
      */
     lfodepth(value: number = 0, time: number): void { this.messageDevice('lfodepth', value, time) }
