@@ -109,7 +109,7 @@ class Granular extends BaseSamplingDevice {
     _grainslope(value: number = 0.01, time: number): void { this.messageDevice('_grainslope', value, time) }
     
     /**
-     * Grain pan. Amount of randomess in grain panning, 0 - 1.
+     * Amount of randomness in grain panning, 0 - 1.
      * @param value
      */
     grainpan(value: number = 0.2, time: number): void { this.messageDevice('grainpan', value, time) }

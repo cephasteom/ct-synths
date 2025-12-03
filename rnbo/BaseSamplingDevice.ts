@@ -23,7 +23,7 @@ class BaseSamplingDevice extends BaseSynth {
     }
 
     /**
-     * Specify which bank of samples you want to use
+     * Sample bank to use.
      * @param name - name of the bank
      */ 
     bank(name: string) {
@@ -34,6 +34,7 @@ class BaseSamplingDevice extends BaseSynth {
      * Load a sample into a buffer
      * @param bank - name of the bank
      * @param index - index of the sample in the bank
+     * @ignore
      * @returns index of the buffer interal to the synth
      */
     async loadSample(bank: string, index: number) {
@@ -68,7 +69,7 @@ class BaseSamplingDevice extends BaseSynth {
     }
 
     /**
-     * Provide an index to play a sample from the current bank
+     * Index of sample in bank.
      * @param value - index of sample in bank
      */ 
     async i(value: number, time: number) {
