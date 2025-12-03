@@ -24,7 +24,7 @@ class Granular extends BaseSamplingDevice {
             s: 1, 
             r: 100, 
             grainrate: 16, 
-            grainsize: 0.125, 
+            grainsize: 100, 
             grainslope: 0.01, 
             grainpan: 0.2, 
             direction: 1,
