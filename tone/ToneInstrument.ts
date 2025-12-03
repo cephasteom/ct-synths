@@ -13,9 +13,9 @@ class ToneInstrument {
     private ready = false
 
     defaults: Record<string, any> = {
-        n: 60, amp: 0.5, dur: 500, nudge: 0, pan: 0.5, vol: 0.5,
+        n: 60, amp: 0.5, dur: 500, nudge: 0, pan: 0.5, vol: 1,
         a: 10, d: 100, s: 0.5, r: 500,
-        osc: 0,
+        osc: 3,
     }
 
     constructor(synth: ChildSynth) {
@@ -203,7 +203,7 @@ class ToneInstrument {
     osc(value: number = 0): void {
         const types = ['sine', 'sawtooth', 'triangle', 'square'];
         // @ts-ignore
-        this.synth._availableVoices.forEach(v => v.oscillator.type = types[value % types.length] || 'sine');
+        this.synth._availableVoices.forEach(v => v.oscillator.type = types[value % types.length - 1] || 'sine');
     }
 }
 
