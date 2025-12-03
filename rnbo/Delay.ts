@@ -46,7 +46,7 @@ class FXDelay extends RNBODevice {
     }
 
     /**
-     * Delay amount
+     * Wet/dry delay amount. 0 - 1.
      * @param value - 0 to 1
      */
     delay(value: number = 0, time: number): void { this.messageDevice('delay', value, time) }
@@ -58,7 +58,7 @@ class FXDelay extends RNBODevice {
     _delay(value: number = 0, time: number): void { this.messageDevice('_delay', value, time) }
 
     /**
-     * Delay time
+     * Delay time in ms.
      * @param value - in ms
      */ 
     dtime(value: number = 500, time: number): void { this.messageDevice('dtime', value, time) }
@@ -70,7 +70,7 @@ class FXDelay extends RNBODevice {
     _dtime(value: number = 500, time: number): void { this.messageDevice('_dtime', value, time) }
 
     /**
-     * Delay feedback
+     * Delay feedback. 0 - 1.
      * @param value - 0 to 1
      */ 
     dfb(value: number = 0.5, time: number): void { this.messageDevice('dfb', value, time) }
@@ -82,7 +82,7 @@ class FXDelay extends RNBODevice {
     _dfb(value: number = 0.5, time: number): void { this.messageDevice('_dfb', value, time) }
 
     /**
-     * Delay spread
+     * Delay spread. 0 - 1.
      * @param value - 0 to 1
      */ 
     dspread(value: number = 0, time: number): void { this.messageDevice('dspread', value, time) }
@@ -94,7 +94,7 @@ class FXDelay extends RNBODevice {
     _dspread(value: number = 0, time: number): void { this.messageDevice('_dspread', value, time) }
 
     /**
-     * Delay colour
+     * Delay colour. 0 - 1.
      * @param value - 0 to 1
      */
     dcolour(value: number = 0.25, time: number): void { this.messageDevice('dcolour', value, time) }
@@ -106,7 +106,7 @@ class FXDelay extends RNBODevice {
     _dcolour(value: number = 0.25, time: number): void { this.messageDevice('_dcolour', value, time) }
 
     /**
-     * Delay filter
+     * Delay filter. 0 - 1.
      * @param value - 0 to 1
      */ 
     

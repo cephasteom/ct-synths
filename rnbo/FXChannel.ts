@@ -68,7 +68,7 @@ class FXChannel extends RNBODevice {
     }
 
     /**
-     * The distortion amount
+     * Wet/dry distortion amount. 0 - 1.
      * @param value - 0 to 1
      */ 
     dist(value: number = 0, time: number): void { this.messageDevice('dist', value, time) }
@@ -80,7 +80,7 @@ class FXChannel extends RNBODevice {
     _dist(value: number = 0, time: number): void { this.messageDevice('_dist', value, time) }
 
     /**
-     * The distortion drive
+     * Distortion drive. 0 - 1.
      * @param value - 0 to 1
      */ 
     drive(value: number = 0.5, time: number): void { this.messageDevice('drive', value, time) }
@@ -92,7 +92,7 @@ class FXChannel extends RNBODevice {
     _drive(value: number = 0.5, time: number): void { this.messageDevice('_drive', value, time) }
 
     /**
-     * Ring modulator amount
+     * Wet/dry ring modulator amount. 0 - 1.
      * @param value - 0 to 1
      */ 
     
@@ -105,7 +105,7 @@ class FXChannel extends RNBODevice {
     _ring(value: number = 0, time: number): void { this.messageDevice('_ring', value, time) }
 
     /**
-     * Ring modulator pitch
+     * Ring modulator pitch. 0 - 1.
      * @param value - 0 to 1
      */ 
     ringf(value: number = 0.25, time: number): void { this.messageDevice('ringf', value, time) }
@@ -117,7 +117,7 @@ class FXChannel extends RNBODevice {
     _ringf(value: number = 0.25, time: number): void { this.messageDevice('_ringf', value, time) }
 
     /**
-     * Ring modulator spread
+     * Ring modulator spread. 0 - 1.
      * @param value - 0 to 1
      */ 
     ringspread(value: number = 0, time: number): void { this.messageDevice('ringspread', value, time) }
@@ -129,7 +129,7 @@ class FXChannel extends RNBODevice {
     _ringspread(value: number = 0, time: number): void { this.messageDevice('_ringspread', value, time) }
 
     /**
-     * Ring modulator mode
+     * Ring modulator mode. 0 - 1.
      * @param value - 0 to 1
      */ 
     ringmode(value: number = 0, time: number): void { this.messageDevice('ringmode', value, time) }
@@ -141,7 +141,7 @@ class FXChannel extends RNBODevice {
     _ringmode(value: number = 0, time: number): void { this.messageDevice('_ringmode', value, time) }
 
     /**
-     * Chorus amount
+     * Wet/dry chorus amount. 0 - 1.
      * @param value - 0 to 1
      */ 
     chorus(value: number = 0, time: number): void { this.messageDevice('chorus', value, time) }
@@ -153,7 +153,7 @@ class FXChannel extends RNBODevice {
     _chorus(value: number = 0, time: number): void { this.messageDevice('_chorus', value, time) }
 
     /**
-     * Chorus depth
+     * Chorus depth. 0 - 1.
      * @param value - 0 to 1
      */
     chdepth(value: number = 0.25, time: number): void { this.messageDevice('chdepth', value, time) }
@@ -165,7 +165,7 @@ class FXChannel extends RNBODevice {
     _chdepth(value: number = 0.25, time: number): void { this.messageDevice('_chdepth', value, time) }
 
     /**
-     * Chorus LFO
+     * Chorus LFO. 0 - 1.
      * @param value - 0 to 1
      */ 
     chlfo(value: number = 0.25, time: number): void { this.messageDevice('chlfo', value, time) }
@@ -177,7 +177,7 @@ class FXChannel extends RNBODevice {
     _chlfo(value: number = 0.25, time: number): void { this.messageDevice('_chlfo', value, time) }
 
     /**
-     * Chorus spread
+     * Chorus spread. 0 - 1.
      * @param value - 0 to 1
      */ 
     chspread(value: number = 0.25, time: number): void { this.messageDevice('chspread', value, time) }
@@ -189,7 +189,7 @@ class FXChannel extends RNBODevice {
     _chspread(value: number = 0.25, time: number): void { this.messageDevice('_chspread', value, time) }
     
     /**
-     * LPF filter - alias for hicut
+     * Low Pass Filter. 0 - 1.
      * @param value - 0 to 1
      */
     lpf(value: number = 0, time: number): void { this.messageDevice('hicut', value, time) }
@@ -201,7 +201,7 @@ class FXChannel extends RNBODevice {
     _lpf(value: number = 0, time: number): void { this.messageDevice('_lpf', value, time) }
 
     /**
-     * HPF filter - alias for locut
+     * High Pass Filter. 0 - 1.
      * @param value - 0 to 1
      */
     hpf(value: number = 0, time: number): void { this.messageDevice('locut', value, time) }
@@ -215,6 +215,7 @@ class FXChannel extends RNBODevice {
     /**
      * Gain of channel
      * @param value - 0 to 1
+     * @ignore
      */ 
     gain(value: number = 1, time: number): void { this.messageDevice('gain', value, time) }
 
@@ -225,7 +226,7 @@ class FXChannel extends RNBODevice {
     _gain(value: number = 1, time: number): void { this.messageDevice('_gain', value, time) }
 
     /**
-     * Limiter threshold
+     * Limiter threshold. 0 - 1.
      * @param value - 0 to 1
      */ 
     lthresh(value: number = 1, time: number): void { this.messageDevice('lthresh', value, time) }

@@ -51,7 +51,7 @@ class ReverbGen extends RNBODevice {
     }
 
     /**
-     * Reverb amount
+     * Wet/dry reverb amount. 0 - 1.
      * @param value - 0 to 1
      */
     reverb(value: number = 0, time: number): void { this.messageDevice('reverb', value, time) }
@@ -63,7 +63,7 @@ class ReverbGen extends RNBODevice {
     _reverb(value: number = 0, time: number): void { this.messageDevice('_reverb', value, time) }    
 
     /**
-     * Reverb size
+     * Reverb size. 0 - 1.
      * @param value - 0 to 1
      */ 
     rsize(value: number = 0.25, time: number): void { 
@@ -77,7 +77,7 @@ class ReverbGen extends RNBODevice {
     _rsize(value: number = 0.25, time: number): void { this.messageDevice('_rsize', value, time) }
 
     /**
-     * Reverb time
+     * Reverb time. 0 - 1.
      * @param value - 0 to 1
      */
     rtime(value: number = 0.25, time: number): void { this.messageDevice('rtime', value, time) }
@@ -89,7 +89,7 @@ class ReverbGen extends RNBODevice {
     _rtime(value: number = 0.25, time: number): void { this.messageDevice('_rtime', value, time) }
 
     /**
-     * Reverb dampening
+     * Reverb dampening. 0 - 1.
      * @param value - 0 to 1
      */ 
     rdamp(value: number = 0.25, time: number): void { this.messageDevice('rdamp', value, time) }
@@ -101,7 +101,7 @@ class ReverbGen extends RNBODevice {
     _rdamp(value: number = 0.25, time: number): void { this.messageDevice('_rdamp', value, time) }
 
     /**
-     * Reverb spread
+     * Reverb spread. 0 - 1.
      * @param value - 0 to 1
      */
     rspread(value: number = 0.25, time: number): void { this.messageDevice('rspread', value, time) }
@@ -113,7 +113,7 @@ class ReverbGen extends RNBODevice {
     _rspread(value: number = 0.25, time: number): void { this.messageDevice('_rspread', value, time) }
 
     /**
-     * Reverb width
+     * Reverb width. 0 - 1.
      * @param value - 0 to 1
      */
     rwidth(value: number = 0.25, time: number): void { this.messageDevice('rwidth', value, time) }
@@ -125,7 +125,7 @@ class ReverbGen extends RNBODevice {
     _rwidth(value: number = 0.25, time: number): void { this.messageDevice('_rwidth', value, time) }
 
     /**
-     * Reverb early
+     * Reverb early. 0 - 1.
      * @param value - 0 to 1
      */
     rearly(value: number = 0.25, time: number): void { this.messageDevice('rearly', value, time) }
@@ -137,7 +137,7 @@ class ReverbGen extends RNBODevice {
     _rearly(value: number = 0.25, time: number): void { this.messageDevice('_rearly', value, time) }
 
     /**
-     * Reverb tail
+     * Reverb tail. 0 - 1.
      * @param value - 0 to 1
      */
     rtail(value: number = 0.25, time: number): void { this.messageDevice('rtail', value, time) }
