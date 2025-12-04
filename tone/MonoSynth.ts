@@ -11,27 +11,27 @@ class MonoSynth extends ToneInstrument {
     }
 
     /**
-     * Set the attack time of the filter envelope
+     * Attack time of the filter envelope. In milliseconds.
      * @param value Attack time in milliseconds
      */
     // @ts-ignore
     fila(value: number = 1000): void { this.synth._voices.forEach(v => v.filterEnvelope.attack = value / 1000);}
 
     /**
-     * Set the decay time of the filter envelope
+     * Decay time of the filter envelope. In milliseconds.
      * @param value Decay time in milliseconds
      */
     // @ts-ignore
     fild(value: number = 100): void { this.synth._voices.forEach(v => v.filterEnvelope.decay = value / 1000); }
 
     /**
-     * Set the release time of the filter envelope
+     * Release time of the filter envelope. In milliseconds.
      * @param value Release time in milliseconds
      */
     // @ts-ignore
     filr(value: number = 500): void { this.synth._voices.forEach(v => v.filterEnvelope.release = value / 1000); }
 
-    /** Set the sustain level of the filter envelope
+    /** Sustain level of the filter envelope. (0 to 1).
      * @param value Sustain level (0 to 1)
      */
     // @ts-ignore

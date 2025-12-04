@@ -12,12 +12,14 @@ class ToneInstrument {
     /** @hidden */
     private ready = false
 
+    /** @hidden */
     defaults: Record<string, any> = {
         n: 60, amp: 0.5, dur: 500, nudge: 0, pan: 0.5, vol: 1,
         a: 10, d: 100, s: 0.5, r: 500,
         osc: 3,
     }
 
+    /** @hidden */
     constructor(synth: ChildSynth) {
         this.synth = new PolySynth(synth as any, {
             envelope: {
@@ -88,7 +90,7 @@ class ToneInstrument {
     }
 
     /**
-     * Cuts all voices at the given time
+     * Cuts all voices at the given time.
      * @param time 
      * @returns 
      */
@@ -112,7 +114,7 @@ class ToneInstrument {
     }
 
     /**
-     * Sets the volume of the synth
+     * Sets the volume of the synth. 0 to 1.
      * @param value The volume value (0 to 1)
      * @param time The time to set the volume
      */
@@ -125,13 +127,14 @@ class ToneInstrument {
      * @param value The volume value (0 to 1)
      * @param time The time to set the volume
      * @param lag The lag time for the volume change
+     * @ignore
      */
     _vol(value: number = 1, time: number, lag: number = 100): void { 
         this.mutateParam('volume', gainToDb(value), time, lag)
     }
 
     /**
-     * Sets the panning of the synth
+     * Pan value. 0 (left) to 1 (right).
      * @param value The panning value (0 to 1)
      * @param time The time to set the panning
      */
@@ -157,22 +160,22 @@ class ToneInstrument {
     }
 
     /**
-     * Sets the detune of the synth
+     * Detune value in semitones.
      * @param value The detune value in cents
      * @param time The time to set the detune
      */
-    detune(value: number = 0, time: number): void { this.setParam('detune', value, time) }
+    detune(value: number = 0, time: number): void { this.setParam('detune', value * 100, time) }
 
     /**
-     * Mutates the detune of the synth
+     * Mutates the detune of the synth. In semitones.
      * @param value The detune value in cents
      * @param time The time to set the detune
      * @param lag The lag time for the detune change
      */
-    _detune(value: number = 0, time: number, lag: number = 100): void { this.mutateParam('detune', value, time, lag) }
+    _detune(value: number = 0, time: number, lag: number = 100): void { this.mutateParam('detune', value * 100, time, lag) }
 
     /**
-     * Set the attack time of the synth envelope
+     * Attack time. In milliseconds.
      * @param value Attack time in milliseconds
      */
     // @ts-ignore
@@ -185,19 +188,19 @@ class ToneInstrument {
     // @ts-ignore
     d(value: number = 100): void { this.synth._voices.forEach(v => v.envelope.decay = value / 1000); }
 
-    /** Set the sustain level of the synth envelope
+    /** Sustain level (0 to 1).
      * @param value Sustain level (0 to 1)
      */
     // @ts-ignore
     s(value: number = 0.5): void { this.synth._voices.forEach(v => v.envelope.sustain = value); }
 
-    /** Set the release time of the synth envelope
+    /** Release time in milliseconds.
      * @param value Release time in milliseconds
      */
     // @ts-ignore
     r(value: number = 500): void { this.synth._voices.forEach(v => v.envelope.release = value / 1000); }
 
-    /** Set the oscillator type of the synth
+    /** Oscillator type. (0: sine, 1: sawtooth, 2: triangle, 3: square).
      * @param value Oscillator type index (0: sine, 1: sawtooth, 2: triangle, 3: square)
      */
     osc(value: number = 0): void {

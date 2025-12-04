@@ -13,7 +13,7 @@ class AMSynth extends ToneInstrument {
         this.init()
     }
 
-    /** Set the harmonicity of the modulator
+    /** Harmonicity ratio between carrier and modulator.
      * @param value Harmonicity value (ratio between carrier and modulator frequency)
      * @param time Time in seconds to reach the value
      */
@@ -26,31 +26,31 @@ class AMSynth extends ToneInstrument {
      */
     _harm(value: number = 1, time: number, lag: number = 100): void { this.mutateParam('harmonicity', value, time, lag) }
 
-    /** Set the attack time of the modulation envelope
+    /** Attack time of the modulation envelope. In milliseconds.
      * @param value Attack time in milliseconds
      */
     // @ts-ignore
     moda(value: number = 1000): void { this.synth._voices.forEach(v => v.modulationEnvelope.attack = value / 1000);}
 
-    /** Set the decay time of the modulation envelope
+    /** Decay time of the modulation envelope. In milliseconds.
      * @param value Decay time in milliseconds
      */
     // @ts-ignore
     modd(value: number = 100): void { this.synth._voices.forEach(v => v.modulationEnvelope.decay = value / 1000); }
 
-    /** Set the release time of the modulation envelope
+    /** Release time of the modulation envelope. In milliseconds.
      * @param value Release time in milliseconds
      */
     // @ts-ignore
     modr(value: number = 500): void { this.synth._voices.forEach(v => v.modulationEnvelope.release = value / 1000); }
 
-    /** Set the sustain level of the modulation envelope
+    /** Sustain level of the modulation envelope. (0 to 1).
      * @param value Sustain level (0 to 1)
      */
     // @ts-ignore
     mods(value: number = 0.5): void { this.synth._voices.forEach(v => v.modulationEnvelope.sustain = value); }
 
-    /** Set the modulation oscillator type
+    /** Modulation oscillator type. (0: sine, 1: sawtooth, 2: triangle, 3: square).
      * @param value Index to select oscillator type
      */
     // @ts-ignore
