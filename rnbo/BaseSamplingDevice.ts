@@ -72,7 +72,7 @@ class BaseSamplingDevice extends BaseSynth {
      * Index of sample in bank.
      * @param value - index of sample in bank
      */ 
-    async i(value: number, time: number) {
+    async i(value: number = 0, time: number) {
         if(!this.currentBank) return
         const index = Math.floor(value) % this.banks[this.currentBank].length
         const bufferI = await this.loadSample(this.currentBank, index)
